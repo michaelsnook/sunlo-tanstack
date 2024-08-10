@@ -1,0 +1,9 @@
+.vercel
+node_modules
+bun.lockb
+pnpm-lock.yaml
+src/supabase/.temp
+src/types/supabase.ts
+out
+src-tauri/target
+src-tauri/gen
