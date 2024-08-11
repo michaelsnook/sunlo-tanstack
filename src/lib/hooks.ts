@@ -8,6 +8,8 @@ import {
   UseQueryResult,
 } from '@tanstack/react-query'
 import { useNavigate, useParams } from '@tanstack/react-router'
+import { useContext } from 'react'
+import { AuthContext } from '../components/auth-context'
 
 export const useLang = () => {
   const parms = useParams({ strict: false })
@@ -22,26 +24,17 @@ const blank = {
   isPending: true,
 }
 
-export const useUserQuery = () =>
-  useQuery({
-    queryKey: ['user'],
-    queryFn: async () => {
-      const { data, error } = await supabase.auth.getUser()
-      if (error) throw error
-      return {
-        isAuth: data?.user.role === 'authenticated',
-        userId: data?.user.id ?? null,
-        userEmail: data?.user.email ?? null,
-        isPending: false,
-      }
-    },
-    placeholderData: blank,
-  })
+// Access the context's value from inside a provider
+export function useAuth() {
+  const context = useContext(AuthContext)
 
-export const useAuth = () => {
-  const userQuery = useUserQuery()
-  return userQuery.isPending ? blank : userQuery.data
+  if (context === null) {
+    throw new Error('You need to wrap AuthProvider.')
+  }
+
+  return context
 }
+
 
 export const useSignOut = () => {
   const navigate = useNavigate()

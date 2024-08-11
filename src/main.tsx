@@ -7,6 +7,8 @@ import { routeTree } from './routeTree.gen'
 import './styles/globals.css'
 import Loading from './components/loading'
 import ShowError from './components/show-error'
+import { AuthProvider } from './components/auth-context'
+import { blankAuthState } from './types/main'
 
 const queryClient = new QueryClient()
 
@@ -14,6 +16,7 @@ const queryClient = new QueryClient()
 const router = createRouter({
   routeTree,
   context: {
+    auth: blankAuthState,
     queryClient,
   },
   defaultPreload: 'intent',
@@ -32,7 +35,9 @@ declare module '@tanstack/react-router' {
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </QueryClientProvider>
   </StrictMode>
 )

@@ -1,17 +1,17 @@
 AUTH
-1. add AuthContext -- so far I've just mocked it with useQuery
+1. ✅ add AuthContext -- so far I've just mocked it with useQuery
 1. ✅ add signOut action to AuthContext -- correction: mocked it with its own hook
 1. ✅ figure out "redirect to home screen" on logout 
 
 NAVIGATION
 1. ✅ get back the "active/inactive" link style in sidebar.tsx
 1. properly use the disabled option on the nav links
-1. probably set it to only active-match exact route matches
+1. ✅ probably set it to only active-match exact route matches
 
 MISC utilities
 1. replace useLang with router feature
 1. double check the new pluck works the same with if (key in obj)
 
 BUILD
-1.  Have disabled `tsc -b` during build; I'm not sure if this foregoes some optimisation,
+1. ❔ Have disabled `tsc -b` during build; I'm not sure if this foregoes some optimisation,
     but I was really just looking for this option like dangerouslyIgnoreBuildErrors.

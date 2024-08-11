@@ -40,7 +40,13 @@ const GenericMenu = ({ menu }: { menu: MenuType }) => {
     <div>
       <p className="my-4 font-bold">
         {menu.href ?
-          <Link className="nav-link" to={menu.href}>
+          <Link
+            className="nav-link"
+            to={menu.href}
+            activeOptions={{
+              exact: true,
+            }}
+          >
             {menu.name}
           </Link>
         : menu.name}
@@ -61,7 +67,6 @@ const GenericMenu = ({ menu }: { menu: MenuType }) => {
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false)
   const toggle = () => setIsOpen(!isOpen)
-  const { isAuth } = useAuth()
 
   const { data: profile, isPending } = useProfile()
   const menuData =
@@ -115,34 +120,31 @@ export default function Sidebar() {
         : null}
 
         <GenericMenu menu={staticMenu} />
-
-        {isAuth && (
-          <p>
-            <SignOutButton />
-          </p>
-        )}
+        <p>
+          <SignOutButton shy />
+        </p>
       </nav>
     </div>
   )
 }
 
-function SignOutButton() {
+function SignOutButton({ shy = false }) {
   const signOut = useSignOut()
   const { isAuth } = useAuth()
 
-  return (
-    <button
-      className="btn btn-ghost"
-      type="button"
-      onClick={(event) => {
-        event.preventDefault()
-        signOut.mutate()
-      }}
-      disabled={signOut.isPending || !isAuth}
-    >
-      Sign out
-    </button>
-  )
+  return shy === false || isAuth === true ?
+      <button
+        className="btn btn-ghost"
+        type="button"
+        onClick={(event) => {
+          event.preventDefault()
+          signOut.mutate()
+        }}
+        disabled={signOut.isPending || !isAuth}
+      >
+        Sign out
+      </button>
+    : null
 }
 
 const SidebarOpener = ({ isOpen, toggle }) => (
