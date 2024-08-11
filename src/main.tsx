@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { routeTree } from './routeTree.gen'
 import './styles/globals.css'
+import Loading from './components/loading'
+import ShowError from './components/show-error'
 
 const queryClient = new QueryClient()
 
@@ -15,9 +17,9 @@ const router = createRouter({
     queryClient,
   },
   defaultPreload: 'intent',
-  // Since we're using React Query, we don't want loader calls to ever be stale
-  // This will ensure that the loader is always called when the route is preloaded or visited
   defaultPreloadStaleTime: 300_000,
+  defaultPendingComponent: Loading,
+  defaultErrorComponent: ({ error }) => <ShowError>{error.message}</ShowError>,
 })
 
 // Register the router instance for type safety
