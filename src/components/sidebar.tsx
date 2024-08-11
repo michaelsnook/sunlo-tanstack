@@ -1,0 +1,193 @@
+import { useState } from 'react'
+import { Garlic } from '../components/garlic'
+import languages from '../lib/languages'
+import { useProfile, useSignOut } from '../lib/hooks'
+import Loading from './loading'
+import { useAuth } from '../lib/hooks'
+import { cn } from '../lib/utils'
+import { Link } from '@tanstack/react-router'
+
+// Don't keep using these. use the framework's types for links and routes
+type LinkType = {
+  name: string
+  href: string | null
+}
+type MenuType = LinkType & {
+  links: Array<LinkType>
+}
+
+const staticMenu: MenuType = {
+  name: 'Menu',
+  href: null,
+  links: [
+    {
+      name: 'Home',
+      href: '/',
+    },
+    {
+      name: 'Log in or sign up',
+      href: '/login',
+    },
+    {
+      name: 'Browse Languages',
+      href: '/language',
+    },
+  ],
+}
+
+const GenericMenu = ({ menu }: { menu: MenuType }) => {
+  return (
+    <div>
+      <p className="my-4 font-bold">
+        {menu.href ?
+          <Link className="nav-link" to={menu.href}>
+            {menu.name}
+          </Link>
+        : menu.name}
+      </p>
+      <ul className="flex flex-col gap-2">
+        {menu.links?.map((i) => (
+          <li key={i.href}>
+            <Link className="nav-link" to={i.href}>
+              {i.name}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+export default function Sidebar() {
+  const [isOpen, setIsOpen] = useState(false)
+  const toggle = () => setIsOpen(!isOpen)
+  const { isAuth } = useAuth()
+
+  const { data: profile, isPending } = useProfile()
+  const menuData =
+    isPending ? null : (
+      {
+        name: 'Learning decks',
+        href: '/home',
+        links: profile?.decks?.map((deck) => {
+          return {
+            name: languages[deck.lang],
+            href: `/home/${deck.lang}`,
+          }
+        }),
+      }
+    )
+
+  return (
+    <div id="sidebar-all">
+      <SidebarOpener isOpen={isOpen} toggle={toggle} />
+      <div
+        className={cn(
+          'z-20 bg-black bg-opacity-50 pt-10',
+          isOpen ? 'fixed' : 'hidden',
+          'bottom-0 left-0 right-0 top-0 md:hidden'
+        )}
+        onClick={toggle}
+      />
+      <nav
+        aria-label="Main navigation"
+        className={cn(
+          isOpen ? 'fixed' : 'hidden',
+          !isOpen ? '' : 'md:sticky md:flex',
+          'top-0 z-30 h-screen w-72 flex-col gap-4 overflow-y-auto overflow-x-hidden bg-base-300 p-6 text-base-content'
+        )}
+      >
+        <span className="h4 flex flex-row items-center">
+          <Garlic size={50} />
+          Sunlo
+        </span>
+        {isPending ?
+          <Loading />
+        : profile ?
+          <>
+            <Link to="/profile">
+              <p className="flex flex-row gap-2">
+                <ProfileIcon /> {profile?.username}
+              </p>
+            </Link>
+            <GenericMenu menu={menuData} />
+          </>
+        : null}
+
+        <GenericMenu menu={staticMenu} />
+
+        {isAuth && (
+          <p>
+            <SignOutButton />
+          </p>
+        )}
+      </nav>
+    </div>
+  )
+}
+
+function SignOutButton() {
+  const signOut = useSignOut()
+  const { isAuth } = useAuth()
+
+  return (
+    <button
+      className="btn btn-ghost"
+      type="button"
+      onClick={(event) => {
+        event.preventDefault()
+        signOut.mutate()
+      }}
+      disabled={signOut.isPending || !isAuth}
+    >
+      Sign out
+    </button>
+  )
+}
+
+const SidebarOpener = ({ isOpen, toggle }) => (
+  <button
+    className={`btn-outline btn-primary fixed bottom-4 left-3 z-50 rounded-full border border-primary bg-white p-2`}
+    role="button"
+    aria-haspopup={true}
+    aria-label="Toggle main menu"
+    aria-expanded={isOpen ? true : false}
+    aria-controls="main-menu"
+    onClick={toggle}
+    tabIndex={0}
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="h-6 w-6"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M4 8h16M4 16h16"
+      />
+    </svg>
+  </button>
+)
+
+const ProfileIcon = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.5}
+      stroke="currentColor"
+      className="h-6 w-6"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
+      />
+    </svg>
+  )
+}

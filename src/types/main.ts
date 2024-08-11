@@ -11,6 +11,13 @@ export type pids = Array<uuid>
 
 export type SelectOption = { value: string; label: string }
 
+export type AuthState = {
+  isAuth: boolean
+  userId: uuid | null
+  userEmail: string | null
+  isPending: boolean
+}
+
 export type UseSBQuery<T> = UseQueryResult<T, PostgrestError>
 export type UseSBMutation<T> = UseMutationResult<T, PostgrestError>
 export type SBQuery<T> = Promise<PostgrestResponse<T>>
@@ -95,7 +102,7 @@ export type ProfileFull = ProfileMeta & {
 
 // for legacy hooks and such
 
-export type Profile = ProfileRow & { deck_stubs: Array<DeckMeta> }
+export type Profile = ProfileRow & { decks: Array<DeckMeta> }
 
 export type PhraseCardInsert = {
   phrase: PhraseInsert
