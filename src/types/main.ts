@@ -144,6 +144,6 @@ export type Deck = DeckStub & {
 
 export type ReviewsCollated = {
   list: Array<Review>
-  collated: Object
+  collated: object
   keysInOrder: Array<string>
 }

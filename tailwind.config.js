@@ -16,7 +16,6 @@ export default {
           '"Helvetica Neue"',
           'Roboto',
           'Oxygen-Sans',
-          'Ubuntu',
           'Cantarell',
           'sans-serif',
         ],

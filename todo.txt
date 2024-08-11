@@ -11,3 +11,7 @@ NAVIGATION
 MISC utilities
 1. replace useLang with router feature
 1. double check the new pluck works the same with if (key in obj)
+
+BUILD
+1.  Have disabled `tsc -b` during build; I'm not sure if this foregoes some optimisation,
+    but I was really just looking for this option like dangerouslyIgnoreBuildErrors.
