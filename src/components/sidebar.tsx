@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { Garlic } from '../components/garlic'
 import languages from '../lib/languages'
-import { useProfile, useSignOut } from '../lib/hooks'
+import { profileQuery, useSignOut } from '../lib/hooks'
 import Loading from './loading'
 import { useAuth } from '../lib/hooks'
 import { cn } from '../lib/utils'
 import { Link } from '@tanstack/react-router'
+import { useQuery } from '@tanstack/react-query'
 
 // Don't keep using these. use the framework's types for links and routes
 type LinkType = {
@@ -68,7 +69,7 @@ export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false)
   const toggle = () => setIsOpen(!isOpen)
 
-  const { data: profile, isPending } = useProfile()
+  const { data: profile, isPending } = useQuery(profileQuery)
   const menuData =
     isPending ? null : (
       {

@@ -6,6 +6,7 @@ import {
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import type { QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { Toaster } from 'react-hot-toast'
 import { AuthState } from '../types/main'
 import Sidebar from '../components/sidebar'
 
@@ -33,6 +34,7 @@ function RootComponent() {
       </div>
       <ReactQueryDevtools buttonPosition="top-right" />
       <TanStackRouterDevtools position="bottom-right" />
+      <Toaster position="bottom-center" />
     </>
   )
 }

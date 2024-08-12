@@ -35,7 +35,6 @@ export function useAuth() {
   return context
 }
 
-
 export const useSignOut = () => {
   const navigate = useNavigate()
   const client = useQueryClient()
@@ -49,16 +48,14 @@ export const useSignOut = () => {
   })
 }
 
-export function useProfile() {
-  return useQuery({
-    queryKey: ['user_profile'],
-    queryFn: async (): Promise<Profile | null> => {
-      const { data } = await supabase
-        .from('user_profile')
-        .select(`*, decks:user_deck_plus(*)`)
-        .maybeSingle()
-        .throwOnError()
-      return data
-    },
-  }) as UseQueryResult<Profile, PostgrestError>
-}
+export const profileQuery = queryOptions<Profile, PostgrestError>({
+  queryKey: ['user_profile'],
+  queryFn: async (): Promise<Profile | null> => {
+    const { data } = await supabase
+      .from('user_profile')
+      .select(`*, decks:user_deck_plus(*)`)
+      .maybeSingle()
+      .throwOnError()
+    return data
+  },
+})

@@ -15,6 +15,12 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as ProfileImport } from './routes/profile'
 import { Route as AboutImport } from './routes/about'
+import { Route as AuthImport } from './routes/_auth'
+import { Route as AppImport } from './routes/_app'
+import { Route as AuthSignupImport } from './routes/_auth.signup'
+import { Route as AuthLoginImport } from './routes/_auth.login'
+import { Route as AppLearnIndexImport } from './routes/_app.learn/index'
+import { Route as AppLearnLangImport } from './routes/_app.learn/$lang'
 
 // Create Virtual Routes
 
@@ -32,10 +38,40 @@ const AboutRoute = AboutImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AuthRoute = AuthImport.update({
+  id: '/_auth',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AppRoute = AppImport.update({
+  id: '/_app',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+
+const AuthSignupRoute = AuthSignupImport.update({
+  path: '/signup',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthLoginRoute = AuthLoginImport.update({
+  path: '/login',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AppLearnIndexRoute = AppLearnIndexImport.update({
+  path: '/learn/',
+  getParentRoute: () => AppRoute,
+} as any)
+
+const AppLearnLangRoute = AppLearnLangImport.update({
+  path: '/learn/$lang',
+  getParentRoute: () => AppRoute,
+} as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -46,6 +82,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AppImport
+      parentRoute: typeof rootRoute
+    }
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthImport
       parentRoute: typeof rootRoute
     }
     '/about': {
@@ -62,6 +112,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileImport
       parentRoute: typeof rootRoute
     }
+    '/_auth/login': {
+      id: '/_auth/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof AuthLoginImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/signup': {
+      id: '/_auth/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof AuthSignupImport
+      parentRoute: typeof AuthImport
+    }
+    '/_app/learn/$lang': {
+      id: '/_app/learn/$lang'
+      path: '/learn/$lang'
+      fullPath: '/learn/$lang'
+      preLoaderRoute: typeof AppLearnLangImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/learn/': {
+      id: '/_app/learn/'
+      path: '/learn'
+      fullPath: '/learn'
+      preLoaderRoute: typeof AppLearnIndexImport
+      parentRoute: typeof AppImport
+    }
   }
 }
 
@@ -69,6 +147,9 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
+  AppRoute: AppRoute.addChildren({ AppLearnLangRoute, AppLearnIndexRoute }),
+  AuthRoute: AuthRoute.addChildren({ AuthLoginRoute, AuthSignupRoute }),
+  AboutRoute,
   ProfileRoute,
 })
 
@@ -81,6 +162,8 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/_app",
+        "/_auth",
         "/about",
         "/profile"
       ]
@@ -88,11 +171,41 @@ export const routeTree = rootRoute.addChildren({
     "/": {
       "filePath": "index.lazy.tsx"
     },
+    "/_app": {
+      "filePath": "_app.tsx",
+      "children": [
+        "/_app/learn/$lang",
+        "/_app/learn/"
+      ]
+    },
+    "/_auth": {
+      "filePath": "_auth.tsx",
+      "children": [
+        "/_auth/login",
+        "/_auth/signup"
+      ]
+    },
     "/about": {
-      "filePath": "about.tsx",
+      "filePath": "about.tsx"
     },
     "/profile": {
       "filePath": "profile.tsx"
+    },
+    "/_auth/login": {
+      "filePath": "_auth.login.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/signup": {
+      "filePath": "_auth.signup.tsx",
+      "parent": "/_auth"
+    },
+    "/_app/learn/$lang": {
+      "filePath": "_app.learn/$lang.tsx",
+      "parent": "/_app"
+    },
+    "/_app/learn/": {
+      "filePath": "_app.learn/index.tsx",
+      "parent": "/_app"
     }
   }
 }
