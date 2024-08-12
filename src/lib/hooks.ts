@@ -2,10 +2,9 @@ import type { Profile } from '../types/main'
 import supabase from './supabase-client'
 import { PostgrestError } from '@supabase/supabase-js'
 import {
+  queryOptions,
   useMutation,
-  useQuery,
   useQueryClient,
-  UseQueryResult,
 } from '@tanstack/react-query'
 import { useNavigate, useParams } from '@tanstack/react-router'
 import { useContext } from 'react'

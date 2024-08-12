@@ -1,16 +1,12 @@
 import { useState } from 'react'
 import SectionTranslations from '../../components/translations-section'
-import { useLanguageMeta, useLanguagePhrases } from '../../lib/preload-language'
-import { useDeckCards, useDeckMeta, useDeckPids } from '../../lib/preload-deck'
 import TinyPhrase from '../../components/tiny-phrase'
+import MyModal from '../../components/modal'
 // import { SectionSeeAlsos } from '../../components/big-phrase'
 
-export default function ClientPage() {
-  const langMeta = useLanguageMeta()
-  const langItems = useLanguagePhrases()
-  const deckMeta = useDeckMeta()
-  const deckItems = useDeckCards()
-  const deckPids = useDeckPids()
+export default function ClientPage({ language, deck }) {
+  const { meta: langMeta, phrases: langItems } = language
+  const { meta: deckMeta, cards: deckItems, pids: deckPids } = deck
 
   return (
     <div className="space-y-4">
