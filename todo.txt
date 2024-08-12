@@ -10,6 +10,8 @@ AUTH
 1. ✅ add signOut action to AuthContext -- correction: mocked it with its own hook
 1. ✅ figure out "redirect to home screen" on logout 
 1. auth "guard" redirect with beforeLoad
+1. we dropped support for login as-modal option, to do this redirect-link thing
+1. @TODO in the _auth/login.tsx - why using hooks? we should have this already
 
 
 NAVIGATION

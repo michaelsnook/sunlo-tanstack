@@ -16,13 +16,6 @@ export const useLang = () => {
   return parms['lang']
 }
 
-const blank = {
-  isAuth: false,
-  userId: null,
-  userEmail: null,
-  isPending: true,
-}
-
 // Access the context's value from inside a provider
 export function useAuth() {
   const context = useContext(AuthContext)
@@ -40,14 +33,14 @@ export const useSignOut = () => {
   return useMutation({
     mutationFn: async () => await supabase.auth.signOut(),
     onSuccess: () => {
-      client.setQueryData(['user'], blank)
+      client.removeQueries({ queryKey: ['user'] })
       navigate({ to: '/' })
     },
   })
 }
 
 export const profileQuery = queryOptions<Profile, PostgrestError>({
-  queryKey: ['user_profile'],
+  queryKey: ['user', 'profile'],
   queryFn: async (): Promise<Profile | null> => {
     const { data } = await supabase
       .from('user_profile')

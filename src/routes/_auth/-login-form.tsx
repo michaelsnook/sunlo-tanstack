@@ -1,27 +1,32 @@
-import { type FormEvent, useCallback, useLayoutEffect } from 'react'
-import { Link, useNavigate } from '@tanstack/react-router'
-import { useMutation } from '@tanstack/react-query'
-import { toast } from 'react-hot-toast'
+import { useLayoutEffect, useEffect, type FormEvent } from 'react'
+import {
+  Link,
+  useNavigate,
+  useRouteContext,
+  useRouter,
+  useSearch,
+} from '@tanstack/react-router'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import toast from 'react-hot-toast'
 
-import supabase from '../lib/supabase-client'
-import { cn } from '../lib/utils'
-import { useAuth } from '../lib/hooks'
-import { ErrorShow } from './errors'
+import supabase from '../../lib/supabase-client'
+import { cn } from '../../lib/utils'
+import { profileQuery, useAuth } from '../../lib/hooks'
+import { ErrorShow } from '../../components/errors'
 
-export default function LoginForm({ asModal = false }) {
-  const { isAuth } = useAuth()
+export default function LoginForm() {
+  const auth = useAuth()
+  const search = useSearch({ strict: false })
   const navigate = useNavigate()
-  const toastSuccess = useCallback(
-    () => toast.success(`You're logged in 👍️ redirecting you...`),
-    []
-  )
-  useLayoutEffect(() => {
-    if (isAuth && navigate && !asModal) {
-      navigate({ to: '/learn' }) // go to home page
-      toastSuccess()
-    }
-  }, [navigate, isAuth, asModal, toastSuccess])
+  console.log(`History and search`, history, search)
 
+  useEffect(() => {
+    if (!!auth.isAuth && navigate) {
+      navigate({ to: search?.['redirect'] ?? '/learn', strict: false })
+    }
+  }, [auth, navigate, search])
+
+  const client = useQueryClient()
   const useLogin = useMutation({
     mutationFn: async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
@@ -34,14 +39,15 @@ export default function LoginForm({ asModal = false }) {
         password,
       })
       if (error) throw error
-      return data
+      return data.user.email
     },
-    onSuccess: (data) => {
-      toast.success(`You're logged in as ${data.user.email}`)
+    onSuccess: (email: string) => {
+      toast.success(`Logged in as ${email}`, { position: 'top-center' })
     },
   })
-
-  if (isAuth) return <p>You are logged in; pls wait while we redirect you.</p>
+  console.log(`what is auth rn`, !!auth, auth)
+  if (!!auth.isAuth)
+    return <p>You are logged in; pls wait while we redirect you.</p>
 
   return (
     <>

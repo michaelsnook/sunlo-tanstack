@@ -17,9 +17,9 @@ import { Route as ProfileImport } from './routes/profile'
 import { Route as AboutImport } from './routes/about'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as AppImport } from './routes/_app'
-import { Route as AuthSignupImport } from './routes/_auth.signup'
-import { Route as AuthLoginImport } from './routes/_auth.login'
-import { Route as AuthForgotPasswordImport } from './routes/_auth.forgot-password'
+import { Route as AuthSignupImport } from './routes/_auth/signup'
+import { Route as AuthLoginImport } from './routes/_auth/login'
+import { Route as AuthForgotPasswordImport } from './routes/_auth/forgot-password'
 import { Route as AppLearnIndexImport } from './routes/_app.learn/index'
 import { Route as AppLearnLangImport } from './routes/_app.learn/$lang'
 
@@ -210,15 +210,15 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "profile.tsx"
     },
     "/_auth/forgot-password": {
-      "filePath": "_auth.forgot-password.tsx",
+      "filePath": "_auth/forgot-password.tsx",
       "parent": "/_auth"
     },
     "/_auth/login": {
-      "filePath": "_auth.login.tsx",
+      "filePath": "_auth/login.tsx",
       "parent": "/_auth"
     },
     "/_auth/signup": {
-      "filePath": "_auth.signup.tsx",
+      "filePath": "_auth/signup.tsx",
       "parent": "/_auth"
     },
     "/_app/learn/$lang": {

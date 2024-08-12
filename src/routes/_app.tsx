@@ -5,6 +5,7 @@ export const Route = createFileRoute('/_app')({
   // This will also happen during prefetching (e.g. hovering over links, etc)
   beforeLoad: ({ context, location }) => {
     // If the user is logged out, redirect them to the login page
+    // console.log(`beforeLoad auth context:`, context.auth)
     if (context.auth?.isAuth === false) {
       throw redirect({
         to: '/login',

@@ -1,19 +1,24 @@
 import { createContext, useState, useEffect } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import supabase from '../lib/supabase-client'
-import type { AuthState } from '../types/main'
+import type { uuid } from '../types/main'
 
-export const AuthContext = createContext<AuthState>(undefined)
-export const blankAuthState: AuthState = {
+export type AuthState = {
+  isAuth: boolean
+  userId: uuid | null
+  userEmail: string | null
+}
+const blankAuthState: AuthState = {
   isAuth: false,
   userId: null,
   userEmail: null,
-  isPending: true,
 }
 
+export const AuthContext = createContext<AuthState>(undefined)
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [auth, setAuth] = useState(blankAuthState)
   const queryClient = useQueryClient()
+  const [sessionState, setSessionState] = useState(null)
 
   /*
     This effect should run once when the app first mounts (the context provider), and then
@@ -36,36 +41,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       (event, session) => {
         console.log(`Auth state changed: ${event}`, session)
         // if we've logged out or no user comes back, we should remove user data from cache
-        if (event === 'SIGNED_OUT' || typeof session?.user !== 'object') {
-          setAuth({ ...blankAuthState, isPending: false })
-          queryClient.removeQueries()
-        } else {
-          // if for some reason the new user is a different user, removoe cache
-          if (session?.user.id !== auth.userId) {
-            queryClient.invalidateQueries()
-          }
-          const newAuth = {
-            isAuth: session?.user.role === 'authenticated',
-            userId: session?.user.id,
-            userEmail: session?.user.email,
-            isPending: false,
-          }
-          if (
-            newAuth.isAuth !== auth.isAuth ||
-            newAuth.userId !== auth.userId ||
-            newAuth.userEmail !== auth.userEmail ||
-            newAuth.isPending !== auth.isPending
-          )
-            setAuth(newAuth)
+        if (event === 'SIGNED_OUT' || !session?.user) {
+          queryClient.removeQueries({ queryKey: ['user'] })
         }
+        setSessionState(session)
       }
     )
 
     return () => {
+      console.log(`Unmounting`)
       listener.subscription.unsubscribe()
     }
-  }, [queryClient, auth, setAuth])
+  }, [queryClient])
 
-  // console.log(`Creating the context and rendering the provider`, auth)
-  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>
+  console.log(`Creating auth context and rendering provider`, sessionState)
+
+  const value = {
+    isAuth: sessionState?.user.role === 'authenticated',
+    userId: sessionState?.user.id,
+    userEmail: sessionState?.user.email,
+  }
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

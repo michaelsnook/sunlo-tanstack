@@ -62,7 +62,7 @@ async function fetchDeck(lang: string): Promise<DeckLoaded> {
 
 const deckQuery = (lang: string) =>
   queryOptions({
-    queryKey: ['deck', lang, 'loaded'],
+    queryKey: ['user', lang],
     queryFn: async ({ queryKey }) => fetchDeck(queryKey[1]),
     enabled: typeof lang === 'string' && lang.length === 3,
     gcTime: 1_200_000,

@@ -7,13 +7,15 @@ import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import type { QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Toaster } from 'react-hot-toast'
-import { AuthState } from '../types/main'
+import { AuthState } from '../components/auth-context'
 import Sidebar from '../components/sidebar'
 
-export const Route = createRootRouteWithContext<{
+interface MyRouterContext {
   auth: AuthState
   queryClient: QueryClient
-}>()({
+}
+
+export const Route = createRootRouteWithContext<MyRouterContext>()({
   component: RootComponent,
   notFoundComponent: () => {
     return (
@@ -35,6 +37,7 @@ function RootComponent() {
       <ReactQueryDevtools buttonPosition="top-right" />
       <TanStackRouterDevtools position="bottom-right" />
       <Toaster position="bottom-center" />
+      <div id="modal-root" />
     </>
   )
 }
