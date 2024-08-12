@@ -74,11 +74,11 @@ export default function Sidebar() {
     isPending ? null : (
       {
         name: 'Learning decks',
-        href: '/home',
+        href: '/learn',
         links: profile?.decks?.map((deck) => {
           return {
             name: languages[deck.lang],
-            href: `/home/${deck.lang}`,
+            href: `/learn/${deck.lang}`,
           }
         }),
       }

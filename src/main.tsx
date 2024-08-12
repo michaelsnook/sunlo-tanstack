@@ -6,9 +6,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { routeTree } from './routeTree.gen'
 import './styles/globals.css'
 import Loading from './components/loading'
-import ShowError from './components/show-error'
 import { AuthProvider } from './components/auth-context'
-import { blankAuthState } from './types/main'
+import { ErrorRender } from './components/errors'
 
 const queryClient = new QueryClient()
 
@@ -16,13 +15,13 @@ const queryClient = new QueryClient()
 const router = createRouter({
   routeTree,
   context: {
-    auth: blankAuthState,
+    auth: undefined!, // we'll inject this when we render
     queryClient,
   },
   defaultPreload: 'intent',
   defaultPreloadStaleTime: 300_000,
   defaultPendingComponent: Loading,
-  defaultErrorComponent: ({ error }) => <ShowError>{error.message}</ShowError>,
+  defaultErrorComponent: ({ error }) => <ErrorRender error={error} />,
 })
 
 // Register the router instance for type safety

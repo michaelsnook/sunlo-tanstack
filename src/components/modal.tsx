@@ -1,7 +1,5 @@
 import Modal from 'react-modal'
 
-Modal.setAppElement('#modal-root')
-
 function MyModal({ onRequestClose, isOpen, children }) {
   return (
     <Modal

@@ -5,7 +5,7 @@ export const Route = createFileRoute('/_app')({
   // This will also happen during prefetching (e.g. hovering over links, etc)
   beforeLoad: ({ context, location }) => {
     // If the user is logged out, redirect them to the login page
-    if (context.auth.isAuth === false) {
+    if (context.auth?.isAuth === false) {
       throw redirect({
         to: '/login',
         search: {
@@ -17,10 +17,8 @@ export const Route = createFileRoute('/_app')({
       })
     }
 
-    // Otherwise, return the user in context
-    return {
-      username: context.auth.userEmail,
-    }
+    // Otherwise, return a pointer to the auth object
+    return context.auth || null
   },
   component: Layout,
 })

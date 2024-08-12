@@ -30,7 +30,6 @@ export function useAuth() {
   if (context === null) {
     throw new Error('You need to wrap AuthProvider.')
   }
-
   return context
 }
 
