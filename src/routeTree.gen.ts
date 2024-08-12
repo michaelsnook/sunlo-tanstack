@@ -19,6 +19,7 @@ import { Route as AuthImport } from './routes/_auth'
 import { Route as AppImport } from './routes/_app'
 import { Route as AuthSignupImport } from './routes/_auth.signup'
 import { Route as AuthLoginImport } from './routes/_auth.login'
+import { Route as AuthForgotPasswordImport } from './routes/_auth.forgot-password'
 import { Route as AppLearnIndexImport } from './routes/_app.learn/index'
 import { Route as AppLearnLangImport } from './routes/_app.learn/$lang'
 
@@ -60,6 +61,11 @@ const AuthSignupRoute = AuthSignupImport.update({
 
 const AuthLoginRoute = AuthLoginImport.update({
   path: '/login',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthForgotPasswordRoute = AuthForgotPasswordImport.update({
+  path: '/forgot-password',
   getParentRoute: () => AuthRoute,
 } as any)
 
@@ -112,6 +118,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileImport
       parentRoute: typeof rootRoute
     }
+    '/_auth/forgot-password': {
+      id: '/_auth/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof AuthForgotPasswordImport
+      parentRoute: typeof AuthImport
+    }
     '/_auth/login': {
       id: '/_auth/login'
       path: '/login'
@@ -148,7 +161,11 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
   AppRoute: AppRoute.addChildren({ AppLearnLangRoute, AppLearnIndexRoute }),
-  AuthRoute: AuthRoute.addChildren({ AuthLoginRoute, AuthSignupRoute }),
+  AuthRoute: AuthRoute.addChildren({
+    AuthForgotPasswordRoute,
+    AuthLoginRoute,
+    AuthSignupRoute,
+  }),
   AboutRoute,
   ProfileRoute,
 })
@@ -181,6 +198,7 @@ export const routeTree = rootRoute.addChildren({
     "/_auth": {
       "filePath": "_auth.tsx",
       "children": [
+        "/_auth/forgot-password",
         "/_auth/login",
         "/_auth/signup"
       ]
@@ -190,6 +208,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/profile": {
       "filePath": "profile.tsx"
+    },
+    "/_auth/forgot-password": {
+      "filePath": "_auth.forgot-password.tsx",
+      "parent": "/_auth"
     },
     "/_auth/login": {
       "filePath": "_auth.login.tsx",

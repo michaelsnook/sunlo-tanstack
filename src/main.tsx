@@ -8,6 +8,7 @@ import './styles/globals.css'
 import Loading from './components/loading'
 import { AuthProvider } from './components/auth-context'
 import { ErrorRender } from './components/errors'
+import { useAuth } from './lib/hooks'
 
 const queryClient = new QueryClient()
 
@@ -15,7 +16,7 @@ const queryClient = new QueryClient()
 const router = createRouter({
   routeTree,
   context: {
-    auth: undefined!, // we'll inject this when we render
+    auth: undefined!, // we'll make this during render
     queryClient,
   },
   defaultPreload: 'intent',
@@ -31,11 +32,16 @@ declare module '@tanstack/react-router' {
   }
 }
 
+function InnerApp() {
+  const auth = useAuth()
+  return <RouterProvider router={router} context={{ auth, queryClient }} />
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <RouterProvider router={router} />
+        <InnerApp />
       </AuthProvider>
     </QueryClientProvider>
   </StrictMode>

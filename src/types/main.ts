@@ -18,13 +18,6 @@ export type AuthState = {
   isPending: boolean
 }
 
-export const blankAuthState: AuthState = {
-  isAuth: false,
-  userId: null,
-  userEmail: null,
-  isPending: true,
-}
-
 export type UseSBQuery<T> = UseQueryResult<T, PostgrestError>
 export type UseSBMutation<T> = UseMutationResult<T, PostgrestError>
 export type SBQuery<T> = Promise<PostgrestResponse<T>>

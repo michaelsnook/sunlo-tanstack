@@ -1,9 +1,15 @@
 import { createContext, useState, useEffect } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import supabase from '../lib/supabase-client'
-import { type AuthState, blankAuthState } from '../types/main'
+import type { AuthState } from '../types/main'
 
-export const AuthContext = createContext<AuthState | null>(null)
+export const AuthContext = createContext<AuthState>(undefined)
+export const blankAuthState: AuthState = {
+  isAuth: false,
+  userId: null,
+  userEmail: null,
+  isPending: true,
+}
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [auth, setAuth] = useState(blankAuthState)
@@ -38,12 +44,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           if (session?.user.id !== auth.userId) {
             queryClient.invalidateQueries()
           }
-          setAuth({
+          const newAuth = {
             isAuth: session?.user.role === 'authenticated',
             userId: session?.user.id,
             userEmail: session?.user.email,
             isPending: false,
-          })
+          }
+          if (
+            newAuth.isAuth !== auth.isAuth ||
+            newAuth.userId !== auth.userId ||
+            newAuth.userEmail !== auth.userEmail ||
+            newAuth.isPending !== auth.isPending
+          )
+            setAuth(newAuth)
         }
       }
     )
@@ -51,7 +64,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => {
       listener.subscription.unsubscribe()
     }
-  }, [queryClient, auth.userId, setAuth])
+  }, [queryClient, auth, setAuth])
 
+  // console.log(`Creating the context and rendering the provider`, auth)
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>
 }
