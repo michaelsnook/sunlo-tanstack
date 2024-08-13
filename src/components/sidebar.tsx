@@ -68,8 +68,6 @@ export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false)
   const toggle = () => setIsOpen(!isOpen)
 
-  const { isAuth } = useAuth()
-
   return (
     <div id="sidebar-all">
       <SidebarOpener isOpen={isOpen} toggle={toggle} />

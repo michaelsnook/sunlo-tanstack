@@ -1,17 +1,11 @@
-import { useLayoutEffect, useEffect, type FormEvent } from 'react'
-import {
-  Link,
-  useNavigate,
-  useRouteContext,
-  useRouter,
-  useSearch,
-} from '@tanstack/react-router'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useEffect, type FormEvent } from 'react'
+import { Link, useNavigate, useSearch } from '@tanstack/react-router'
+import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 
 import supabase from '../../lib/supabase-client'
 import { cn } from '../../lib/utils'
-import { profileQuery, useAuth } from '../../lib/hooks'
+import { useAuth } from '../../lib/hooks'
 import { ErrorShow } from '../../components/errors'
 
 export default function LoginForm() {
@@ -26,7 +20,6 @@ export default function LoginForm() {
     }
   }, [auth, navigate, search])
 
-  const client = useQueryClient()
   const useLogin = useMutation({
     mutationFn: async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
@@ -63,7 +56,7 @@ export default function LoginForm() {
               id="email"
               name="email"
               required={true}
-              pattern="[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*"
+              pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
               // aria-invalid={login.error?.email ? true : false}
               className={cn(
                 // login.error?.email ? 'border-error/60' : '',

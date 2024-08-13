@@ -8,11 +8,6 @@ export type AuthState = {
   userId: uuid | null
   userEmail: string | null
 }
-const blankAuthState: AuthState = {
-  isAuth: false,
-  userId: null,
-  userEmail: null,
-}
 
 export const AuthContext = createContext<AuthState>(undefined)
 
