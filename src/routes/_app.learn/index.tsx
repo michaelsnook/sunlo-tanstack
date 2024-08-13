@@ -23,7 +23,7 @@ export default function Page() {
         {isPending ?
           <Loading />
         : <ol>
-            {profile.decks?.map((deck) => (
+            {profile?.decks?.map((deck) => (
               <li
                 key={deck.lang}
                 className="glass my-2 rounded p-2 text-center"

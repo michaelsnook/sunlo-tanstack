@@ -4,6 +4,7 @@ import { PostgrestError } from '@supabase/supabase-js'
 import {
   queryOptions,
   useMutation,
+  useQuery,
   useQueryClient,
 } from '@tanstack/react-query'
 import { useNavigate, useParams } from '@tanstack/react-router'
@@ -33,7 +34,7 @@ export const useSignOut = () => {
   return useMutation({
     mutationFn: async () => await supabase.auth.signOut(),
     onSuccess: () => {
-      client.removeQueries({ queryKey: ['user'] })
+      client.removeQueries({ queryKey: ['user'], exact: false })
       navigate({ to: '/' })
     },
   })
@@ -50,3 +51,8 @@ export const profileQuery = queryOptions<Profile, PostgrestError>({
     return data
   },
 })
+
+export const useProfile = () => {
+  const auth = useAuth()
+  return useQuery({ ...profileQuery, enabled: auth.isAuth })
+}

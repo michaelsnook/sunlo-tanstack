@@ -37,8 +37,11 @@
   .s-link {
     @apply link cursor-pointer decoration-base-content/50 hover:decoration-base-content;
   }
+  .nav-link {
+    @apply transition-all;
+  }
   .nav-link:not(.active) {
-    @apply cursor-pointer hover:decoration-accent hover:underline;
+    @apply cursor-pointer hover:border-primary hover:border-l-4 hover:pl-2;
   }
   .nav-link.active {
     @apply disabled border-l-4 border-base-content/50 pl-2 text-base-content/70;

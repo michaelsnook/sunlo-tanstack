@@ -1,12 +1,11 @@
 import { useState } from 'react'
 import { Garlic } from '../components/garlic'
 import languages from '../lib/languages'
-import { profileQuery, useSignOut } from '../lib/hooks'
-import Loading from './loading'
+import { useProfile, useSignOut } from '../lib/hooks'
 import { useAuth } from '../lib/hooks'
 import { cn } from '../lib/utils'
 import { Link } from '@tanstack/react-router'
-import { useQuery } from '@tanstack/react-query'
+import Loading from './loading'
 
 // Don't keep using these. use the framework's types for links and routes
 type LinkType = {
@@ -69,20 +68,7 @@ export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false)
   const toggle = () => setIsOpen(!isOpen)
 
-  const { data: profile, isPending } = useQuery(profileQuery)
-  const menuData =
-    isPending ? null : (
-      {
-        name: 'Learning decks',
-        href: '/learn',
-        links: profile?.decks?.map((deck) => {
-          return {
-            name: languages[deck.lang],
-            href: `/learn/${deck.lang}`,
-          }
-        }),
-      }
-    )
+  const { isAuth } = useAuth()
 
   return (
     <div id="sidebar-all">
@@ -107,25 +93,45 @@ export default function Sidebar() {
           <Garlic size={50} />
           Sunlo
         </span>
-        {isPending ?
-          <Loading />
-        : profile ?
-          <>
-            <Link to="/profile">
-              <p className="flex flex-row gap-2">
-                <ProfileIcon /> {profile?.username}
-              </p>
-            </Link>
-            <GenericMenu menu={menuData} />
-          </>
-        : null}
-
+        <DeckMenu />
         <GenericMenu menu={staticMenu} />
         <p>
           <SignOutButton shy />
         </p>
       </nav>
     </div>
+  )
+}
+
+function DeckMenu() {
+  console.log(`logging pre usequery`)
+  const { data: profile, isLoading } = useProfile()
+  console.log(`logging post usequery`, profile)
+  const menuData =
+    !profile ? null : (
+      {
+        name: 'Learning decks',
+        href: '/learn',
+        links: profile?.decks?.map((deck) => {
+          return {
+            name: languages[deck.lang],
+            href: `/learn/${deck.lang}`,
+          }
+        }),
+      }
+    )
+  return (
+    isLoading ? <Loading />
+    : menuData ?
+      <>
+        <Link to="/profile">
+          <p className="flex flex-row gap-2">
+            <ProfileIcon /> {profile?.username}
+          </p>
+        </Link>
+        <GenericMenu menu={menuData} />
+      </>
+    : null
   )
 }
 

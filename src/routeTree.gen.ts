@@ -18,6 +18,7 @@ import { Route as AboutImport } from './routes/about'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as AppImport } from './routes/_app'
 import { Route as AuthSignupImport } from './routes/_auth/signup'
+import { Route as AuthSetNewPasswordImport } from './routes/_auth/set-new-password'
 import { Route as AuthLoginImport } from './routes/_auth/login'
 import { Route as AuthForgotPasswordImport } from './routes/_auth/forgot-password'
 import { Route as AppLearnIndexImport } from './routes/_app.learn/index'
@@ -56,6 +57,11 @@ const IndexLazyRoute = IndexLazyImport.update({
 
 const AuthSignupRoute = AuthSignupImport.update({
   path: '/signup',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthSetNewPasswordRoute = AuthSetNewPasswordImport.update({
+  path: '/set-new-password',
   getParentRoute: () => AuthRoute,
 } as any)
 
@@ -132,6 +138,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/set-new-password': {
+      id: '/_auth/set-new-password'
+      path: '/set-new-password'
+      fullPath: '/set-new-password'
+      preLoaderRoute: typeof AuthSetNewPasswordImport
+      parentRoute: typeof AuthImport
+    }
     '/_auth/signup': {
       id: '/_auth/signup'
       path: '/signup'
@@ -164,6 +177,7 @@ export const routeTree = rootRoute.addChildren({
   AuthRoute: AuthRoute.addChildren({
     AuthForgotPasswordRoute,
     AuthLoginRoute,
+    AuthSetNewPasswordRoute,
     AuthSignupRoute,
   }),
   AboutRoute,
@@ -200,6 +214,7 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/_auth/forgot-password",
         "/_auth/login",
+        "/_auth/set-new-password",
         "/_auth/signup"
       ]
     },
@@ -215,6 +230,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_auth/login": {
       "filePath": "_auth/login.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/set-new-password": {
+      "filePath": "_auth/set-new-password.tsx",
       "parent": "/_auth"
     },
     "/_auth/signup": {

@@ -14,7 +14,6 @@ import {
 import languages from '../../lib/languages'
 import ClientPage from './-interactive'
 import Loading from '../../components/loading'
-// nextjs: import Link from 'next/link'
 
 async function fetchLanguage(lang: string): Promise<LanguageLoaded> {
   const { data } = await supabase
