@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import SectionTranslations from '../../components/translations-section'
-import TinyPhrase from '../../components/tiny-phrase'
-import MyModal from '../../components/modal'
-// import { SectionSeeAlsos } from '../../components/big-phrase'
+import SectionTranslations from 'components/translations-section'
+import TinyPhrase from 'components/tiny-phrase'
+import MyModal from 'components/modal'
+// import { SectionSeeAlsos } from 'components/big-phrase'
 
 export default function ClientPage({ language, deck }) {
   const { meta: langMeta, phrases: langItems } = language

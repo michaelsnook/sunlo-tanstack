@@ -1,4 +1,4 @@
-import type { Profile } from '../types/main'
+import type { Profile } from 'types/main'
 import supabase from './supabase-client'
 import { PostgrestError } from '@supabase/supabase-js'
 import {
@@ -9,7 +9,7 @@ import {
 } from '@tanstack/react-query'
 import { useNavigate, useParams } from '@tanstack/react-router'
 import { useContext } from 'react'
-import { AuthContext } from '../components/auth-context'
+import { AuthContext } from 'components/auth-context'
 
 export const useLang = () => {
   const parms = useParams({ strict: false })

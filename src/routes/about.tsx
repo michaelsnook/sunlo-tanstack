@@ -1,7 +1,7 @@
 import { queryOptions, useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
-import supabase from '../lib/supabase-client'
-import Loading from '../components/loading'
+import supabase from 'lib/supabase-client'
+import Loading from 'components/loading'
 
 const publicProfilesQuery = queryOptions({
   queryKey: ['profiles'],

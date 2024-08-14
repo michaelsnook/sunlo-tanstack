@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import supabase from '../lib/supabase-client'
-import type { uuid } from '../types/main'
+import supabase from 'lib/supabase-client'
+import type { uuid } from 'types/main'
 
 export type AuthState = {
   isAuth: boolean

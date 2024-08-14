@@ -1,7 +1,7 @@
 import { queryOptions, useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import supabase from '../../lib/supabase-client'
-import { mapArray, selects } from '../../lib/utils'
+import supabase from 'lib/supabase-client'
+import { mapArray, selects } from 'lib/utils'
 import {
   CardsMap,
   DeckFetched,
@@ -10,10 +10,10 @@ import {
   LanguageLoaded,
   PhrasesMap,
   pids,
-} from '../../types/main'
-import languages from '../../lib/languages'
+} from 'types/main'
+import languages from 'lib/languages'
 import ClientPage from './-interactive'
-import Loading from '../../components/loading'
+import Loading from 'components/loading'
 
 async function fetchLanguage(lang: string): Promise<LanguageLoaded> {
   const { data } = await supabase

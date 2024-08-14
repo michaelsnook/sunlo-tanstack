@@ -3,10 +3,10 @@ import { Link, useNavigate, useSearch } from '@tanstack/react-router'
 import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 
-import supabase from '../../lib/supabase-client'
-import { cn } from '../../lib/utils'
-import { useAuth } from '../../lib/hooks'
-import { ErrorShow } from '../../components/errors'
+import supabase from 'lib/supabase-client'
+import { cn } from 'lib/utils'
+import { useAuth } from 'lib/hooks'
+import { ErrorShow } from 'components/errors'
 
 export default function LoginForm() {
   const auth = useAuth()
@@ -38,8 +38,9 @@ export default function LoginForm() {
       toast.success(`Logged in as ${email}`, { position: 'top-center' })
     },
   })
-  console.log(`what is auth rn`, !!auth, auth)
-  if (!!auth.isAuth)
+  // console.log(`what is auth rn`, auth.isAuth, auth)
+
+  if (auth.isAuth)
     return <p>You are logged in; pls wait while we redirect you.</p>
 
   return (

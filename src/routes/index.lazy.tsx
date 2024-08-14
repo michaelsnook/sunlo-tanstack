@@ -1,6 +1,6 @@
 // nextjs: import Link from 'next/link'
 import { createLazyFileRoute } from '@tanstack/react-router'
-import { GarlicBroccoli } from '../components/garlic'
+import { GarlicBroccoli } from 'components/garlic'
 
 export const Route = createLazyFileRoute('/')({
   component: Index,
