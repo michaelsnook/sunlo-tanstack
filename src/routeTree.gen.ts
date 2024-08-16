@@ -14,6 +14,7 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as ProfileImport } from './routes/profile'
+import { Route as PrivacyPolicyImport } from './routes/privacy-policy'
 import { Route as AboutImport } from './routes/about'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as AppImport } from './routes/_app'
@@ -32,6 +33,11 @@ const IndexLazyImport = createFileRoute('/')()
 
 const ProfileRoute = ProfileImport.update({
   path: '/profile',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PrivacyPolicyRoute = PrivacyPolicyImport.update({
+  path: '/privacy-policy',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -117,6 +123,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyImport
+      parentRoute: typeof rootRoute
+    }
     '/profile': {
       id: '/profile'
       path: '/profile'
@@ -181,6 +194,7 @@ export const routeTree = rootRoute.addChildren({
     AuthSignupRoute,
   }),
   AboutRoute,
+  PrivacyPolicyRoute,
   ProfileRoute,
 })
 
@@ -196,6 +210,7 @@ export const routeTree = rootRoute.addChildren({
         "/_app",
         "/_auth",
         "/about",
+        "/privacy-policy",
         "/profile"
       ]
     },
@@ -220,6 +235,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/about": {
       "filePath": "about.tsx"
+    },
+    "/privacy-policy": {
+      "filePath": "privacy-policy.tsx"
     },
     "/profile": {
       "filePath": "profile.tsx"
