@@ -4,6 +4,7 @@ bun.lockb
 pnpm-lock.yaml
 src/supabase/.temp
 src/types/supabase.ts
+src/*.gen.ts
 out
 src-tauri/target
 src-tauri/gen

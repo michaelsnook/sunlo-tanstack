@@ -1,5 +1,5 @@
 import { queryOptions, useQuery } from '@tanstack/react-query'
-import { createFileRoute } from '@tanstack/react-router'
+import { createLazyFileRoute } from '@tanstack/react-router'
 import supabase from 'lib/supabase-client'
 import Loading from 'components/loading'
 
@@ -11,7 +11,7 @@ const publicProfilesQuery = queryOptions({
   gcTime: 300_000,
 })
 
-export const Route = createFileRoute('/about')({
+export const Route = createLazyFileRoute('/about')({
   // Use the `loader` option to ensure that the data is loaded
   loader: ({ context: { queryClient } }) => {
     queryClient.ensureQueryData(publicProfilesQuery)
