@@ -219,7 +219,7 @@ export type Database = {
           created_at: string | null
           id: string
           phrase_id: string
-          status: string
+          status: Database["public"]["Enums"]["card_status"] | null
           uid: string
           updated_at: string | null
           user_deck_id: string
@@ -228,7 +228,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           phrase_id: string
-          status?: string
+          status?: Database["public"]["Enums"]["card_status"] | null
           uid?: string
           updated_at?: string | null
           user_deck_id: string
@@ -237,7 +237,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           phrase_id?: string
-          status?: string
+          status?: Database["public"]["Enums"]["card_status"] | null
           uid?: string
           updated_at?: string | null
           user_deck_id?: string
@@ -517,7 +517,7 @@ export type Database = {
           id: string | null
           lang: string | null
           phrase_id: string | null
-          status: string | null
+          status: Database["public"]["Enums"]["card_status"] | null
           uid: string | null
           updated_at: string | null
           user_deck_id: string | null
@@ -625,6 +625,8 @@ export type Database = {
           cards_active: number | null
           cards_learned: number | null
           cards_skipped: number | null
+          count_reviews_7d: number | null
+          count_reviews_7d_positive: number | null
           created_at: string | null
           id: string | null
           lang: string | null
@@ -669,7 +671,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      card_status: "active" | "learned" | "skipped"
     }
     CompositeTypes: {
       [_ in never]: never
