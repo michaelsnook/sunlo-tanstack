@@ -58,6 +58,7 @@ export default function LoginForm() {
               name="email"
               required={true}
               pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+              // pattern = "[a-zA-Z0-9.+_-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+"
               // aria-invalid={login.error?.email ? true : false}
               className={cn(
                 // login.error?.email ? 'border-error/60' : '',
