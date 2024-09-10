@@ -1,7 +1,7 @@
 {
-  "name": "tanstack-sunlo",
+  "name": "sunlo-tanstack",
   "private": true,
-  "version": "0.0.4",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -33,6 +33,7 @@
     "@tanstack/react-query-devtools": "^5.51.23",
     "@tanstack/router-devtools": "^1.47.1",
     "@tanstack/router-plugin": "^1.47.0",
+    "@tauri-apps/cli": "2.0.0-rc.13",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
