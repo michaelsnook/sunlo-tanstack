@@ -1,16 +1,19 @@
-MOBILE
-1. compile to android with tauri
+CROSS-PLATFORM
+1. ✅ compile to android with tauri
+ - Make Tauri work with HMR and Vite setup
 1. compile to ios with tauri
 
 BUILD
 1. ✅ Figure out how to build regardless of ts errors -- have disabled `tsc -b` during build
 
+RADIX
+1. Add/replace react-select and react-modal with Radix primitives
+
 AUTH
 1. ✅ add AuthContext -- so far I've just mocked it with useQuery
 1. ✅ add signOut action to AuthContext -- correction: mocked it with its own hook
 1. ✅ figure out "redirect to home screen" on logout 
-1. auth "guard" redirect with beforeLoad
-1. we dropped support for login as-modal option, to do this redirect-link thing
+1. auth guard redirect with redirectedFrom param
 1. @TODO in the _auth/login.tsx - why using hooks? we should have this already
 
 
@@ -19,6 +22,9 @@ NAVIGATION
 1. properly use the disabled option on the nav links
 1. ✅ probably set it to only active-match exact route matches
 1. don't forget to add the Navbar back in
+
+UX
+1. Add activity graph to deck summaries :)) https://app.radicle.xyz/nodes/seed.radicle.xyz/rad:z4V1sjrXqjvFdnCUbxPFqd5p4DtH5/tree/src/components/ActivityDiagram.svelte
 
 MISC utilities
 1. replace useLang with router feature

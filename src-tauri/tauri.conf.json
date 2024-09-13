@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "identifier": "app.sunlo.dev",
   "build": {
-    "frontendDist": "../assets",
+    "frontendDist": "../dist",
     "devUrl": "http://localhost:5173",
     "beforeDevCommand": "pnpm dev",
     "beforeBuildCommand": "pnpm build"
