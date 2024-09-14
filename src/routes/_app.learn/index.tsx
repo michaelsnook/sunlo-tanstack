@@ -3,7 +3,7 @@ import { profileQuery } from 'lib/hooks'
 import languages from 'lib/languages'
 import Loading from 'components/loading'
 import { useQuery } from '@tanstack/react-query'
-// import Navbar from 'components/navbar'
+import Navbar from 'components/navbar'
 
 export const Route = createFileRoute('/_app/learn/')({
   loader: ({ context: { queryClient } }) =>
@@ -16,9 +16,7 @@ export default function Page() {
 
   return (
     <>
-      {/* <Navbar title={`Continue learning...`}> 
-        <Link href={`/my-decks/new`}>+ deck</Link>
-      </Navbar> */}
+      <Navbar title={`Your active learning decks`} />
       <main className="flex flex-col gap-4 p-2">
         {isPending ?
           <Loading />
