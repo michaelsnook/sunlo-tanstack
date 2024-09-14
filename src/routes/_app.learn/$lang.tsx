@@ -1,5 +1,5 @@
 import { queryOptions, useQuery } from '@tanstack/react-query'
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import supabase from 'lib/supabase-client'
 import { mapArray, selects } from 'lib/utils'
 import {
@@ -14,6 +14,7 @@ import {
 import languages from 'lib/languages'
 import ClientPage from './-interactive'
 import Loading from 'components/loading'
+import Navbar from 'components/navbar'
 
 async function fetchLanguage(lang: string): Promise<LanguageLoaded> {
   const { data } = await supabase
@@ -79,30 +80,40 @@ export const Route = createFileRoute('/_app/learn/$lang')({
 
 function Page() {
   const { lang } = Route.useParams()
+
   const { data: languageData, isPending: languageIsPending } = useQuery(
     languageQuery(lang)
   )
   const { data: deckData, isPending: deckIsPending } = useQuery(deckQuery(lang))
 
   return (
-    <main className="page-card">
-      <h1 className="h1">
-        {languages[lang]} <span className="sub">[{lang}]</span>
-      </h1>
-      <p>
-        <Link from={Route.fullPath} to="/learn/$lang" params={{ lang: 'hin' }}>
-          hin
-        </Link>{' '}
-        |{' '}
-        <Link from={Route.fullPath} to="/learn/$lang" params={{ lang: 'tam' }}>
-          tam
-        </Link>
-      </p>
-      <div>
-        {languageIsPending || deckIsPending ?
-          <Loading />
-        : <ClientPage language={languageData} deck={deckData} />}
-      </div>
-    </main>
+    <>
+      <Navbar title={`Learning ${languages[lang]}`} />
+      <main className="page-card">
+        <h1 className="h1"></h1>
+        <p>
+          <Link
+            from={Route.fullPath}
+            to="/learn/$lang"
+            params={{ lang: 'hin' }}
+          >
+            hin
+          </Link>{' '}
+          |{' '}
+          <Link
+            from={Route.fullPath}
+            to="/learn/$lang"
+            params={{ lang: 'tam' }}
+          >
+            tam
+          </Link>
+        </p>
+        <div>
+          {languageIsPending || deckIsPending ?
+            <Loading />
+          : <ClientPage language={languageData} deck={deckData} />}
+        </div>
+      </main>
+    </>
   )
 }
