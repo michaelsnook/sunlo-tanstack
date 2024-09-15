@@ -35,7 +35,7 @@ export default function Page() {
   return (
     <>
       <Navbar
-        title={`Your Language Decks`}
+        title={`Learning Home`}
         subtitle={
           profile?.decks?.length ?
             `${profile?.decks?.length} active decks`
@@ -43,7 +43,7 @@ export default function Page() {
         }
         contextMenu={contextMenu}
       />
-      <main className="flex flex-col gap-4 p-2">
+      <main className="flex flex-col gap-4 px-4">
         {isPending ?
           <Loading />
         : <ol>

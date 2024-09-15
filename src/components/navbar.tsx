@@ -40,7 +40,7 @@ export default function Navbar({
 
   const [isOpen, setIsOpen] = useState(false)
   return (
-    <nav className="flex items-center justify-between px-4 py-3 shadow-lg">
+    <nav className="flex items-center justify-between px-4 py-3 shadow-xl mb-4">
       <div className="flex items-center space-x-4">
         <Button variant="default" size="icon" onClick={onBackClick}>
           <ChevronLeft className="h-6 w-6" />
