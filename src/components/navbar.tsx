@@ -6,6 +6,7 @@ import {
   MoreVertical,
   Search,
   SquarePlus,
+  WalletCards,
 } from 'lucide-react'
 import { Button } from 'components/ui/button'
 import {
@@ -89,6 +90,8 @@ function renderIcon(icon: string) {
       return <SquarePlus size={20} />
     case 'search':
       return <Search size={20} />
+    case 'wallet-cards':
+      return <WalletCards size={20} />
     default:
       return null
   }
