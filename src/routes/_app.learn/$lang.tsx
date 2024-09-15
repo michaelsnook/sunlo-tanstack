@@ -85,10 +85,17 @@ function Page() {
     languageQuery(lang)
   )
   const { data: deckData, isPending: deckIsPending } = useQuery(deckQuery(lang))
+  const contextMenu = [
+    {
+      name: 'Add a phrase',
+      href: './add-phrase',
+      icon: 'square-plus',
+    },
+  ]
 
   return (
     <>
-      <Navbar title={`Learning ${languages[lang]}`} />
+      <Navbar title={`Learning ${languages[lang]}`} contextMenu={contextMenu} />
       <main className="page-card">
         <p>
           <Link
