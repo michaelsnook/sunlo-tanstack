@@ -6,15 +6,7 @@ import { useAuth } from 'lib/hooks'
 import { cn } from 'lib/utils'
 import { Link } from '@tanstack/react-router'
 import Loading from './loading'
-
-// Don't keep using these. use the framework's types for links and routes
-type LinkType = {
-  name: string
-  href: string | null
-}
-type MenuType = LinkType & {
-  links: Array<LinkType>
-}
+import { MenuType } from 'types/main'
 
 const staticMenu: MenuType = {
   name: 'Menu',
