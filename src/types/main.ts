@@ -38,7 +38,7 @@ export type PhrasesMap = {
 export type LanguageLoaded = {
   meta: LanguageMeta
   pids: pids
-  phrases: {
+  phrasesMap: {
     [key: string]: PhraseFull
   }
 }
@@ -78,7 +78,7 @@ export type CardsMap = {
 export type DeckLoaded = {
   meta: DeckMeta
   pids: pids
-  cards: CardsMap
+  cardsMap: CardsMap
 }
 
 export type CardRow = Tables<'user_card'>

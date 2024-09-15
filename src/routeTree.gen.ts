@@ -17,7 +17,12 @@ import { Route as AuthImport } from './routes/_auth'
 import { Route as AppImport } from './routes/_app'
 import { Route as AuthLoginImport } from './routes/_auth/login'
 import { Route as AppLearnIndexImport } from './routes/_app.learn/index'
-import { Route as AppLearnLangImport } from './routes/_app.learn/$lang'
+import { Route as AppLearnQuickSearchImport } from './routes/_app.learn/quick-search'
+import { Route as AppLearnAddDeckImport } from './routes/_app.learn/add-deck'
+import { Route as AppLearnLangIndexImport } from './routes/_app.learn/$lang/index'
+import { Route as AppLearnLangSearchImport } from './routes/_app.learn/$lang/search'
+import { Route as AppLearnLangBrowseImport } from './routes/_app.learn/$lang/browse'
+import { Route as AppLearnLangAddPhraseImport } from './routes/_app.learn/$lang/add-phrase'
 
 // Create Virtual Routes
 
@@ -94,8 +99,33 @@ const AppLearnIndexRoute = AppLearnIndexImport.update({
   getParentRoute: () => AppRoute,
 } as any)
 
-const AppLearnLangRoute = AppLearnLangImport.update({
-  path: '/learn/$lang',
+const AppLearnQuickSearchRoute = AppLearnQuickSearchImport.update({
+  path: '/learn/quick-search',
+  getParentRoute: () => AppRoute,
+} as any)
+
+const AppLearnAddDeckRoute = AppLearnAddDeckImport.update({
+  path: '/learn/add-deck',
+  getParentRoute: () => AppRoute,
+} as any)
+
+const AppLearnLangIndexRoute = AppLearnLangIndexImport.update({
+  path: '/learn/$lang/',
+  getParentRoute: () => AppRoute,
+} as any)
+
+const AppLearnLangSearchRoute = AppLearnLangSearchImport.update({
+  path: '/learn/$lang/search',
+  getParentRoute: () => AppRoute,
+} as any)
+
+const AppLearnLangBrowseRoute = AppLearnLangBrowseImport.update({
+  path: '/learn/$lang/browse',
+  getParentRoute: () => AppRoute,
+} as any)
+
+const AppLearnLangAddPhraseRoute = AppLearnLangAddPhraseImport.update({
+  path: '/learn/$lang/add-phrase',
   getParentRoute: () => AppRoute,
 } as any)
 
@@ -173,11 +203,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignupLazyImport
       parentRoute: typeof AuthImport
     }
-    '/_app/learn/$lang': {
-      id: '/_app/learn/$lang'
-      path: '/learn/$lang'
-      fullPath: '/learn/$lang'
-      preLoaderRoute: typeof AppLearnLangImport
+    '/_app/learn/add-deck': {
+      id: '/_app/learn/add-deck'
+      path: '/learn/add-deck'
+      fullPath: '/learn/add-deck'
+      preLoaderRoute: typeof AppLearnAddDeckImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/learn/quick-search': {
+      id: '/_app/learn/quick-search'
+      path: '/learn/quick-search'
+      fullPath: '/learn/quick-search'
+      preLoaderRoute: typeof AppLearnQuickSearchImport
       parentRoute: typeof AppImport
     }
     '/_app/learn/': {
@@ -187,6 +224,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppLearnIndexImport
       parentRoute: typeof AppImport
     }
+    '/_app/learn/$lang/add-phrase': {
+      id: '/_app/learn/$lang/add-phrase'
+      path: '/learn/$lang/add-phrase'
+      fullPath: '/learn/$lang/add-phrase'
+      preLoaderRoute: typeof AppLearnLangAddPhraseImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/learn/$lang/browse': {
+      id: '/_app/learn/$lang/browse'
+      path: '/learn/$lang/browse'
+      fullPath: '/learn/$lang/browse'
+      preLoaderRoute: typeof AppLearnLangBrowseImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/learn/$lang/search': {
+      id: '/_app/learn/$lang/search'
+      path: '/learn/$lang/search'
+      fullPath: '/learn/$lang/search'
+      preLoaderRoute: typeof AppLearnLangSearchImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/learn/$lang/': {
+      id: '/_app/learn/$lang/'
+      path: '/learn/$lang'
+      fullPath: '/learn/$lang'
+      preLoaderRoute: typeof AppLearnLangIndexImport
+      parentRoute: typeof AppImport
+    }
   }
 }
 
@@ -194,7 +259,15 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
-  AppRoute: AppRoute.addChildren({ AppLearnLangRoute, AppLearnIndexRoute }),
+  AppRoute: AppRoute.addChildren({
+    AppLearnAddDeckRoute,
+    AppLearnQuickSearchRoute,
+    AppLearnIndexRoute,
+    AppLearnLangAddPhraseRoute,
+    AppLearnLangBrowseRoute,
+    AppLearnLangSearchRoute,
+    AppLearnLangIndexRoute,
+  }),
   AuthRoute: AuthRoute.addChildren({
     AuthLoginRoute,
     AuthForgotPasswordLazyRoute,
@@ -228,8 +301,13 @@ export const routeTree = rootRoute.addChildren({
     "/_app": {
       "filePath": "_app.tsx",
       "children": [
-        "/_app/learn/$lang",
-        "/_app/learn/"
+        "/_app/learn/add-deck",
+        "/_app/learn/quick-search",
+        "/_app/learn/",
+        "/_app/learn/$lang/add-phrase",
+        "/_app/learn/$lang/browse",
+        "/_app/learn/$lang/search",
+        "/_app/learn/$lang/"
       ]
     },
     "/_auth": {
@@ -266,12 +344,32 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_auth/signup.lazy.tsx",
       "parent": "/_auth"
     },
-    "/_app/learn/$lang": {
-      "filePath": "_app.learn/$lang.tsx",
+    "/_app/learn/add-deck": {
+      "filePath": "_app.learn/add-deck.tsx",
+      "parent": "/_app"
+    },
+    "/_app/learn/quick-search": {
+      "filePath": "_app.learn/quick-search.tsx",
       "parent": "/_app"
     },
     "/_app/learn/": {
       "filePath": "_app.learn/index.tsx",
+      "parent": "/_app"
+    },
+    "/_app/learn/$lang/add-phrase": {
+      "filePath": "_app.learn/$lang/add-phrase.tsx",
+      "parent": "/_app"
+    },
+    "/_app/learn/$lang/browse": {
+      "filePath": "_app.learn/$lang/browse.tsx",
+      "parent": "/_app"
+    },
+    "/_app/learn/$lang/search": {
+      "filePath": "_app.learn/$lang/search.tsx",
+      "parent": "/_app"
+    },
+    "/_app/learn/$lang/": {
+      "filePath": "_app.learn/$lang/index.tsx",
       "parent": "/_app"
     }
   }
