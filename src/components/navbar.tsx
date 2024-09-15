@@ -1,5 +1,6 @@
+import type { LinkType } from 'types/main'
 import { useCallback, useState } from 'react'
-import { ChevronLeft, MoreVertical } from 'lucide-react'
+import { ChevronLeft, FolderPlus, MoreVertical } from 'lucide-react'
 import { Button } from 'components/ui/button'
 import {
   DropdownMenu,
@@ -7,15 +8,21 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from 'components/ui/dropdown-menu'
-import { useNavigate } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 
 interface NavbarProps {
   title?: string
   subtitle?: string
   onBackClick?: () => void
+  contextMenu?: Array<LinkType>
 }
 
-export default function Navbar({ title, subtitle, onBackClick }: NavbarProps) {
+export default function Navbar({
+  title,
+  subtitle,
+  onBackClick,
+  contextMenu,
+}: NavbarProps) {
   const navigate = useNavigate()
   const goBack = useCallback(() => {
     console.log(`Go back, maybe?`)
@@ -38,20 +45,41 @@ export default function Navbar({ title, subtitle, onBackClick }: NavbarProps) {
         </div>
       </div>
 
-      <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-        <DropdownMenuTrigger asChild>
-          <Button variant="default" size="icon">
-            <MoreVertical className="h-6 w-6" />
-            <span className="sr-only">Open menu</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-56">
-          <DropdownMenuItem>Lessons</DropdownMenuItem>
-          <DropdownMenuItem>Vocabulary</DropdownMenuItem>
-          <DropdownMenuItem>Practice</DropdownMenuItem>
-          <DropdownMenuItem>Settings</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      {!(contextMenu?.length > 0) ? null : (
+        <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+          <DropdownMenuTrigger asChild>
+            <Button variant="default" size="icon">
+              <MoreVertical className="h-6 w-6" />
+              <span className="sr-only">Open menu</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            {contextMenu.map(({ href, name, icon }) => {
+              return (
+                <DropdownMenuItem>
+                  <Link
+                    to={href}
+                    className="w-full flex flex-row gap-2 justify-content-center"
+                  >
+                    {renderIcon(icon)}
+                    {name}
+                  </Link>
+                </DropdownMenuItem>
+              )
+            })}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
     </nav>
   )
+}
+
+// TODO move this to utils?
+function renderIcon(icon: string) {
+  switch (icon) {
+    case 'folder-plus':
+      return <FolderPlus size={20} />
+    default:
+      return null
+  }
 }

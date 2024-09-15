@@ -10,6 +10,16 @@ export type uuid = string
 export type pids = Array<uuid>
 
 export type SelectOption = { value: string; label: string }
+// Don't keep using these. use the framework's types for links and routes
+export type LinkType = {
+  name: string
+  href: string | null
+  // TODO enum these for the caller
+  icon?: string
+}
+export type MenuType = LinkType & {
+  links: Array<LinkType>
+}
 
 export type UseSBQuery<T> = UseQueryResult<T, PostgrestError>
 export type UseSBMutation<T> = UseMutationResult<T, PostgrestError>

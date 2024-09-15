@@ -90,7 +90,6 @@ function Page() {
     <>
       <Navbar title={`Learning ${languages[lang]}`} />
       <main className="page-card">
-        <h1 className="h1"></h1>
         <p>
           <Link
             from={Route.fullPath}
