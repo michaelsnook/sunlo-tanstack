@@ -91,6 +91,16 @@ function Page() {
       href: './add-phrase',
       icon: 'square-plus',
     },
+    {
+      name: `Search ${deckData?.meta.language}`,
+      href: './search',
+      icon: 'search',
+    },
+    {
+      name: 'Your cards',
+      href: './browse',
+      icon: 'wallet-cards',
+    },
   ]
 
   return (
