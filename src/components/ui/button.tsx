@@ -5,16 +5,18 @@ import { cn } from 'lib/utils'
 import { ButtonHTMLAttributes, forwardRef } from 'react'
 
 const buttonVariants = cva(
-  'inline-flex items-center hover:bg-base-100/10 aria-expanded:bg-base-100/10 justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
-        default: '',
+        default: 'hover:bg-primary/40 aria-expanded:bg-primary/40',
+        white:
+          'bg-primary-foreground hover:bg-primary text-primary hover:text-white border-primary border-2',
       },
       size: {
         default: 'h-10 px-4 py-2',
-        sm: 'h-9 rounded-md px-3',
-        lg: 'h-11 rounded-md px-8',
+        sm: 'h-9 rounded-md px-3 text-sm',
+        lg: 'h-11 rounded-md px-8 text-lg btn-lg',
         icon: 'h-10 w-10',
       },
     },

@@ -1,6 +1,7 @@
 // nextjs: import Link from 'next/link'
-import { createLazyFileRoute } from '@tanstack/react-router'
+import { createLazyFileRoute, Link } from '@tanstack/react-router'
 import { GarlicBroccoli } from 'components/garlic'
+import { Button } from 'components/ui/button'
 
 export const Route = createLazyFileRoute('/')({
   component: Index,
@@ -21,13 +22,9 @@ function Index() {
         </div>
         <div className="mx-auto flex-none space-y-4 text-center @xl:basis-1/3">
           <GarlicBroccoli className="mx-auto" />
-          <a
-            tabIndex={1}
-            href="/login"
-            className="btn btn-outline btn-primary btn-lg bg-white focus:shadow focus:shadow-white"
-          >
-            Log in or sign up &rarr;
-          </a>
+          <Button asChild size="lg" variant="white">
+            <Link to="/login">Log in or sign up &rarr;</Link>
+          </Button>
         </div>
       </main>
 
@@ -153,13 +150,11 @@ function Index() {
       </section>
       <section className="my-10 pb-16 text-center">
         <h2 className="h2">Ready to get started?</h2>
-        <a
-          tabIndex={1}
-          href="/login"
-          className="btn btn-outline btn-primary btn-lg w-80 bg-white focus:shadow focus:shadow-white"
-        >
-          Sign up and start learning &rarr;
-        </a>
+        <Button asChild size="lg" variant="white">
+          <Link to="/login" className="w-80">
+            Sign up and start learning &rarr;
+          </Link>
+        </Button>
       </section>
 
       <section className="card my-16 bg-base-100 px-4 pb-16 pt-4 text-base-content @lg:px-8 @lg:pt-10">
