@@ -26,7 +26,7 @@ export const Route = createFileRoute('/_app')({
 
 function Layout() {
   return (
-    <div className="w-app my-4">
+    <div className="w-app">
       <Outlet />
     </div>
   )

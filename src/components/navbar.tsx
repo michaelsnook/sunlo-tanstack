@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { ChevronLeft, MoreVertical } from 'lucide-react'
 import { Button } from 'components/ui/button'
 import {
@@ -10,30 +10,37 @@ import {
 import { useNavigate } from '@tanstack/react-router'
 
 interface NavbarProps {
-  title: string
+  title?: string
+  subtitle?: string
   onBackClick?: () => void
 }
 
-export default function Navbar({ title, onBackClick }: NavbarProps) {
-  const [isOpen, setIsOpen] = useState(false)
+export default function Navbar({ title, subtitle, onBackClick }: NavbarProps) {
   const navigate = useNavigate()
-  onBackClick ??= () => {
+  const goBack = useCallback(() => {
     console.log(`Go back, maybe?`)
     navigate({ to: '..' })
-  }
+  }, [navigate])
+
+  onBackClick ??= goBack
+
+  const [isOpen, setIsOpen] = useState(false)
   return (
-    <nav className="flex items-center justify-between px-4 py-3">
+    <nav className="flex items-center justify-between px-4 py-3 shadow-lg">
       <div className="flex items-center space-x-4">
-        <Button variant="ghost" size="icon" onClick={onBackClick}>
+        <Button variant="default" size="icon" onClick={onBackClick}>
           <ChevronLeft className="h-6 w-6" />
           <span className="sr-only">Back</span>
         </Button>
-        <h1 className="text-lg font-semibold">{title}</h1>
+        <div className="">
+          <h1 className="text-lg font-bold">{title}</h1>
+          <p className="text-sm">{subtitle}</p>
+        </div>
       </div>
 
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon">
+          <Button variant="default" size="icon">
             <MoreVertical className="h-6 w-6" />
             <span className="sr-only">Open menu</span>
           </Button>

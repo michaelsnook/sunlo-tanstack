@@ -16,7 +16,14 @@ export default function Page() {
 
   return (
     <>
-      <Navbar title={`Your active learning decks`} />
+      <Navbar
+        title={`Your Language Decks`}
+        subtitle={
+          profile?.decks?.length ?
+            `${profile?.decks?.length} active decks`
+          : null
+        }
+      />
       <main className="flex flex-col gap-4 p-2">
         {isPending ?
           <Loading />

@@ -1,4 +1,4 @@
-# React + TypeScript + Vite
+# React + TypeScript + Vite + Tauri
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
@@ -48,8 +48,6 @@ export default tseslint.config({
   },
 })
 ```
-
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). The back-end consists of a Supabase instance with a postgrest server we fetch to/from using the supabase-js client.
 
 ## Getting Started
 
@@ -107,4 +105,6 @@ When your local supabase starts up it will spit out the environment variables yo
 
 The app is set to deploy as static HTML outputs, so it should generally work
 with the Tauri system for compiling to WASM/Rust. e.g. `pnpm tauri dev`,
-`pnpm tauri android dev`, `pnpm tauri android open` and so on.
+`pnpm tauri android dev`, `pnpm tauri ios dev`, and so on.
+
+Remember to start the Android Studio and activate a Virtual Device from the Device Manager. Check `adb devices` to make sure something is connected.
