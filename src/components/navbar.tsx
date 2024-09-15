@@ -1,6 +1,12 @@
 import type { LinkType } from 'types/main'
 import { useCallback, useState } from 'react'
-import { ChevronLeft, FolderPlus, MoreVertical } from 'lucide-react'
+import {
+  ChevronLeft,
+  FolderPlus,
+  MoreVertical,
+  Search,
+  SquarePlus,
+} from 'lucide-react'
 import { Button } from 'components/ui/button'
 import {
   DropdownMenu,
@@ -79,6 +85,10 @@ function renderIcon(icon: string) {
   switch (icon) {
     case 'folder-plus':
       return <FolderPlus size={20} />
+    case 'square-plus':
+      return <SquarePlus size={20} />
+    case 'search':
+      return <Search size={20} />
     default:
       return null
   }

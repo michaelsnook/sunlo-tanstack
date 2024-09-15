@@ -23,6 +23,13 @@ export default function Page() {
       // TODO: passing these props from here is wrong; the Navbar or Menu components should handle this
       icon: 'folder-plus',
     },
+    {
+      name: 'Quick search',
+      // TODO: Definitely don't keep using this built-in type; use the Router's link opts type
+      href: '/learn/quick-search',
+      // TODO: passing these props from here is wrong; the Navbar or Menu components should handle this
+      icon: 'search',
+    },
   ]
 
   return (
