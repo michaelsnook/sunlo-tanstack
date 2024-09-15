@@ -106,7 +106,7 @@ function Page() {
   return (
     <>
       <Navbar title={`Learning ${languages[lang]}`} contextMenu={contextMenu} />
-      <main className="page-card">
+      <main className="page-card my-4">
         <p>
           <Link
             from={Route.fullPath}
