@@ -1,5 +1,3 @@
-'use client'
-
 import { useState } from 'react'
 import TinyPhrase from 'components/tiny-phrase'
 import AddTranslationsModal from 'components/translations-add-modal'

@@ -1,5 +1,3 @@
-'use client'
-
 import { type FormEvent, useState } from 'react'
 import {
   UseMutationResult,
