@@ -1,5 +1,5 @@
 import type { LinkType } from 'types/main'
-import { useCallback, useState } from 'react'
+import { useCallback, useId, useState } from 'react'
 import {
   ChevronLeft,
   FolderPlus,
@@ -62,8 +62,9 @@ export default function Navbar({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
             {contextMenu.map(({ href, name, icon }) => {
+              const id = useId()
               return (
-                <DropdownMenuItem>
+                <DropdownMenuItem key={id}>
                   <Link
                     to={href}
                     className="w-full flex flex-row gap-2 justify-content-center"

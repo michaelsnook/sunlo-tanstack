@@ -3,9 +3,10 @@
 import { useState } from 'react'
 import TinyPhrase from 'components/tiny-phrase'
 import AddTranslationsModal from 'components/translations-add-modal'
+import { TranslationRow } from 'types/main'
 
 export default function SectionTranslations({ phrase }) {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>()
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const open = () => setIsModalOpen(true)
   const close = () => setIsModalOpen(false)
 
@@ -22,7 +23,7 @@ export default function SectionTranslations({ phrase }) {
       </p>
       {phrase.translations?.length > 0 ?
         <ul className="text-2xl font-bold">
-          {phrase.translations.map((trans) => (
+          {phrase.translations.map((trans: TranslationRow) => (
             <li lang={trans.lang} key={`translation-${trans.id}`}>
               <TinyPhrase {...trans} />
             </li>

@@ -94,9 +94,7 @@ export default function Sidebar() {
 }
 
 function DeckMenu() {
-  console.log(`logging pre usequery`)
   const { data: profile, isLoading } = useProfile()
-  console.log(`logging post usequery`, profile)
   const menuData =
     !profile ? null : (
       {
