@@ -5,7 +5,7 @@ import Loading from 'components/loading'
 import { useQuery } from '@tanstack/react-query'
 import { NavbarData } from 'types/main'
 
-export const Route = createFileRoute('/_app/learn/')({
+export const Route = createFileRoute('/learn/')({
   loader: ({ context: { queryClient } }) => {
     queryClient.ensureQueryData(profileQuery)
     return {

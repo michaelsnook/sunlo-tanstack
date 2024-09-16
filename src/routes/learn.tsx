@@ -6,7 +6,7 @@ import {
 } from '@tanstack/react-router'
 import Navbar from 'components/navbar'
 
-export const Route = createFileRoute('/_app')({
+export const Route = createFileRoute('/learn')({
   // Before loading, authenticate the user via our auth context
   // This will also happen during prefetching (e.g. hovering over links, etc)
   beforeLoad: ({ context, location }) => {
