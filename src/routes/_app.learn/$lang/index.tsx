@@ -6,12 +6,36 @@ import { useState } from 'react'
 import MyModal from 'components/modal'
 import SectionTranslations from 'components/translations-section'
 import TinyPhrase from 'components/tiny-phrase'
-import { uuid } from 'types/main'
+import { NavbarData, uuid } from 'types/main'
 import { useDeck, useDeckMeta } from 'lib/use-deck'
 import { useLanguage, useLanguageMeta } from 'lib/use-language'
 
 export const Route = createFileRoute('/_app/learn/$lang/')({
   component: Page,
+  loader: ({ params: { lang } }) => {
+    return {
+      navbar: {
+        title: `Learning ${languages[lang]}`,
+        contextMenu: [
+          {
+            name: 'Add a phrase',
+            href: './add-phrase',
+            icon: 'square-plus',
+          },
+          {
+            name: `Search ${languages[lang]}`,
+            href: './search',
+            icon: 'search',
+          },
+          {
+            name: 'Your cards',
+            href: './browse',
+            icon: 'wallet-cards',
+          },
+        ],
+      } as NavbarData,
+    }
+  },
 })
 
 function Page() {
@@ -20,60 +44,29 @@ function Page() {
   const deckMeta = useDeckMeta(lang)
   const languageMeta = useLanguageMeta(lang)
 
-  const contextMenu = [
-    {
-      name: 'Add a phrase',
-      href: './add-phrase',
-      icon: 'square-plus',
-    },
-    {
-      name: `Search ${deckMeta.data?.language}`,
-      href: './search',
-      icon: 'search',
-    },
-    {
-      name: 'Your cards',
-      href: './browse',
-      icon: 'wallet-cards',
-    },
-  ]
-
   return (
-    <>
-      <Navbar title={`Learning ${languages[lang]}`} contextMenu={contextMenu} />
-      <main className="page-card my-4">
-        <p>
-          <Link
-            from={Route.fullPath}
-            to="/learn/$lang"
-            params={{ lang: 'hin' }}
-          >
-            hin
-          </Link>{' '}
-          |{' '}
-          <Link
-            from={Route.fullPath}
-            to="/learn/$lang"
-            params={{ lang: 'tam' }}
-          >
-            tam
-          </Link>
-        </p>
-        <div>
-          {deckMeta.isPending || languageMeta.isPending ?
-            <Loading />
-          : <ClientPage lang={lang} />}
-        </div>
-      </main>
-    </>
+    <main className="page-card my-4">
+      <p>
+        <Link from={Route.fullPath} to="/learn/$lang" params={{ lang: 'hin' }}>
+          hin
+        </Link>{' '}
+        |{' '}
+        <Link from={Route.fullPath} to="/learn/$lang" params={{ lang: 'tam' }}>
+          tam
+        </Link>
+      </p>
+      <div>
+        {deckMeta.isPending || languageMeta.isPending ?
+          <Loading />
+        : <ClientPage lang={lang} />}
+      </div>
+    </main>
   )
 }
 
 export default function ClientPage({ lang }) {
   const deck = useDeck(lang)
   const language = useLanguage(lang)
-  console.log(`ALERT!`, deck, language)
-
   return (
     <div className="space-y-4">
       <div>

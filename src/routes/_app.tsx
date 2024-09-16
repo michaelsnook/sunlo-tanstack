@@ -1,4 +1,10 @@
-import { createFileRoute, redirect, Outlet } from '@tanstack/react-router'
+import {
+  createFileRoute,
+  redirect,
+  Outlet,
+  useMatches,
+} from '@tanstack/react-router'
+import Navbar from 'components/navbar'
 
 export const Route = createFileRoute('/_app')({
   // Before loading, authenticate the user via our auth context
@@ -25,8 +31,13 @@ export const Route = createFileRoute('/_app')({
 })
 
 function Layout() {
+  const matches = useMatches()
+  const lastMatch = matches[matches.length - 1]
+  const navbarData = lastMatch.loaderData?.['navbar'] ?? { title: '' } // as NavbarData | undefined
+
   return (
     <div className="w-app">
+      <Navbar data={navbarData} />
       <Outlet />
     </div>
   )

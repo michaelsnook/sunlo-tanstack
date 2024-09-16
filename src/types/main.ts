@@ -20,6 +20,12 @@ export type LinkType = {
 export type MenuType = LinkType & {
   links: Array<LinkType>
 }
+export type NavbarData = {
+  title: string
+  subtitle?: string
+  onBackClick?: () => void
+  contextMenu?: Array<LinkType>
+}
 
 export type UseSBQuery<T> = UseQueryResult<T, PostgrestError>
 export type UseSBMutation<T> = UseMutationResult<T, PostgrestError>
