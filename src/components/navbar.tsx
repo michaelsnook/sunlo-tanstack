@@ -1,5 +1,5 @@
-import type { LinkType } from 'types/main'
-import { useCallback, useId, useState } from 'react'
+import type { NavbarData } from 'types/main'
+import { useCallback, useState } from 'react'
 import {
   ChevronLeft,
   FolderPlus,
@@ -18,25 +18,17 @@ import {
 import { Link, useNavigate } from '@tanstack/react-router'
 
 interface NavbarProps {
-  title?: string
-  subtitle?: string
-  onBackClick?: () => void
-  contextMenu?: Array<LinkType>
+  data?: NavbarData
 }
 
-export default function Navbar({
-  title,
-  subtitle,
-  onBackClick,
-  contextMenu,
-}: NavbarProps) {
+export default function Navbar({ data }: NavbarProps) {
+  console.log(`Navbar data is:`, data)
   const navigate = useNavigate()
   const goBack = useCallback(() => {
     console.log(`Go back, maybe?`)
     navigate({ to: '..' })
   }, [navigate])
-
-  onBackClick ??= goBack
+  const onBackClick = data?.onBackClick ?? goBack
 
   const [isOpen, setIsOpen] = useState(false)
   return (
@@ -47,12 +39,12 @@ export default function Navbar({
           <span className="sr-only">Back</span>
         </Button>
         <div className="">
-          <h1 className="text-lg font-bold">{title}</h1>
-          <p className="text-sm">{subtitle}</p>
+          <h1 className="text-lg font-bold">{data?.title}</h1>
+          <p className="text-sm">{data?.subtitle}</p>
         </div>
       </div>
 
-      {!(contextMenu?.length > 0) ? null : (
+      {!(data?.contextMenu?.length > 0) ? null : (
         <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
           <DropdownMenuTrigger asChild>
             <Button variant="default" size="icon">
@@ -61,20 +53,19 @@ export default function Navbar({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
-            {contextMenu.map(({ href, name, icon }) => {
-              const id = useId()
-              return (
-                <DropdownMenuItem key={id}>
-                  <Link
-                    to={href}
-                    className="w-full flex flex-row gap-2 justify-content-center"
-                  >
-                    {renderIcon(icon)}
-                    {name}
-                  </Link>
-                </DropdownMenuItem>
-              )
-            })}
+            {data?.contextMenu.map(({ href, name, icon }, index) => (
+              <DropdownMenuItem key={index}>
+                <Link
+                  to={href}
+                  className="w-full flex flex-row gap-2 justify-content-center"
+                >
+                  {renderIcon(icon)}
+                  {name}
+                </Link>
+              </DropdownMenuItem>
+            )) || (
+              <DropdownMenuItem disabled>No options available</DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       )}
