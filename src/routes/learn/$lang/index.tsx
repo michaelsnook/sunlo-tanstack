@@ -10,7 +10,7 @@ import { NavbarData, uuid } from 'types/main'
 import { useDeck, useDeckMeta } from 'lib/use-deck'
 import { useLanguage, useLanguageMeta } from 'lib/use-language'
 
-export const Route = createFileRoute('/_app/learn/$lang/')({
+export const Route = createFileRoute('/learn/$lang/')({
   component: Page,
   loader: ({ params: { lang } }) => {
     return {
