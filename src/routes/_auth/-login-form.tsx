@@ -12,7 +12,6 @@ export default function LoginForm() {
   const auth = useAuth()
   const search = useSearch({ strict: false })
   const navigate = useNavigate()
-  console.log(`History and search`, history, search)
 
   useEffect(() => {
     if (!!auth.isAuth && navigate) {
