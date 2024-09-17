@@ -9,6 +9,7 @@ import { useLanguage, useLanguageMeta } from 'lib/use-language'
 import { useProfile } from 'lib/hooks'
 import MyModal from 'components/modal'
 import { useState } from 'react'
+import { Button } from 'components/ui/button'
 
 export const Route = createFileRoute('/learn/$lang/')({
   component: Page,
@@ -18,6 +19,11 @@ export const Route = createFileRoute('/learn/$lang/')({
         title: `Learning ${languages[lang]}`,
         icon: 'book-marked',
         contextMenu: [
+          {
+            name: 'Start a review',
+            href: './review',
+            icon: 'star',
+          },
           {
             name: 'Add a phrase',
             href: './add-phrase',
@@ -53,6 +59,9 @@ function Page() {
         trying to push you toward starting a "review" session. Time on task is
         one of the most important factors.
       </p>
+      <Button variant="action" asChild>
+        <Link to="./review">Let's Start Today&apos;s Deck</Link>
+      </Button>
 
       <div className="space-y-4">
         {!lang ?
@@ -71,7 +80,13 @@ export default function DeckFullContents({ lang }) {
   const deck = useDeck(lang)
   const language = useLanguage(lang)
   return (
-    <div className="space-y-4">
+    <div className="border-dashed border rounded my-4 space-y-4">
+      <div>
+        <h2 className="h3">Deck Details</h2>
+        <p className="opacity-60 -mt-2 text-sm">
+          (an excrutiating level of detail actually)
+        </p>
+      </div>
       <div>
         <div>
           deck is{' '}
@@ -148,11 +163,11 @@ function FriendsSection({ lang }) {
     ) || []
 
   return (
-    <div className="card border-dashed border rounded my-4">
-      <div>
+    <div className="border-dashed border rounded my-4">
+      <div className="mb-4">
         <h2 className="h3">Your Friends</h2>
         <p className="opacity-60 -mt-2 text-sm">
-          (ppl helping the user learn this language):
+          (ppl helping the user learn this language)
         </p>
       </div>
       <ul className="list-disc ml-4">

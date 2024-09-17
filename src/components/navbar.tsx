@@ -9,6 +9,7 @@ import {
   Search,
   Settings,
   SquarePlus,
+  Star,
   WalletCards,
 } from 'lucide-react'
 import { Button } from 'components/ui/button'
@@ -96,6 +97,8 @@ function renderIcon(icon: string, props = { size: 20 }) {
       return <Settings {...props} />
     case 'square-plus': // for a new card
       return <SquarePlus {...props} />
+    case 'star': // for GOAL actions (start a review)
+      return <Star {...props} />
     case 'wallet-cards': // browse your own cards
       return <WalletCards {...props} />
     default:

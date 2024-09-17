@@ -12,6 +12,8 @@ const buttonVariants = cva(
         default: 'hover:bg-primary aria-expanded:bg-primary',
         white:
           'bg-white hover:bg-primary text-primary hover:text-white border-primary border-2',
+        action:
+          'bg-primary text-white border-primary border-2 font-semibold sm:w-[60%] sm:mx-auto hover:opacity-90 hover:ring',
       },
       size: {
         default: 'h-10 px-4 py-2',
