@@ -31,7 +31,7 @@ function RootComponent() {
   return (
     <>
       <Sidebar />
-      <div className="mx-auto w-full max-w-[1100px] px-[1%] @container">
+      <div className="mx-auto w-full max-w-[1100px] @container">
         <Outlet />
       </div>
       <ReactQueryDevtools buttonPosition="top-right" />
