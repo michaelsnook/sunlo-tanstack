@@ -108,11 +108,18 @@ export type ProfileInsert = TablesInsert<'user_profile'>
 export type ProfileMeta = ProfileRow // Tables<'profile_meta'>
 export type ProfileFull = ProfileMeta & {
   decks: Array<DeckMeta>
+  friendships: Array<FriendshipRow>
+}
+
+export type FriendshipRow = {
+  uid: uuid
+  friend_uuid: uuid
+  helping_with: Array<string>
+  created_at: string
+  updated_at: string
 }
 
 // for legacy hooks and such
-
-export type Profile = ProfileRow & { decks: Array<DeckMeta> }
 
 export type PhraseCardInsert = {
   phrase: PhraseInsert

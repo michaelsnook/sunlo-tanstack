@@ -1,14 +1,14 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import Loading from 'components/loading'
-import Navbar from 'components/navbar'
 import languages from 'lib/languages'
-import { useState } from 'react'
-import MyModal from 'components/modal'
 import SectionTranslations from 'components/translations-section'
 import TinyPhrase from 'components/tiny-phrase'
-import { NavbarData, uuid } from 'types/main'
+import { FriendshipRow, NavbarData, uuid } from 'types/main'
 import { useDeck, useDeckMeta } from 'lib/use-deck'
 import { useLanguage, useLanguageMeta } from 'lib/use-language'
+import { useProfile } from 'lib/hooks'
+import MyModal from 'components/modal'
+import { useState } from 'react'
 
 export const Route = createFileRoute('/learn/$lang/')({
   component: Page,
@@ -46,31 +46,28 @@ export const Route = createFileRoute('/learn/$lang/')({
 
 function Page() {
   const { lang } = Route.useParams()
-
-  const deckMeta = useDeckMeta(lang)
-  const languageMeta = useLanguageMeta(lang)
-
   return (
     <main className="page-card my-4">
       <p>
-        <Link from={Route.fullPath} to="/learn/$lang" params={{ lang: 'hin' }}>
-          hin
-        </Link>{' '}
-        |{' '}
-        <Link from={Route.fullPath} to="/learn/$lang" params={{ lang: 'tam' }}>
-          tam
-        </Link>
+        This is way meant as a place to just get started. We are really just
+        trying to push you toward starting a "review" session. Time on task is
+        one of the most important factors.
       </p>
-      <div>
-        {deckMeta.isPending || languageMeta.isPending ?
+
+      <div className="space-y-4">
+        {!lang ?
           <Loading />
-        : <ClientPage lang={lang} />}
+        : <>
+            <FriendsSection lang={lang} />
+            <DeckFullContents lang={lang} />
+          </>
+        }
       </div>
     </main>
   )
 }
 
-export default function ClientPage({ lang }) {
+export default function DeckFullContents({ lang }) {
   const deck = useDeck(lang)
   const language = useLanguage(lang)
   return (
@@ -136,5 +133,33 @@ function PlusDetailModal({ children }) {
         {children}
       </MyModal>
     </>
+  )
+}
+
+// TODO the database doesn't have friendships yet so this is all mockup-y
+// and the type is also mocked
+function FriendsSection({ lang }) {
+  const profileQuery = useProfile()
+  if (profileQuery.data === null) return null
+
+  const friendsThisLanguage =
+    profileQuery.data?.friendships?.filter(
+      (f: FriendshipRow) => f.helping_with.indexOf(lang) !== -1
+    ) || []
+
+  return (
+    <div className="card border-dashed border rounded my-4">
+      <div>
+        <h2 className="h3">Your Friends</h2>
+        <p className="opacity-60 -mt-2 text-sm">
+          (ppl helping the user learn this language):
+        </p>
+      </div>
+      <ul className="list-disc ml-4">
+        <li>mahesh (see recent activity or whatever)</li>
+        <li>a-money (you have a new phrase from them)</li>
+        <li>j-bhai (nothing special actually)</li>
+      </ul>
+    </div>
   )
 }

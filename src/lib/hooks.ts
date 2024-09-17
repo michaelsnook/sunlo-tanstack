@@ -1,4 +1,4 @@
-import type { Profile } from 'types/main'
+import type { ProfileFull } from 'types/main'
 import supabase from './supabase-client'
 import { PostgrestError } from '@supabase/supabase-js'
 import {
@@ -40,12 +40,12 @@ export const useSignOut = () => {
   })
 }
 
-export const profileQuery = queryOptions<Profile, PostgrestError>({
+export const profileQuery = queryOptions<ProfileFull, PostgrestError>({
   queryKey: ['user', 'profile'],
-  queryFn: async (): Promise<Profile | null> => {
+  queryFn: async () => {
     const { data } = await supabase
       .from('user_profile')
-      .select(`*, decks:user_deck_plus(*)`)
+      .select(`*, decks:user_deck_plus(*)`) // `friendships:user_friendships(*)`
       .maybeSingle()
       .throwOnError()
     return data
