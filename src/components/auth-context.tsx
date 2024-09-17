@@ -44,12 +44,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     )
 
     return () => {
-      console.log(`Unmounting`)
       listener.subscription.unsubscribe()
     }
   }, [queryClient])
-
-  console.log(`Creating auth context and rendering provider`, sessionState)
 
   const value = {
     isAuth: sessionState?.user.role === 'authenticated',

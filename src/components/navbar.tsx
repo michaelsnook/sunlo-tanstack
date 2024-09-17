@@ -22,10 +22,8 @@ interface NavbarProps {
 }
 
 export default function Navbar({ data }: NavbarProps) {
-  console.log(`Navbar data is:`, data)
   const navigate = useNavigate()
   const goBack = useCallback(() => {
-    console.log(`Go back, maybe?`)
     navigate({ to: '..' })
   }, [navigate])
   const onBackClick = data?.onBackClick ?? goBack
