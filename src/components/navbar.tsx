@@ -7,6 +7,7 @@ import {
   Home,
   MoreVertical,
   Search,
+  Settings,
   SquarePlus,
   WalletCards,
 } from 'lucide-react'
@@ -89,10 +90,12 @@ function renderIcon(icon: string, props = { size: 20 }) {
       return <Home {...props} />
     case 'folder-plus': // for a new deck
       return <FolderPlus {...props} />
-    case 'square-plus': // for a new card
-      return <SquarePlus {...props} />
     case 'search':
       return <Search {...props} />
+    case 'settings':
+      return <Settings {...props} />
+    case 'square-plus': // for a new card
+      return <SquarePlus {...props} />
     case 'wallet-cards': // browse your own cards
       return <WalletCards {...props} />
     default:

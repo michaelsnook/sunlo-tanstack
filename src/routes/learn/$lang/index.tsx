@@ -33,6 +33,11 @@ export const Route = createFileRoute('/learn/$lang/')({
             href: './browse',
             icon: 'wallet-cards',
           },
+          {
+            name: 'Deck settings',
+            href: './settings',
+            icon: 'settings',
+          },
         ],
       } as NavbarData,
     }

@@ -20,6 +20,7 @@ import { Route as LearnQuickSearchImport } from './routes/learn/quick-search'
 import { Route as LearnAddDeckImport } from './routes/learn/add-deck'
 import { Route as AuthLoginImport } from './routes/_auth/login'
 import { Route as LearnLangIndexImport } from './routes/learn/$lang/index'
+import { Route as LearnLangSettingsImport } from './routes/learn/$lang/settings'
 import { Route as LearnLangSearchImport } from './routes/learn/$lang/search'
 import { Route as LearnLangBrowseImport } from './routes/learn/$lang/browse'
 import { Route as LearnLangAddPhraseImport } from './routes/learn/$lang/add-phrase'
@@ -111,6 +112,11 @@ const AuthLoginRoute = AuthLoginImport.update({
 
 const LearnLangIndexRoute = LearnLangIndexImport.update({
   path: '/$lang/',
+  getParentRoute: () => LearnRoute,
+} as any)
+
+const LearnLangSettingsRoute = LearnLangSettingsImport.update({
+  path: '/$lang/settings',
   getParentRoute: () => LearnRoute,
 } as any)
 
@@ -245,6 +251,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LearnLangSearchImport
       parentRoute: typeof LearnImport
     }
+    '/learn/$lang/settings': {
+      id: '/learn/$lang/settings'
+      path: '/$lang/settings'
+      fullPath: '/learn/$lang/settings'
+      preLoaderRoute: typeof LearnLangSettingsImport
+      parentRoute: typeof LearnImport
+    }
     '/learn/$lang/': {
       id: '/learn/$lang/'
       path: '/$lang'
@@ -272,6 +285,7 @@ export const routeTree = rootRoute.addChildren({
     LearnLangAddPhraseRoute,
     LearnLangBrowseRoute,
     LearnLangSearchRoute,
+    LearnLangSettingsRoute,
     LearnLangIndexRoute,
   }),
   AboutLazyRoute,
@@ -316,6 +330,7 @@ export const routeTree = rootRoute.addChildren({
         "/learn/$lang/add-phrase",
         "/learn/$lang/browse",
         "/learn/$lang/search",
+        "/learn/$lang/settings",
         "/learn/$lang/"
       ]
     },
@@ -366,6 +381,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/learn/$lang/search": {
       "filePath": "learn/$lang/search.tsx",
+      "parent": "/learn"
+    },
+    "/learn/$lang/settings": {
+      "filePath": "learn/$lang/settings.tsx",
       "parent": "/learn"
     },
     "/learn/$lang/": {
