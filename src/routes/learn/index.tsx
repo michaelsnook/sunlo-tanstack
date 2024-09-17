@@ -11,6 +11,8 @@ export const Route = createFileRoute('/learn/')({
     return {
       navbar: {
         title: `Learning Home`,
+        subtitle: `Which deck are we studying today?`,
+        icon: 'home',
         contextMenu: [
           {
             name: 'New Deck',

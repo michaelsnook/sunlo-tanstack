@@ -1,8 +1,10 @@
 import type { NavbarData } from 'types/main'
 import { useCallback, useState } from 'react'
 import {
+  BookMarked,
   ChevronLeft,
   FolderPlus,
+  Home,
   MoreVertical,
   Search,
   SquarePlus,
@@ -31,14 +33,21 @@ export default function Navbar({ data }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false)
   return (
     <nav className="flex items-center justify-between px-4 py-3 shadow-xl mb-4 bg-white/10">
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center">
         <Button variant="default" size="icon" onClick={onBackClick}>
           <ChevronLeft className="h-6 w-6" />
           <span className="sr-only">Back</span>
         </Button>
-        <div className="">
-          <h1 className="text-lg font-bold">{data?.title}</h1>
-          <p className="text-sm">{data?.subtitle}</p>
+        <div className="flex flex-row items-center gap-2">
+          {data?.icon ?
+            <span className="rounded-full p-2 bg-white/10">
+              {renderIcon(data?.icon, { size: 24 })}
+            </span>
+          : <>&nbsp;</>}
+          <div>
+            <h1 className="text-lg font-bold">{data?.title}</h1>
+            <p className="text-sm">{data?.subtitle}</p>
+          </div>
         </div>
       </div>
 
@@ -72,16 +81,20 @@ export default function Navbar({ data }: NavbarProps) {
 }
 
 // TODO move this to utils?
-function renderIcon(icon: string) {
+function renderIcon(icon: string, props = { size: 20 }) {
   switch (icon) {
-    case 'folder-plus':
-      return <FolderPlus size={20} />
-    case 'square-plus':
-      return <SquarePlus size={20} />
+    case 'book-marked': // for your /learn page
+      return <BookMarked {...props} />
+    case 'home': // for your /learn page
+      return <Home {...props} />
+    case 'folder-plus': // for a new deck
+      return <FolderPlus {...props} />
+    case 'square-plus': // for a new card
+      return <SquarePlus {...props} />
     case 'search':
-      return <Search size={20} />
-    case 'wallet-cards':
-      return <WalletCards size={20} />
+      return <Search {...props} />
+    case 'wallet-cards': // browse your own cards
+      return <WalletCards {...props} />
     default:
       return null
   }

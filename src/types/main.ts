@@ -23,6 +23,7 @@ export type MenuType = LinkType & {
 export type NavbarData = {
   title: string
   subtitle?: string
+  icon?: string
   onBackClick?: () => void
   contextMenu?: Array<LinkType>
 }

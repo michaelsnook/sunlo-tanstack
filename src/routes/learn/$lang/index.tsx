@@ -16,6 +16,7 @@ export const Route = createFileRoute('/learn/$lang/')({
     return {
       navbar: {
         title: `Learning ${languages[lang]}`,
+        icon: 'book-marked',
         contextMenu: [
           {
             name: 'Add a phrase',
