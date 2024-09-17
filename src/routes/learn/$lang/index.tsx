@@ -68,6 +68,7 @@ function Page() {
           <Loading />
         : <>
             <FriendsSection lang={lang} />
+            <DeckSettings lang={lang} />
             <DeckFullContents lang={lang} />
           </>
         }
@@ -76,7 +77,53 @@ function Page() {
   )
 }
 
-export default function DeckFullContents({ lang }) {
+// TODO: these inputs don't do anything.
+// use https://v0.dev/chat/PNg3tT-DSoC for deck mode
+function DeckSettings({ lang }) {
+  const deck = useDeckMeta(lang)
+
+  return (
+    <div className="border-dashed border rounded my-4 space-y-4">
+      <div>
+        <h2 className="h3">Deck Settings</h2>
+        <p className="opacity-60 -mt-2 text-sm">
+          Delete your deck? Pause it? Change modes? Set goals? Travel dates
+          coming up?
+        </p>
+      </div>
+      <div>
+        <p>What mode are you in? tavel? friends?</p>
+        <div>
+          <div className="flex flex-row gap-2 items-center">
+            <input type="radio" value="1" />
+            <label>Friends & Coworkers</label>
+          </div>
+          <div className="flex flex-row gap-2 items-center">
+            <input type="radio" value="2" defaultChecked={true} />
+            <label>Family Connections</label>
+          </div>
+          <div className="flex flex-row gap-2 items-center">
+            <input type="radio" value="3" />
+            <label>Upcoming Visit</label>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p>Pause your deck maybe</p>
+        <div className="flex flex-row gap-2 items-center">
+          <input type="radio" value="2" defaultChecked={true} />
+          <label>This deck is active</label>
+        </div>
+        <div className="flex flex-row gap-2 items-center">
+          <input type="radio" value="3" />
+          <label>Deactivate it</label>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function DeckFullContents({ lang }) {
   const deck = useDeck(lang)
   const language = useLanguage(lang)
   return (
@@ -134,6 +181,7 @@ export default function DeckFullContents({ lang }) {
   )
 }
 
+// TODO replace this with radix/shadcn dialog
 function PlusDetailModal({ children }) {
   const [isOpen, setIsOpen] = useState(false)
   const close = () => setIsOpen(false)

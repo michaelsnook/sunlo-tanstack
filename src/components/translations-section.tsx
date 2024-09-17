@@ -21,7 +21,7 @@ export default function SectionTranslations({ phrase }) {
       </p>
       {phrase.translations?.length > 0 ?
         <ul className="text-2xl font-bold">
-          {phrase.translations.map((trans: TranslationRow) => (
+          {phrase.translations?.map((trans: TranslationRow) => (
             <li lang={trans.lang} key={`translation-${trans.id}`}>
               <TinyPhrase {...trans} />
             </li>
