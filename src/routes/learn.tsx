@@ -36,7 +36,7 @@ function Layout() {
   const navbarData = lastMatch.loaderData?.['navbar'] ?? { title: '' } // as NavbarData | undefined
 
   return (
-    <div className="w-app">
+    <div className="w-app @container">
       <Navbar data={navbarData} />
       <Outlet />
     </div>

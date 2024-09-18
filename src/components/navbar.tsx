@@ -35,18 +35,18 @@ export default function Navbar({ data }: NavbarProps) {
 
   const [isOpen, setIsOpen] = useState(false)
   return (
-    <nav className="flex items-center justify-between px-4 py-3 shadow-xl mb-4 bg-white/10">
+    <nav className="flex items-center justify-between py-3 px-[1cqw] shadow-xl mb-4 bg-white/10">
       <div className="flex items-center">
         <Button
           variant="ghost"
           size="sm"
-          className="me-2 px-2"
+          className="me-[1cqw] px-2"
           onClick={onBackClick}
         >
           <ChevronLeft className="h-6 w-6" />
           <span className="sr-only">Back</span>
         </Button>
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-row items-center gap-[1cqw]">
           {data?.icon ?
             <span className="rounded bg-white/20 p-2">
               {renderIcon(data?.icon, { size: 24 })}
