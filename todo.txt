@@ -1,11 +1,3 @@
-CROSS-PLATFORM
-1. ✅ compile to android with tauri
- - Make Tauri work with HMR and Vite setup
-1. compile to ios with tauri
-
-BUILD
-1. ✅ Figure out how to build regardless of ts errors -- have disabled `tsc -b` during build
-
 RADIX
 1. Add/replace react-select and react-modal with Radix primitives
 
@@ -21,12 +13,18 @@ NAVIGATION
 1. ✅ get back the "active/inactive" link style in sidebar.tsx
 1. properly use the disabled option on the nav links
 1. ✅ probably set it to only active-match exact route matches
-1. ✅ don't forget to add the Navbar back in
+1. ✅ don't forget to add the Navbar
+1. ✅ add context menus (links) to all the pages and scaffold pages
 
 UX
 1. Add activity graph to deck summaries :)) https://app.radicle.xyz/nodes/seed.radicle.xyz/rad:z4V1sjrXqjvFdnCUbxPFqd5p4DtH5/tree/src/components/ActivityDiagram.svelte
 
 MISC utilities
-1. replace useLang with router feature
+1. ✅ replace useLang with router feature
 1. double check the new pluck works the same with if (key in obj)
+1. refresh all the fetcher hooks w the select-paradigm code
 
+CROSS-PLATFORM
+1. ✅ compile to android with tauri
+ - Make Tauri work with HMR and Vite setup
+1. compile to ios with tauri

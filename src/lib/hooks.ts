@@ -11,12 +11,6 @@ import { useNavigate, useParams } from '@tanstack/react-router'
 import { useContext } from 'react'
 import { AuthContext } from 'components/auth-context'
 
-export const useLang = () => {
-  const parms = useParams({ strict: false })
-  console.log(`useParams returns:`, parms)
-  return parms['lang']
-}
-
 // Access the context's value from inside a provider
 export function useAuth() {
   const context = useContext(AuthContext)
