@@ -38,9 +38,9 @@ export default function Navbar({ data }: NavbarProps) {
     <nav className="flex items-center justify-between px-4 py-3 shadow-xl mb-4 bg-white/10">
       <div className="flex items-center">
         <Button
-          variant="default"
-          size="icon"
-          className="me-2"
+          variant="ghost"
+          size="sm"
+          className="me-2 px-2"
           onClick={onBackClick}
         >
           <ChevronLeft className="h-6 w-6" />
@@ -62,7 +62,7 @@ export default function Navbar({ data }: NavbarProps) {
       {!(data?.contextMenu?.length > 0) ? null : (
         <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
           <DropdownMenuTrigger asChild>
-            <Button variant="default" size="icon">
+            <Button variant="ghost" size="sm" className="px-2">
               <MoreVertical className="h-6 w-6" />
               <span className="sr-only">Open menu</span>
             </Button>
