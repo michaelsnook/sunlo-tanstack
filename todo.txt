@@ -1,5 +1,7 @@
 RADIX
-1. Add/replace react-select and react-modal with Radix primitives
+1. ✅ replace react-modal with Radix primitives/ShadCN
+1. replace the DaisyUI expandos
+1. replace react-select
 
 AUTH
 1. ✅ add AuthContext -- so far I've just mocked it with useQuery

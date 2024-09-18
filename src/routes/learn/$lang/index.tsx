@@ -5,10 +5,9 @@ import SectionTranslations from 'components/translations-section'
 import TinyPhrase from 'components/tiny-phrase'
 import { FriendshipRow, NavbarData, uuid } from 'types/main'
 import { useDeck, useDeckMeta } from 'lib/use-deck'
-import { useLanguage, useLanguageMeta } from 'lib/use-language'
+import { useLanguage } from 'lib/use-language'
 import { useProfile } from 'lib/hooks'
-import MyModal from 'components/modal'
-import { useState } from 'react'
+import ModalWithOpener from 'components/modal-with-opener'
 import { Button } from 'components/ui/button'
 
 export const Route = createFileRoute('/learn/$lang/')({
@@ -139,15 +138,15 @@ function DeckFullContents({ lang }) {
       <div>
         <div>
           deck is{' '}
-          <PlusDetailModal>
+          <ModalWithOpener title="Deck Details">
             {JSON.stringify(deck.data?.meta, null, 2)}
-          </PlusDetailModal>
+          </ModalWithOpener>
         </div>
         <div>
           language is{' '}
-          <PlusDetailModal>
+          <ModalWithOpener title="Language Details">
             {JSON.stringify(language.data?.meta, null, 2)}
-          </PlusDetailModal>
+          </ModalWithOpener>
         </div>
       </div>
       <div className="flex-basis-[20rem] flex flex-shrink flex-row flex-wrap gap-4">
@@ -180,24 +179,6 @@ function DeckFullContents({ lang }) {
         })}
       </div>
     </div>
-  )
-}
-
-// TODO replace this with radix/shadcn dialog
-function PlusDetailModal({ children }) {
-  const [isOpen, setIsOpen] = useState(false)
-  const close = () => setIsOpen(false)
-  const open = () => setIsOpen(true)
-  return (
-    <>
-      <a role="button" onClick={open} className="s-link">
-        [see details]
-      </a>
-
-      <MyModal isOpen={isOpen} onRequestClose={close}>
-        {children}
-      </MyModal>
-    </>
   )
 }
 
