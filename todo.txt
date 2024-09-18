@@ -21,7 +21,7 @@ NAVIGATION
 1. ✅ get back the "active/inactive" link style in sidebar.tsx
 1. properly use the disabled option on the nav links
 1. ✅ probably set it to only active-match exact route matches
-1. don't forget to add the Navbar back in
+1. ✅ don't forget to add the Navbar back in
 
 UX
 1. Add activity graph to deck summaries :)) https://app.radicle.xyz/nodes/seed.radicle.xyz/rad:z4V1sjrXqjvFdnCUbxPFqd5p4DtH5/tree/src/components/ActivityDiagram.svelte

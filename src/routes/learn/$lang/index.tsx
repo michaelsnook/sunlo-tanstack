@@ -17,12 +17,12 @@ export const Route = createFileRoute('/learn/$lang/')({
     return {
       navbar: {
         title: `Learning ${languages[lang]}`,
-        icon: 'book-marked',
+        icon: 'book-heart',
         contextMenu: [
           {
             name: 'Start a review',
             href: './review',
-            icon: 'star',
+            icon: 'rocket',
           },
           {
             name: 'Add a phrase',
@@ -54,13 +54,15 @@ function Page() {
   const { lang } = Route.useParams()
   return (
     <main className="page-card my-4">
-      <p>
-        This is way meant as a place to just get started. We are really just
-        trying to push you toward starting a "review" session. Time on task is
-        one of the most important factors.
+      <p className="italic opacity-80">
+        This is meant as a place to just get the user going. They need to feel
+        comfortable and be reminded of the resources they have to lean on and
+        their motivations, but time on task is one of the most important
+        factors, so we are really just trying to push them toward starting a
+        "review" session.
       </p>
       <Button variant="action" asChild>
-        <Link to="./review">Let's Start Today&apos;s Deck</Link>
+        <Link to="./review">Time To Start Today&apos;s Deck</Link>
       </Button>
 
       <div className="space-y-4">

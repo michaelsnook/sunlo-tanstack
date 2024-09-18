@@ -1,15 +1,16 @@
 import type { NavbarData } from 'types/main'
 import { useCallback, useState } from 'react'
 import {
-  BookMarked,
+  type LucideProps,
+  BookHeart,
   ChevronLeft,
   FolderPlus,
   Home,
   MoreVertical,
+  Rocket,
   Search,
   Settings,
   SquarePlus,
-  Star,
   WalletCards,
 } from 'lucide-react'
 import { Button } from 'components/ui/button'
@@ -36,13 +37,18 @@ export default function Navbar({ data }: NavbarProps) {
   return (
     <nav className="flex items-center justify-between px-4 py-3 shadow-xl mb-4 bg-white/10">
       <div className="flex items-center">
-        <Button variant="default" size="icon" onClick={onBackClick}>
+        <Button
+          variant="default"
+          size="icon"
+          className="me-2"
+          onClick={onBackClick}
+        >
           <ChevronLeft className="h-6 w-6" />
           <span className="sr-only">Back</span>
         </Button>
         <div className="flex flex-row items-center gap-2">
           {data?.icon ?
-            <span className="rounded-full p-2 bg-white/10">
+            <span className="rounded bg-white/20 p-2">
               {renderIcon(data?.icon, { size: 24 })}
             </span>
           : <>&nbsp;</>}
@@ -83,10 +89,12 @@ export default function Navbar({ data }: NavbarProps) {
 }
 
 // TODO move this to utils?
-function renderIcon(icon: string, props = { size: 20 }) {
+function renderIcon(icon: string, props: LucideProps = { size: 20 }) {
+  props.strokeWidth ??=
+    typeof props.size === 'string' ? 1.5 : (props.size / 20) * 1.5
   switch (icon) {
-    case 'book-marked': // for your /learn page
-      return <BookMarked {...props} />
+    case 'book-heart': // for your /learn page
+      return <BookHeart {...props} />
     case 'home': // for your /learn page
       return <Home {...props} />
     case 'folder-plus': // for a new deck
@@ -97,8 +105,8 @@ function renderIcon(icon: string, props = { size: 20 }) {
       return <Settings {...props} />
     case 'square-plus': // for a new card
       return <SquarePlus {...props} />
-    case 'star': // for GOAL actions (start a review)
-      return <Star {...props} />
+    case 'rocket': // for GOAL actions (start a review)
+      return <Rocket {...props} />
     case 'wallet-cards': // browse your own cards
       return <WalletCards {...props} />
     default:
