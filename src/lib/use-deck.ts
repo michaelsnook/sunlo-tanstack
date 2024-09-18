@@ -46,7 +46,7 @@ function useDeckQuery({ select = undefined, lang }: DeckQuery) {
     queryKey: ['user', lang],
     queryFn: async ({ queryKey }) => fetchDeck(queryKey[1]),
     select,
-    enabled: !!userId && lang.length === 3,
+    enabled: !!userId && !!lang,
     gcTime: 1_200_000,
     staleTime: 120_000,
     refetchOnWindowFocus: false,
@@ -72,11 +72,11 @@ export const useDeckPids = (lang: string) =>
 export const useDeckCards = (lang: string) =>
   useDeckQuery({
     lang,
-    select: (data: DeckLoaded) => data.cards,
+    select: (data: DeckLoaded) => data.cardsMap,
   }) as UseQueryResult<CardsMap>
 
 export const useCard = (pid: uuid, lang: string) =>
   useDeckQuery({
     lang,
-    select: (data: DeckLoaded) => data.cards[pid],
+    select: (data: DeckLoaded) => data.cardsMap[pid],
   }) as UseQueryResult<CardFull>

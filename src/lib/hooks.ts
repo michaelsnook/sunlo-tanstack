@@ -6,6 +6,7 @@ import {
   useMutation,
   useQuery,
   useQueryClient,
+  UseQueryResult,
 } from '@tanstack/react-query'
 import { useNavigate, useParams } from '@tanstack/react-router'
 import { useContext } from 'react'
@@ -46,7 +47,7 @@ export const profileQuery = queryOptions<ProfileFull, PostgrestError>({
   },
 })
 
-export const useProfile = () => {
+export const useProfile = (): UseQueryResult<ProfileFull, PostgrestError> => {
   const auth = useAuth()
   return useQuery({ ...profileQuery, enabled: auth.isAuth })
 }

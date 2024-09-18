@@ -1,14 +1,13 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import Loading from 'components/loading'
 import languages from 'lib/languages'
-import SectionTranslations from 'components/translations-section'
-import TinyPhrase from 'components/tiny-phrase'
 import { FriendshipRow, NavbarData, uuid } from 'types/main'
 import { useDeck, useDeckMeta } from 'lib/use-deck'
 import { useLanguage } from 'lib/use-language'
-import { useProfile } from 'lib/hooks'
+import { useProfile } from 'lib/use-profile'
 import ModalWithOpener from 'components/modal-with-opener'
 import { Button } from 'components/ui/button'
+import { LanguagePhrasesAccordionComponent } from 'components/language-phrases-accordion'
 
 export const Route = createFileRoute('/learn/$lang/')({
   component: Page,
@@ -138,45 +137,28 @@ function DeckFullContents({ lang }) {
       <div>
         <div>
           deck is{' '}
-          <ModalWithOpener title="Deck Details">
+          <ModalWithOpener
+            title="Deck Details"
+            description="A bunch of JSON actually, not really good for humans."
+          >
             {JSON.stringify(deck.data?.meta, null, 2)}
           </ModalWithOpener>
         </div>
         <div>
           language is{' '}
-          <ModalWithOpener title="Language Details">
+          <ModalWithOpener
+            title="Language Details"
+            description="A bunch of JSON actually, not really good for humans."
+          >
             {JSON.stringify(language.data?.meta, null, 2)}
           </ModalWithOpener>
         </div>
       </div>
       <div className="flex-basis-[20rem] flex flex-shrink flex-row flex-wrap gap-4">
-        {deck.data?.pids.map((pid: uuid) => {
-          return (
-            <div
-              key={pid}
-              tabIndex={0}
-              className="collapse collapse-arrow border border-base-300 bg-base-200"
-            >
-              <div className="collapse-title text-xl font-medium">
-                <div className="inline flex-grow">
-                  {deck.data?.cardsMap[pid].status.substring(0, 2)}
-                  {'  '}
-                  <TinyPhrase {...language.data?.phrasesMap[pid]} />
-                </div>
-              </div>
-              <div className="collapse-content">
-                <SectionTranslations phrase={language.data?.phrasesMap[pid]} />
-                {/*
-                  <SectionSeeAlsos seeAlsos={langItems[pid].relation_pids} />
-
-                  This won't work (yet) bc the structure of this data has changed.
-                  We will copy this component, modify it for the new structure, and
-                  delete the old one when the pages using it are migrated or retired.
-                */}
-              </div>
-            </div>
-          )
-        })}
+        <LanguagePhrasesAccordionComponent
+          pids={deck.data?.pids}
+          phrasesMap={language.data?.phrasesMap}
+        />
       </div>
     </div>
   )

@@ -69,11 +69,11 @@ export const useLanguagePids = (lang: string) =>
 export const useLanguagePhrases = (lang: string) =>
   useLanguageQuery({
     lang,
-    select: (data: LanguageLoaded) => data.phrases,
+    select: (data: LanguageLoaded) => data.phrasesMap,
   }) as UseQueryResult<PhrasesMap>
 
 export const usePhrase = (pid: uuid, lang: string) =>
   useLanguageQuery({
     lang,
-    select: (data: LanguageLoaded) => data.phrases[pid],
+    select: (data: LanguageLoaded) => data.phrasesMap[pid],
   }) as UseQueryResult<PhraseFull>

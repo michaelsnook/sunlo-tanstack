@@ -1,7 +1,13 @@
 RADIX
 1. ✅ replace react-modal with Radix primitives/ShadCN
-1. replace the DaisyUI expandos
+1. ✅ replace the DaisyUI expandos
+		tweak it so you can click without open-close (no bubble)
 1. replace react-select
+
+PRIMARY CARD INTERACTIONS
+1. bring over the new structure for relations
+1. make the "add to deck" function work
+1. bring over the "edit status"
 
 AUTH
 1. ✅ add AuthContext -- so far I've just mocked it with useQuery
@@ -23,10 +29,11 @@ UX
 
 MISC utilities
 1. ✅ replace useLang with router feature
+1. replace the old useProfile and ProfileFull
 1. double check the new pluck works the same with if (key in obj)
-1. refresh all the fetcher hooks w the select-paradigm code
+1. ✅ refresh all the fetcher hooks w the select-paradigm code
 
 CROSS-PLATFORM
 1. ✅ compile to android with tauri
- - Make Tauri work with HMR and Vite setup
+ 		Make Tauri work with HMR and Vite setup
 1. compile to ios with tauri
