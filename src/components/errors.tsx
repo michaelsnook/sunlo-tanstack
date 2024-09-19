@@ -6,9 +6,9 @@ import type { PropsWithChildren } from 'react'
 */
 
 export function ErrorRender({ error }: { error: Error }) {
-  if (!error) return null
-  console.log(`ErrorRender component showing:`, error)
-  return <ErrorShow>{error.message}</ErrorShow>
+	if (!error) return null
+	console.log(`ErrorRender component showing:`, error)
+	return <ErrorShow>{error.message}</ErrorShow>
 }
 
 /*
@@ -23,29 +23,29 @@ export function ErrorRender({ error }: { error: Error }) {
 */
 
 export function ErrorShow({
-  show = null,
-  children = null,
+	show = null,
+	children = null,
 }: PropsWithChildren<{ show?: boolean | null }>) {
-  // if show is "false", don't show. if show is true, show it.
-  // if show us not set, then show if there's content to show.
-  if (show === false) return null
-  if (show === null && !children) return null
-  return (
-    <div className="alert alert-error">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6 flex-shrink-0 stroke-current"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-      <div>{children || `An unknown error has occurred (sorry)`}</div>
-    </div>
-  )
+	// if show is "false", don't show. if show is true, show it.
+	// if show us not set, then show if there's content to show.
+	if (show === false) return null
+	if (show === null && !children) return null
+	return (
+		<div className="alert alert-error">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				className="h-6 w-6 flex-shrink-0 stroke-current"
+				fill="none"
+				viewBox="0 0 24 24"
+			>
+				<path
+					strokeLinecap="round"
+					strokeLinejoin="round"
+					strokeWidth={2}
+					d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+				/>
+			</svg>
+			<div>{children || `An unknown error has occurred (sorry)`}</div>
+		</div>
+	)
 }

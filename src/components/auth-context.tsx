@@ -4,18 +4,18 @@ import supabase from 'lib/supabase-client'
 import type { uuid } from 'types/main'
 
 export type AuthState = {
-  isAuth: boolean
-  userId: uuid | null
-  userEmail: string | null
+	isAuth: boolean
+	userId: uuid | null
+	userEmail: string | null
 }
 
 export const AuthContext = createContext<AuthState>(undefined)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const queryClient = useQueryClient()
-  const [sessionState, setSessionState] = useState(null)
+	const queryClient = useQueryClient()
+	const [sessionState, setSessionState] = useState(null)
 
-  /*
+	/*
     This effect should run once when the app first mounts (the context provider), and then
     hopefully never again. We're just going to attach this auth-state-change listener, and whenever
     the auth state changes, we check what kind of change has happened, update the state hook and do
@@ -27,32 +27,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     encountered a race condition where 'INITIAL_SESSION' fires after the listener is attached.
   */
 
-  useEffect(() => {
-    if (!queryClient) {
-      console.log('Returning early bc queryClient hook has not come back')
-      return
-    }
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        console.log(`Auth state changed: ${event}`, session)
-        // if we've logged out or no user comes back, we should remove user data from cache
-        if (event === 'SIGNED_OUT' || !session?.user) {
-          queryClient.removeQueries({ queryKey: ['user'] })
-        }
-        setSessionState(session)
-      }
-    )
+	useEffect(() => {
+		if (!queryClient) {
+			console.log('Returning early bc queryClient hook has not come back')
+			return
+		}
+		const { data: listener } = supabase.auth.onAuthStateChange(
+			(event, session) => {
+				console.log(`Auth state changed: ${event}`, session)
+				// if we've logged out or no user comes back, we should remove user data from cache
+				if (event === 'SIGNED_OUT' || !session?.user) {
+					queryClient.removeQueries({ queryKey: ['user'] })
+				}
+				setSessionState(session)
+			}
+		)
 
-    return () => {
-      listener.subscription.unsubscribe()
-    }
-  }, [queryClient])
+		return () => {
+			listener.subscription.unsubscribe()
+		}
+	}, [queryClient])
 
-  const value = {
-    isAuth: sessionState?.user.role === 'authenticated',
-    userId: sessionState?.user.id,
-    userEmail: sessionState?.user.email,
-  }
+	const value = {
+		isAuth: sessionState?.user.role === 'authenticated',
+		userId: sessionState?.user.id,
+		userEmail: sessionState?.user.email,
+	}
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
