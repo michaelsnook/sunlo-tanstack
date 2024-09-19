@@ -16,7 +16,7 @@ AUTH
 1. ✅ add AuthContext -- so far I've just mocked it with useQuery
 1. ✅ add signOut action to AuthContext -- correction: mocked it with its own hook
 1. ✅ figure out "redirect to home screen" on logout 
-1. auth guard redirect with redirectedFrom param
+1. auth guard bounce, login, redirect back (only when not logged in)
 1. @TODO in the _auth/login.tsx - why using hooks? we should have this already
 
 
@@ -29,12 +29,21 @@ NAVIGATION
 
 UX
 1. Add activity graph to deck summaries :)) https://app.radicle.xyz/nodes/seed.radicle.xyz/rad:z4V1sjrXqjvFdnCUbxPFqd5p4DtH5/tree/src/components/ActivityDiagram.svelte
+1. When a loader awaits, this is a time to show blank shell and transition in
 
-MISC utilities
+DATA LOADING
 1. ✅ replace useLang with router feature
-1. replace the old useProfile and ProfileFull
-1. double check the new pluck works the same with if (key in obj)
+1. ✅ replace the old useProfile and ProfileFull
 1. ✅ refresh all the fetcher hooks w the select-paradigm code
+1. research loaders, preloading, query client prefetching, etc. patterns so
+		we can get the most out of things. 
+		* access `auth` on first render inside the DaisyUI
+		* suspend until profile loads
+		* suspend /$lang routes until language & deck load
+		* when the router loader is suspending and then stops, transition in
+1. don't use `enabled` to waterfall useQueries on auth context
+		perhaps this will just be a code convention only render components after auth
+		perhaps there is a better way to use the params / data / keys
 
 CROSS-PLATFORM
 1. ✅ compile to android with tauri

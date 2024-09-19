@@ -7,8 +7,8 @@ import languages from 'lib/languages'
 import Loading from 'components/loading'
 
 export const Route = createFileRoute('/learn/')({
-	loader: ({ context: { queryClient } }) => {
-		queryClient.ensureQueryData(profileQuery)
+	loader: async ({ context: { queryClient } }) => {
+		await queryClient.ensureQueryData(profileQuery)
 		return {
 			navbar: {
 				title: `Learning Home`,

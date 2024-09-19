@@ -12,10 +12,6 @@ const publicProfilesQuery = queryOptions({
 })
 
 export const Route = createLazyFileRoute('/about')({
-	// Use the `loader` option to ensure that the data is loaded
-	loader: ({ context: { queryClient } }) => {
-		queryClient.ensureQueryData(publicProfilesQuery)
-	},
 	component: About,
 })
 
