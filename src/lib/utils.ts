@@ -10,7 +10,7 @@ export function mapArray<T, K extends keyof T>(arr: Array<T>, key: string) {
 	if (!key) throw new Error('Must provide a key to map against')
 	if (!arr) return null // uninitialized or null array
 	// @ts-ignore
-	let result: { [key: K]: T } = {}
+	const result: { [key: K]: T } = {}
 	// @ts-ignore
 	const valids = arr.filter((item: T) => typeof item[key] === 'string')
 	// return empty map
