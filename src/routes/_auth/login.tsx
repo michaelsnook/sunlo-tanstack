@@ -105,7 +105,12 @@ export default function LoginForm() {
 						>
 							Log in
 						</button>
-						<Link tabIndex={4} to="/signup" className="btn btn-ghost">
+						<Link
+							tabIndex={4}
+							to="/signup"
+							from={Route.fullPath}
+							className="btn btn-ghost"
+						>
 							Create account
 						</Link>
 					</div>
@@ -113,7 +118,11 @@ export default function LoginForm() {
 						Problem logging in: {useLogin.error?.message}
 					</ErrorShow>
 					<p>
-						<Link to="/forgot-password" className="s-link text-sm">
+						<Link
+							to="/forgot-password"
+							from={Route.fullPath}
+							className="s-link text-sm"
+						>
 							Forgot password?
 						</Link>
 					</p>

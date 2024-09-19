@@ -22,7 +22,9 @@ function Index() {
 				<div className="mx-auto flex-none space-y-4 text-center @xl:basis-1/3">
 					<GarlicBroccoli className="mx-auto" />
 					<Button asChild size="lg" variant="white">
-						<Link to="/login">Log in or sign up &rarr;</Link>
+						<Link to="/login" from="/">
+							Log in or sign up &rarr;
+						</Link>
 					</Button>
 				</div>
 			</main>
@@ -150,7 +152,7 @@ function Index() {
 			<section className="my-10 pb-16 text-center">
 				<h2 className="h2">Ready to get started?</h2>
 				<Button asChild size="lg" variant="white">
-					<Link to="/login" className="w-80">
+					<Link to="/login" from="/" className="w-80">
 						Sign up and start learning &rarr;
 					</Link>
 				</Button>
