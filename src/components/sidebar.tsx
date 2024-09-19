@@ -143,7 +143,7 @@ function SignOutButton({ shy = false }) {
 		:	null
 }
 
-const SidebarOpener = ({ isOpen, toggle }) => (
+const SidebarOpener = ({ isOpen = false, toggle = () => {} }) => (
 	<button
 		className={`btn-outline btn-primary fixed bottom-4 left-3 z-50 rounded-full border border-primary bg-white p-2`}
 		role="button"
