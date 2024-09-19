@@ -25,6 +25,7 @@ export const profileQuery = queryOptions<ProfileFull, PostgrestError>({
 
 export const useProfile = () => {
 	// TODO this is only here to re-render when auth changes
-	const _auth = useAuth()
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const auth = useAuth()
 	return useQuery({ ...profileQuery })
 }
