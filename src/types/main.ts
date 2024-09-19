@@ -106,11 +106,7 @@ export type CardFull = CardMeta & {
 export type ProfileRow = Tables<'user_profile'>
 export type ProfileInsert = TablesInsert<'user_profile'>
 export type ProfileMeta = ProfileRow // Tables<'profile_meta'>
-export type ProfileFull = ProfileMeta & {
-	decks: Array<DeckMeta>
-	friendships?: Array<FriendshipRow>
-}
-export type ProfileFulls = Tables<'user_profile'> & {
+export type ProfileFull = Tables<'user_profile'> & {
 	decksMap: DecksMap
 	deckLanguages: Array<string>
 	friendships?: Array<FriendshipRow>

@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { profileQuery } from 'lib/hooks'
+import { profileQuery } from 'lib/use-profile'
 import languages from 'lib/languages'
 import Loading from 'components/loading'
 import { useQuery } from '@tanstack/react-query'
@@ -39,14 +39,10 @@ export default function Page() {
 			{isPending ?
 				<Loading />
 			:	<ol>
-					{profile?.decks?.map((deck) => (
-						<li key={deck.lang} className="glass my-2 rounded p-2 text-center">
-							<Link
-								from={Route.fullPath}
-								to="./$lang"
-								params={{ lang: deck.lang }}
-							>
-								<p className="py-2 text-xl">{languages[deck.lang]}</p>
+					{profile?.deckLanguages.map((lang) => (
+						<li key={lang} className="glass my-2 rounded p-2 text-center">
+							<Link from={Route.fullPath} to="/learn/$lang" params={{ lang }}>
+								<p className="py-2 text-xl">{languages[lang]}</p>
 							</Link>
 						</li>
 					))}

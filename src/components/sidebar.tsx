@@ -1,12 +1,13 @@
 import { useState } from 'react'
-import { Garlic } from 'components/garlic'
-import languages from 'lib/languages'
-import { useProfile, useSignOut } from 'lib/hooks'
-import { useAuth } from 'lib/hooks'
-import { cn } from 'lib/utils'
 import { Link } from '@tanstack/react-router'
+
+import type { MenuType } from 'types/main'
+import languages from 'lib/languages'
+import { Garlic } from 'components/garlic'
+import { useProfile } from 'lib/use-profile'
+import { useAuth, useSignOut } from 'lib/hooks'
+import { cn } from 'lib/utils'
 import Loading from './loading'
-import { MenuType } from 'types/main'
 
 const staticMenu: MenuType = {
 	name: 'Menu',
@@ -100,10 +101,10 @@ function DeckMenu() {
 			{
 				name: 'Learning decks',
 				href: '/learn',
-				links: profile?.decks?.map((deck) => {
+				links: profile?.deckLanguages?.map((lang) => {
 					return {
-						name: languages[deck.lang],
-						href: `/learn/${deck.lang}`,
+						name: languages[lang],
+						href: `/learn/${lang}`,
 					}
 				}),
 			}

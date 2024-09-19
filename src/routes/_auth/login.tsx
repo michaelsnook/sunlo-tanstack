@@ -40,7 +40,7 @@ export default function LoginForm() {
 			return data.user.email
 		},
 		onSuccess: (email: string) => {
-			toast.success(`Logged in as ${email}`, { position: 'top-center' })
+			toast.success(`Logged in as ${email}`, { position: 'bottom-center' })
 		},
 	})
 	// console.log(`what is auth rn`, auth.isAuth, auth)

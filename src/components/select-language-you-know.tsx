@@ -1,4 +1,4 @@
-import { useProfile } from 'lib/hooks'
+import { useProfile } from 'lib/use-profile'
 import Loading from './loading'
 import { allLanguageOptions, makeLanguageOptions } from 'lib/languages'
 import { SelectOption } from 'types/main'

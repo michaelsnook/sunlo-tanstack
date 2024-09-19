@@ -1,4 +1,3 @@
-// nextjs: import Link from 'next/link'
 import { createLazyFileRoute, Link } from '@tanstack/react-router'
 import { GarlicBroccoli } from 'components/garlic'
 import { Button } from 'components/ui/button'
