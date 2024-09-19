@@ -102,7 +102,7 @@ export type CardFull = CardMeta & {
 	reviews?: Array<ReviewMeta>
 }
 
-// export type ProfilePublic = Tables<'public_profile'>
+export type PublicProfile = Tables<'public_profile'>
 export type ProfileRow = Tables<'user_profile'>
 export type ProfileInsert = TablesInsert<'user_profile'>
 export type ProfileMeta = ProfileRow // Tables<'profile_meta'>

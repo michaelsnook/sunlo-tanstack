@@ -11,7 +11,7 @@ import Loading from 'components/loading'
 import toast from 'react-hot-toast'
 import { ErrorShow } from 'components/errors'
 import { TranslationRow, SelectOption } from 'types/main'
-import { PostgrestError } from '@supabase/supabase-js'
+import { PostgrestError, QueryResult } from '@supabase/supabase-js'
 
 export default function AddTranslationsModal({ phrase, close }) {
 	const queryClient = useQueryClient()
@@ -21,14 +21,14 @@ export default function AddTranslationsModal({ phrase, close }) {
 			if (typeof text !== 'string' || !(text.length > 0))
 				throw Error('there is no translation text')
 			console.log(`Running mutation with`, text, translationLang, phrase.id)
-			const { data, error } = await supabase
+			const { data, error } = (await supabase
 				.from('phrase_translation')
 				.insert({
 					phrase_id: phrase.id,
 					lang: translationLang,
 					text,
 				})
-				.select()
+				.select()) as QueryResult<Array<TranslationRow>>
 			if (error) throw error
 			console.log(`The Data`, data)
 			return data[0]
