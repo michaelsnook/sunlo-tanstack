@@ -1,9 +1,16 @@
-import { useQueryClient } from '@tanstack/react-query'
-import { RouterProvider } from '@tanstack/react-router'
+import { QueryClient, useQueryClient } from '@tanstack/react-query'
+import { RouterProvider, Register } from '@tanstack/react-router'
+import { AuthState } from 'components/auth-context'
 import { useAuth } from 'lib/hooks'
 
-export default function Routes({ router }) {
+type RouterContext = {
+	auth: AuthState
+	queryClient: QueryClient
+}
+
+export default function Routes({ router }: Register) {
 	const auth = useAuth()
 	const queryClient = useQueryClient()
-	return <RouterProvider router={router} context={{ auth, queryClient }} />
+	const context: RouterContext = { auth, queryClient }
+	return <RouterProvider router={router} context={context} />
 }
