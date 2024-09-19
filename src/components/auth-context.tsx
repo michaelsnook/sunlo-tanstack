@@ -1,4 +1,9 @@
-import { type ReactNode, createContext, useState, useEffect } from 'react'
+import {
+	type PropsWithChildren,
+	createContext,
+	useState,
+	useEffect,
+} from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import supabase from 'lib/supabase-client'
 import type { uuid } from 'types/main'
@@ -12,7 +17,7 @@ export type AuthState = {
 
 export const AuthContext = createContext<AuthState>(undefined)
 
-export function AuthProvider({ children }: { children: ReactNode }) {
+export function AuthProvider({ children }: PropsWithChildren) {
 	const queryClient = useQueryClient()
 	const [sessionState, setSessionState] = useState<Session>(null)
 
