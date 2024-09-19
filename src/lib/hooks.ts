@@ -22,7 +22,7 @@ export const useSignOut = () => {
 		mutationFn: async () => await supabase.auth.signOut(),
 		onSuccess: () => {
 			client.removeQueries({ queryKey: ['user'], exact: false })
-			navigate({ to: '/' })
+			void navigate({ to: '/' })
 		},
 	})
 }

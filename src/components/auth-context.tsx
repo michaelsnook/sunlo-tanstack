@@ -1,7 +1,8 @@
-import { createContext, useState, useEffect } from 'react'
+import { type ReactNode, createContext, useState, useEffect } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import supabase from 'lib/supabase-client'
 import type { uuid } from 'types/main'
+import { Session } from '@supabase/supabase-js'
 
 export type AuthState = {
 	isAuth: boolean
@@ -11,9 +12,9 @@ export type AuthState = {
 
 export const AuthContext = createContext<AuthState>(undefined)
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({ children }: { children: ReactNode }) {
 	const queryClient = useQueryClient()
-	const [sessionState, setSessionState] = useState(null)
+	const [sessionState, setSessionState] = useState<Session>(null)
 
 	/*
     This effect should run once when the app first mounts (the context provider), and then
