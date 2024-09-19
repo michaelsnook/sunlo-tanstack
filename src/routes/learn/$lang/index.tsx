@@ -48,8 +48,7 @@ export const Route = createFileRoute('/learn/$lang/')({
   },
 })
 
-function Page() {
-  const { lang } = Route.useParams()
+function Page({ params: { lang } }) {
   return (
     <main className="page-card my-4">
       <p className="italic opacity-80">
@@ -60,7 +59,9 @@ function Page() {
         "review" session.
       </p>
       <Button variant="action" asChild>
-        <Link to="./review">Time To Start Today&apos;s Deck</Link>
+        <Link to="/learn/$lang/review" params={{ lang }}>
+          Time To Start Today&apos;s Deck
+        </Link>
       </Button>
 
       <div className="space-y-4">
