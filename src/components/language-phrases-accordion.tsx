@@ -10,6 +10,7 @@ import { PhraseFull, PhrasesMap, pids, uuid } from 'types/main'
 import { Button } from './ui/button'
 import { useMutation } from '@tanstack/react-query'
 import supabase from 'lib/supabase-client'
+import { ReactNode } from 'react'
 
 // TODO check if we can get this from the supabase types?
 type LearningStatus = 'active' | 'skipped' | 'learned'
@@ -17,7 +18,7 @@ type LearningStatus = 'active' | 'skipped' | 'learned'
 const getStatusIcon = (
 	status: LearningStatus | undefined,
 	addToDeck: () => void
-) => {
+): ReactNode => {
 	console.log(`status`, status)
 	switch (status) {
 		case 'active':
@@ -75,7 +76,7 @@ export function LanguagePhrasesAccordionComponent({
 			return data[0]
 		},
 	})
-	if (!set || !set.length || !phrasesMap) return null
+	if (!set || !set.length || !phrasesMap) return <></>
 	return (
 		<Accordion type="single" collapsible className="w-full p-2">
 			{set.map((pid) => {
