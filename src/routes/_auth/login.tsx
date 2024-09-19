@@ -13,30 +13,41 @@ import { cn } from 'lib/utils'
 import { useAuth } from 'lib/hooks'
 import { ErrorShow } from 'components/errors'
 
+interface LoginSearchParams {
+	redirectedFrom?: string
+}
+
 export const Route = createFileRoute('/_auth/login')({
+	validateSearch: (search: Record<string, unknown>): LoginSearchParams => {
+		return {
+			redirectedFrom: search.redirectedFrom as string | undefined,
+		}
+	},
 	component: LoginForm,
 })
 
 export default function LoginForm() {
-	const auth = useAuth()
-	const search = useSearch({ strict: false })
+	const { isAuth } = useAuth()
 	const navigate = useNavigate()
+	const { redirectedFrom } = useSearch({ strict: false })
+	const fromPath = Route.fullPath
 
 	useEffect(() => {
-		if (!!auth.isAuth && navigate) {
+		if (isAuth && navigate) {
 			void navigate({
-				to: search?.['redirect'] ?? '/learn',
-				strict: false,
+				to: redirectedFrom || '/learn',
+				from: fromPath,
 			})
 		}
-	}, [auth, navigate, search])
+	}, [isAuth, navigate, redirectedFrom, fromPath])
 
 	const useLogin = useMutation({
 		mutationFn: async (event: FormEvent<HTMLFormElement>) => {
 			event.preventDefault()
 
-			const email = event.target['email'].value
-			const password = event.target['password'].value
+			const formData = new FormData(event.currentTarget)
+			const email = formData.get('email') as string
+			const password = formData.get('password') as string
 
 			const { data, error } = await supabase.auth.signInWithPassword({
 				email,
@@ -51,8 +62,7 @@ export default function LoginForm() {
 	})
 	// console.log(`what is auth rn`, auth.isAuth, auth)
 
-	if (auth.isAuth)
-		return <p>You are logged in; pls wait while we redirect you.</p>
+	if (isAuth) return <p>You are logged in; pls wait while we redirect you.</p>
 
 	return (
 		<>

@@ -31,6 +31,10 @@ UX
 1. Add activity graph to deck summaries :)) https://app.radicle.xyz/nodes/seed.radicle.xyz/rad:z4V1sjrXqjvFdnCUbxPFqd5p4DtH5/tree/src/components/ActivityDiagram.svelte
 1. When a loader awaits, this is a time to show blank shell and transition in
 
+BETTER FORMS
+1. Try Zod https://v0.dev/chat/cddhdPsiX7x (this ex is for login form inputs)
+1. Try react-formal https://jquense.github.io/react-formal/getting-started/
+
 DATA LOADING
 1. ✅ replace useLang with router feature
 1. ✅ replace the old useProfile and ProfileFull
