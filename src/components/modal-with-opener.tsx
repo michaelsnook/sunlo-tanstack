@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { type ReactNode, useState } from 'react'
 import { Ellipsis } from 'lucide-react'
 import {
 	AlertDialog,
@@ -17,7 +17,7 @@ interface ModalWithOpenerProps {
 	title: string
 	description: string
 	onClose?: () => void
-	children: React.ReactNode
+	children: ReactNode
 }
 
 export default function ModalWithOpener({

@@ -29,7 +29,7 @@ interface NavbarProps {
 export default function Navbar({ data }: NavbarProps) {
 	const navigate = useNavigate()
 	const goBack = useCallback(() => {
-		navigate({ to: '..' })
+		void navigate({ to: '..' })
 	}, [navigate])
 	const onBackClick = data?.onBackClick ?? goBack
 

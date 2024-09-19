@@ -24,7 +24,10 @@ export default function LoginForm() {
 
 	useEffect(() => {
 		if (!!auth.isAuth && navigate) {
-			navigate({ to: search?.['redirect'] ?? '/learn', strict: false })
+			void navigate({
+				to: search?.['redirect'] ?? '/learn',
+				strict: false,
+			})
 		}
 	}, [auth, navigate, search])
 
