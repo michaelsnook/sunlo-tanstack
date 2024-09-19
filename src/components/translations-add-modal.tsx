@@ -10,10 +10,15 @@ import SelectLanguageYouKnow from 'components/select-language-you-know'
 import Loading from 'components/loading'
 import toast from 'react-hot-toast'
 import { ErrorShow } from 'components/errors'
-import { TranslationRow, SelectOption } from 'types/main'
+import { TranslationRow, SelectOption, PhraseFull } from 'types/main'
 import { PostgrestError, QueryResult } from '@supabase/supabase-js'
 
-export default function AddTranslationsModal({ phrase, close }) {
+interface ModalProps {
+	phrase: PhraseFull
+	close: () => void
+}
+
+export default function AddTranslationsModal({ phrase, close }: ModalProps) {
 	const queryClient = useQueryClient()
 	const [translationLang, setTranslationLang] = useState('')
 	const addTranslation = useMutation({
