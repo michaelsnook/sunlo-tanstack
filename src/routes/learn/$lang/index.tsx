@@ -59,7 +59,7 @@ function Page({ params: { lang } }) {
 				"review" session.
 			</p>
 			<Button variant="action" asChild>
-				<Link to="/learn/$lang/review" params={{ lang }}>
+				<Link to="/learn/$lang/review" params={{ lang }} from={Route.fullPath}>
 					Time To Start Today&apos;s Deck
 				</Link>
 			</Button>
