@@ -47,16 +47,17 @@ const getStatusIcon = (
 }
 
 interface PhrasesWithOptionalOrder {
+	lang: string
 	phrasesMap: PhrasesMap
 	pids?: pids
 }
 
 export function LanguagePhrasesAccordionComponent({
+	lang,
 	phrasesMap,
 	pids = null,
 }: PhrasesWithOptionalOrder) {
-	const set = pids || Object.keys(phrasesMap)
-	const lang = phrasesMap[set[0]].lang
+	const set = pids || Object.keys(phrasesMap || {})
 
 	// now do UI
 	// if called in a no-auth place the statuses should simply not show

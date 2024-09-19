@@ -48,7 +48,8 @@ export const Route = createFileRoute('/learn/$lang/')({
 	},
 })
 
-function Page({ params: { lang } }) {
+function Page() {
+	const { lang } = Route.useParams()
 	return (
 		<main className="page-card my-4">
 			<p className="italic opacity-80">
@@ -68,9 +69,9 @@ function Page({ params: { lang } }) {
 				{!lang ?
 					<Loading />
 				:	<>
-						<FriendsSection lang={lang} />
-						<DeckSettings lang={lang} />
-						<DeckFullContents lang={lang} />
+						<FriendsSection />
+						<DeckSettings />
+						<DeckFullContents />
 					</>
 				}
 			</div>
@@ -80,7 +81,8 @@ function Page({ params: { lang } }) {
 
 // TODO: these inputs don't do anything.
 // use https://v0.dev/chat/PNg3tT-DSoC for deck mode
-function DeckSettings({ lang }) {
+function DeckSettings() {
+	const { lang } = Route.useParams()
 	const deck = useDeckMeta(lang)
 
 	return (
@@ -124,7 +126,8 @@ function DeckSettings({ lang }) {
 	)
 }
 
-function DeckFullContents({ lang }) {
+function DeckFullContents() {
+	const { lang } = Route.useParams()
 	const deck = useDeck(lang)
 	const language = useLanguage(lang)
 	return (
@@ -155,19 +158,23 @@ function DeckFullContents({ lang }) {
 					</ModalWithOpener>
 				</div>
 			</div>
-			<div className="flex-basis-[20rem] flex flex-shrink flex-row flex-wrap gap-4">
-				<LanguagePhrasesAccordionComponent
-					pids={deck.data?.pids}
-					phrasesMap={language.data?.phrasesMap}
-				/>
-			</div>
+			{deck.data?.pids.length > 0 ?
+				<div className="flex-basis-[20rem] flex flex-shrink flex-row flex-wrap gap-4">
+					<LanguagePhrasesAccordionComponent
+						lang={lang}
+						pids={deck.data?.pids}
+						phrasesMap={language.data?.phrasesMap}
+					/>
+				</div>
+			:	null}
 		</div>
 	)
 }
 
 // TODO the database doesn't have friendships yet so this is all mockup-y
 // and the type is also mocked
-function FriendsSection({ lang }) {
+function FriendsSection() {
+	const { lang } = Route.useParams()
 	const profileQuery = useProfile()
 	if (profileQuery.data === null) return null
 
