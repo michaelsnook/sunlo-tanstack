@@ -42,13 +42,9 @@ export default function LoginForm() {
 	}, [isAuth, navigate, redirectedFrom, fromPath])
 
 	const useLogin = useMutation({
-		mutationFn: async (event: FormEvent<HTMLFormElement>) => {
-			event.preventDefault()
-
-			const formData = new FormData(event.currentTarget)
+		mutationFn: async (formData: FormData) => {
 			const email = formData.get('email') as string
 			const password = formData.get('password') as string
-
 			const { data, error } = await supabase.auth.signInWithPassword({
 				email,
 				password,
@@ -62,12 +58,18 @@ export default function LoginForm() {
 	})
 	// console.log(`what is auth rn`, auth.isAuth, auth)
 
+	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault()
+		const formData = new FormData(event.currentTarget)
+		useLogin.mutate(formData)
+	}
+
 	if (isAuth) return <p>You are logged in; pls wait while we redirect you.</p>
 
 	return (
 		<>
 			<h1 className="h3 text-base-content/90">Please log in</h1>
-			<form role="form" onSubmit={useLogin.mutate} className="form">
+			<form role="form" onSubmit={handleSubmit} className="form">
 				<fieldset
 					className="flex flex-col gap-y-4"
 					disabled={useLogin.isPending}
