@@ -4,7 +4,10 @@ import { allLanguageOptions, makeLanguageOptions } from 'lib/languages'
 import { SelectOption } from 'types/main'
 import Select from 'react-select'
 
-export default function SelectLanguageYouKnow({ onChange, disabledLang }) {
+export default function SelectLanguageYouKnow({
+	onChange = () => {},
+	disabledLang = '',
+}) {
 	const { data, isPending } = useProfile()
 	if (isPending) return <Loading />
 	const languages_spoken = data?.languages_spoken || []
