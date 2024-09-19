@@ -1,3 +1,6 @@
+ISSUES
+1. auth guard is always redirecting to login and back
+
 RADIX
 1. ✅ replace react-modal with Radix primitives/ShadCN
 1. ✅ replace the DaisyUI expandos

@@ -27,6 +27,6 @@
 		"noUnusedParameters": true,
 		"noFallthroughCasesInSwitch": true
 	},
-	"files": ["./src/main.tsx"],
-	"include": ["src/**/*"]
+	"files": ["src/main.tsx"],
+	"include": ["src/**/*.ts", "src/**/*.tsx"]
 }

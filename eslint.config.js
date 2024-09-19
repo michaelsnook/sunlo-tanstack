@@ -14,7 +14,7 @@ export default [
 			ecmaVersion: 2022,
 			sourceType: 'module',
 			parser: tseslint.parser,
-			parserOptions: { project: './tsconfig.json' },
+			parserOptions: { project: ['./tsconfig.app.json'] },
 			globals: { ...globals.browser },
 		},
 		plugins: {
@@ -35,6 +35,26 @@ export default [
 				'warn',
 				{ allowConstantExport: true },
 			],
+		},
+	},
+	{
+		files: ['vite.config.ts'],
+		languageOptions: {
+			ecmaVersion: 2022,
+			sourceType: 'module',
+			parser: tseslint.parser,
+			parserOptions: {
+				project: ['./tsconfig.node.json'],
+				tsconfigRootDir: '.',
+			},
+		},
+		plugins: {
+			'@typescript-eslint': tseslint.plugin,
+		},
+		rules: {
+			...js.configs.recommended.rules,
+			...tseslint.plugin.configs['recommended'].rules,
+			...tseslint.plugin.configs['recommended-requiring-type-checking'].rules,
 		},
 	},
 ]
