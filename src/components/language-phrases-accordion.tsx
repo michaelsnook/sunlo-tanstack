@@ -16,7 +16,7 @@ type LearningStatus = 'active' | 'skipped' | 'learned'
 
 const getStatusIcon = (
 	status: LearningStatus | undefined,
-	addToDeck: () => any
+	addToDeck: () => void
 ) => {
 	console.log(`status`, status)
 	switch (status) {
@@ -54,8 +54,6 @@ export function LanguagePhrasesAccordionComponent({
 	phrasesMap,
 	pids = null,
 }: PhrasesWithOptionalOrder) {
-	// pre-flight checks
-	if (!pids || !phrasesMap) return null
 	const set = pids || Object.keys(phrasesMap)
 	const lang = phrasesMap[set[0]].lang
 
@@ -77,7 +75,7 @@ export function LanguagePhrasesAccordionComponent({
 			return data[0]
 		},
 	})
-
+	if (!set || !set.length || !phrasesMap) return null
 	return (
 		<Accordion type="single" collapsible className="w-full p-2">
 			{set.map((pid) => {

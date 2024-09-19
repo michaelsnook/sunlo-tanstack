@@ -24,6 +24,8 @@ export const profileQuery = queryOptions<ProfileFull, PostgrestError>({
 })
 
 export const useProfile = () => {
+	// TODO this is only here to re-render when auth changes
+	// @ts-ignore
 	const auth = useAuth()
 	return useQuery({ ...profileQuery })
 }

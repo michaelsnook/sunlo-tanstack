@@ -9,6 +9,7 @@ import type {
 	CardFull,
 	uuid,
 	pids,
+	ReviewsCollated,
 } from 'types/main'
 import { mapArray } from 'lib/utils'
 import { useAuth } from 'lib/hooks'
@@ -38,7 +39,17 @@ async function fetchDeck(lang: string): Promise<DeckLoaded> {
 // Inputs for any kind of deck query we want to construct
 type DeckQuery = {
 	lang: string
-	select?: (data: DeckLoaded) => any
+	select?: (
+		data: DeckLoaded
+	) =>
+		| DeckLoaded
+		| DeckMeta
+		| CardsMap
+		| CardFull
+		| Array<CardFull>
+		| pids
+		| { [key: string]: pids }
+		| ReviewsCollated
 }
 
 function useDeckQuery({ select = undefined, lang }: DeckQuery) {

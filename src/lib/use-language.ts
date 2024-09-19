@@ -36,7 +36,15 @@ export async function fetchLanguage(lang: string): Promise<LanguageLoaded> {
 // Inputs for any kind of deck query we want to construct
 type LanguageQuery = {
 	lang: string
-	select?: (data: LanguageLoaded) => any
+	select?: (
+		data: LanguageLoaded
+	) =>
+		| LanguageLoaded
+		| PhraseFull
+		| Array<PhraseFull>
+		| PhrasesMap
+		| LanguageMeta
+		| pids
 }
 
 function useLanguageQuery({ select = undefined, lang }: LanguageQuery) {
