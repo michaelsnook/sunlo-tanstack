@@ -1,9 +1,9 @@
-import type { DeckMeta, DecksMap, ProfileFull } from 'types/main'
-import supabase from './supabase-client'
 import { PostgrestError } from '@supabase/supabase-js'
 import { queryOptions, useQuery } from '@tanstack/react-query'
-import { mapArray } from './utils'
-import { useAuth } from './hooks'
+import type { DeckMeta, DecksMap, ProfileFull } from 'types/main'
+import supabase from 'lib/supabase-client'
+import { mapArray } from 'lib/utils'
+import { useAuth } from 'lib/hooks'
 
 async function fetchAndShapeProfileFull(): Promise<ProfileFull | null> {
 	const { data } = await supabase

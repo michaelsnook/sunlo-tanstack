@@ -3,12 +3,14 @@ import { createRoot } from 'react-dom/client'
 import { createRouter } from '@tanstack/react-router'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
+import Loading from 'components/loading'
+import { AuthProvider } from 'components/auth-context'
+import { ErrorRender } from 'components/errors'
+
 import { routeTree } from './routeTree.gen'
-import './styles/globals.css'
-import Loading from './components/loading'
-import { AuthProvider } from './components/auth-context'
-import { ErrorRender } from './components/errors'
 import Routes from './routes'
+
+import 'styles/globals.css'
 
 const queryClient = new QueryClient()
 

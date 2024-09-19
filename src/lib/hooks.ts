@@ -1,7 +1,7 @@
-import supabase from './supabase-client'
+import { useContext } from 'react'
+import supabase from 'lib/supabase-client'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
-import { useContext } from 'react'
 import { AuthContext } from 'components/auth-context'
 
 // Access the context's value from inside a provider

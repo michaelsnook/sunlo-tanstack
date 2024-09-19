@@ -8,8 +8,8 @@ import type {
 	pids,
 	uuid,
 } from 'types/main'
-import { mapArray } from 'lib/utils'
 import supabase from 'lib/supabase-client'
+import { mapArray } from 'lib/utils'
 
 const qs = {
 	phrase_full: () => `*, translations:phrase_translation(*)` as const,

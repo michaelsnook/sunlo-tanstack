@@ -1,7 +1,7 @@
+import type { FriendshipRow, NavbarData } from 'types/main'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import Loading from 'components/loading'
 import languages from 'lib/languages'
-import { FriendshipRow, NavbarData, uuid } from 'types/main'
 import { useDeck, useDeckMeta } from 'lib/use-deck'
 import { useLanguage } from 'lib/use-language'
 import { useProfile } from 'lib/use-profile'

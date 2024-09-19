@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
+import { useQuery } from '@tanstack/react-query'
+
+import type { NavbarData } from 'types/main'
 import { profileQuery } from 'lib/use-profile'
 import languages from 'lib/languages'
 import Loading from 'components/loading'
-import { useQuery } from '@tanstack/react-query'
-import { NavbarData } from 'types/main'
 
 export const Route = createFileRoute('/learn/')({
 	loader: ({ context: { queryClient } }) => {

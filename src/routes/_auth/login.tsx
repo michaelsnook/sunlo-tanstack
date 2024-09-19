@@ -1,7 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router'
-
-import { useEffect, type FormEvent } from 'react'
-import { Link, useNavigate, useSearch } from '@tanstack/react-router'
+import { type FormEvent, useEffect } from 'react'
+import {
+	createFileRoute,
+	useNavigate,
+	useSearch,
+	Link,
+} from '@tanstack/react-router'
 import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 
