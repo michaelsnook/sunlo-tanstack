@@ -37,7 +37,6 @@ function RootComponent() {
 			<ReactQueryDevtools buttonPosition="top-right" />
 			<TanStackRouterDevtools position="bottom-right" />
 			<Toaster position="bottom-center" />
-			<div id="modal-root" />
 		</>
 	)
 }
