@@ -11,7 +11,7 @@ import toast from 'react-hot-toast'
 import supabase from 'lib/supabase-client'
 import { cn } from 'lib/utils'
 import { useAuth } from 'lib/hooks'
-import { ErrorShow } from 'components/errors'
+import { ShowError } from 'components/errors'
 
 interface LoginSearchParams {
 	redirectedFrom?: string
@@ -129,9 +129,9 @@ export default function LoginForm() {
 							Create account
 						</Link>
 					</div>
-					<ErrorShow show={!!useLogin.error}>
+					<ShowError show={!!useLogin.error}>
 						Problem logging in: {useLogin.error?.message}
-					</ErrorShow>
+					</ShowError>
 					<p>
 						<Link
 							to="/forgot-password"

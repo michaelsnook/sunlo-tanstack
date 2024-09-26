@@ -9,7 +9,7 @@ import supabase from 'lib/supabase-client'
 import SelectLanguageYouKnow from 'components/select-language-you-know'
 import Loading from 'components/loading'
 import toast from 'react-hot-toast'
-import { ErrorShow } from 'components/errors'
+import { ShowError } from 'components/errors'
 import { TranslationRow, SelectOption, PhraseFull } from 'types/main'
 import { PostgrestError, QueryResult } from '@supabase/supabase-js'
 
@@ -85,11 +85,11 @@ export default function AddTranslationsModal({ phrase, close }: ModalProps) {
 							<Loading />
 						:	`Submit translation`}
 					</button>
-					<ErrorShow show={!!addTranslation.error}>
+					<ShowError show={!!addTranslation.error}>
 						{addTranslation.error?.['code'] === '23505' ?
 							`This translation already exists for this phrase`
 						:	addTranslation.error?.message}
-					</ErrorShow>
+					</ShowError>
 				</fieldset>
 			</form>
 		</ModalWithOpener>
