@@ -14,6 +14,7 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as LearnImport } from './routes/learn'
+import { Route as GettingStartedImport } from './routes/getting-started'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as LearnIndexImport } from './routes/learn/index'
 import { Route as LearnQuickSearchImport } from './routes/learn/quick-search'
@@ -59,6 +60,11 @@ const AboutLazyRoute = AboutLazyImport.update({
 
 const LearnRoute = LearnImport.update({
   path: '/learn',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const GettingStartedRoute = GettingStartedImport.update({
+  path: '/getting-started',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -157,6 +163,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof AuthImport
+      parentRoute: typeof rootRoute
+    }
+    '/getting-started': {
+      id: '/getting-started'
+      path: '/getting-started'
+      fullPath: '/getting-started'
+      preLoaderRoute: typeof GettingStartedImport
       parentRoute: typeof rootRoute
     }
     '/learn': {
@@ -291,6 +304,7 @@ export const routeTree = rootRoute.addChildren({
     AuthSetNewPasswordLazyRoute,
     AuthSignupLazyRoute,
   }),
+  GettingStartedRoute,
   LearnRoute: LearnRoute.addChildren({
     LearnAddDeckRoute,
     LearnQuickSearchRoute,
@@ -317,6 +331,7 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/",
         "/_auth",
+        "/getting-started",
         "/learn",
         "/about",
         "/privacy-policy",
@@ -334,6 +349,9 @@ export const routeTree = rootRoute.addChildren({
         "/_auth/set-new-password",
         "/_auth/signup"
       ]
+    },
+    "/getting-started": {
+      "filePath": "getting-started.tsx"
     },
     "/learn": {
       "filePath": "learn.tsx",
