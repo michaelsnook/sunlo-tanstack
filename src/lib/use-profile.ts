@@ -18,14 +18,34 @@ async function fetchAndShapeProfileFull(): Promise<ProfileFull | null> {
 	return { ...profile, decksMap, deckLanguages }
 }
 
-export const profileQuery = queryOptions<ProfileFull, PostgrestError>({
-	queryKey: ['user', 'profile'],
-	queryFn: fetchAndShapeProfileFull,
-})
+const emptyProfile: ProfileFull = {
+  uid: '',
+  username: '',
+  language_primary: '',
+  languages_spoken: [],
+  avatar_url: '',
+  created_at: '',
+  updated_at: '',
+  decksMap: {},
+  deckLanguages: [],
+}
+
+export const profileQuery = (userId?: string) =>
+  queryOptions<ProfileFull, PostgrestError>({
+    queryKey: ['user', userId],
+    queryFn: async () => {
+      if (!userId) throw new Error('No user ID provided')
+      const profile = await fetchAndShapeProfileFull()
+      return profile ?? emptyProfile
+    },
+    initialData: emptyProfile,
+  })
 
 export const useProfile = () => {
-	// TODO this is only here to re-render when auth changes
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const auth = useAuth()
-	return useQuery({ ...profileQuery })
+  const { userId } = useAuth()
+  return useQuery({
+    ...profileQuery(userId),
+    enabled: !!userId,
+  })
 }
+

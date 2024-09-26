@@ -1,28 +1,17 @@
 import type { PropsWithChildren } from 'react'
 
 /*
-  You can either pass children content to ErrorShow,
-  or just pass the error ob to ErrorRender.
-*/
-
-export function ErrorRender({ error }: { error: Error }) {
-	if (!error) return null
-	console.log(`ErrorRender component showing:`, error)
-	return <ErrorShow>{error.message}</ErrorShow>
-}
-
-/*
   If the error message passed as `children` is nullable, we can simply use:
 
-    <ErrorShow>{some nullable message}</ErrorShow>
+    <ShowError>{some nullable message}</ShowError>
 
   But when we want to put some text directly in the template, like `Error: ${message}` it will mean
   that `children` is never null, so we add the `show` prop:
 
-    <ErrorShow show={!!error}>Error submitting form: {error.message}</ErrorShow>
+    <ShowError show={!!error}>Error submitting form: {error.message}</ShowError>
 */
 
-export function ErrorShow({
+export function ShowError({
 	show = null,
 	children = null,
 }: PropsWithChildren<{ show?: boolean | null }>) {

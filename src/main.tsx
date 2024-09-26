@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import Loading from 'components/loading'
 import { AuthProvider } from 'components/auth-context'
-import { ErrorRender } from 'components/errors'
+import { ShowError } from 'components/errors'
 
 import { routeTree } from './routeTree.gen'
 import Routes from './routes'
@@ -24,7 +24,9 @@ const router = createRouter({
 	defaultPreload: 'intent',
 	defaultPreloadStaleTime: 300_000,
 	defaultPendingComponent: Loading,
-	defaultErrorComponent: ({ error }) => <ErrorRender error={error} />,
+	defaultErrorComponent: ({ error }) => (
+		<ShowError show={!!error}>Error: {error?.message}</ShowError>
+	),
 })
 
 // Register the router instance for type safety
