@@ -14,7 +14,7 @@ AUTH
 1. ✅ add AuthContext -- so far I've just mocked it with useQuery
 1. ✅ add signOut action to AuthContext -- correction: mocked it with its own hook
 1. ✅ figure out "redirect to home screen" on logout 
-1. auth guard bounce, login, redirect back (only when not logged in)
+1. ✅ auth guard bounce, login, redirect back (only when not logged in)
 1. @TODO in the _auth/login.tsx - why using hooks? we should have this already
 
 

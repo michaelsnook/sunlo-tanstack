@@ -28,8 +28,8 @@ export const Route = createFileRoute('/_auth/login')({
 
 export default function LoginForm() {
 	const { isAuth } = useAuth()
-	const navigate = useNavigate()
-	const { redirectedFrom } = useSearch({ strict: false })
+	const navigate = Route.useNavigate()
+	const { redirectedFrom } = Route.useSearch()
 	const fromPath = Route.fullPath
 
 	useEffect(() => {
