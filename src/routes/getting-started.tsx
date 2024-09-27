@@ -1,11 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
+import { ShowError } from 'components/errors'
 import Loading from 'components/loading'
 import SuccessCheckmark from 'components/SuccessCheckmark'
 import { useAuth } from 'lib/hooks'
 import languages from 'lib/languages'
 import supabase from 'lib/supabase-client'
 import { useProfile } from 'lib/use-profile'
+import { cn } from 'lib/utils'
 import { type FormEvent, SyntheticEvent, useState } from 'react'
 import toast from 'react-hot-toast'
 
@@ -98,8 +100,9 @@ function GettingStartedPage() {
 	// if (mainForm.error) console.log(`Error logging:`, mainForm)
 	if (mainForm.isSuccess) return <ShowSuccess tempDeckToAdd={tempDeckToAdd} />
 	if (profile.isPending) return <Loading />
-
+	if (!profile.data) return <>no data; you are nicht profile-y: "{userId}"</>
 	const { deckLanguages } = profile.data
+
 	return (
 		<>
 			<main className="p2 text-white md:p-6 lg:p-10">
@@ -120,7 +123,7 @@ function GettingStartedPage() {
 							<div className="my-6 flex flex-row-reverse items-center justify-around"></div>
 						)}
 				</div>
-				<ShowError show={!!mainForm?.error?.message}>
+				<ShowError show={!!mainForm?.error}>
 					Problem inserting profile or making deck:{' '}
 					{mainForm?.error?.message || 'unknown error, sorry. call m.'}
 				</ShowError>

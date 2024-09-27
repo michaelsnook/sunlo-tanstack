@@ -5,7 +5,7 @@ import supabase from 'lib/supabase-client'
 import { mapArray } from 'lib/utils'
 import { useAuth } from 'lib/hooks'
 
-async function fetchAndShapeProfileFull(): Promise<ProfileFull | null> {
+async function fetchAndShapeProfileFull() {
 	const { data } = await supabase
 		.from('user_profile')
 		.select(`*, decks_array:user_deck_plus(*)`)
@@ -15,37 +15,32 @@ async function fetchAndShapeProfileFull(): Promise<ProfileFull | null> {
 	const { decks_array, ...profile } = data
 	const decksMap: DecksMap = mapArray<DeckMeta, 'lang'>(decks_array, 'lang')
 	const deckLanguages: Array<string> = decks_array.map((d) => d.lang)
-	return { ...profile, decksMap, deckLanguages }
+	return { ...profile, decksMap, deckLanguages } as ProfileFull
 }
 
 const emptyProfile: ProfileFull = {
-  uid: '',
-  username: '',
-  language_primary: '',
-  languages_spoken: [],
-  avatar_url: '',
-  created_at: '',
-  updated_at: '',
-  decksMap: {},
-  deckLanguages: [],
+	uid: '',
+	username: '',
+	language_primary: '',
+	languages_spoken: [],
+	avatar_url: '',
+	created_at: '',
+	updated_at: '',
+	decksMap: {},
+	deckLanguages: [],
 }
 
 export const profileQuery = (userId?: string) =>
-  queryOptions<ProfileFull, PostgrestError>({
-    queryKey: ['user', userId],
-    queryFn: async () => {
-      if (!userId) throw new Error('No user ID provided')
-      const profile = await fetchAndShapeProfileFull()
-      return profile ?? emptyProfile
-    },
-    initialData: emptyProfile,
-  })
+	queryOptions<ProfileFull, PostgrestError>({
+		queryKey: ['user', userId],
+		queryFn: async () => {
+			if (!userId) return emptyProfile
+			return await fetchAndShapeProfileFull()
+		},
+		initialData: emptyProfile,
+	})
 
 export const useProfile = () => {
-  const { userId } = useAuth()
-  return useQuery({
-    ...profileQuery(userId),
-    enabled: !!userId,
-  })
+	const { userId } = useAuth()
+	return useQuery({ ...profileQuery(userId) })
 }
-
