@@ -205,7 +205,7 @@ const languages: { [key: string]: string } = {
 	zul: 'Zulu',
 }
 
-export const makeLanguageOptions = (
+export const opts = (
 	keys: Array<string>
 ): Array<{ value: string; label: string }> => {
 	return keys.map((lang) => {
@@ -216,6 +216,6 @@ export const makeLanguageOptions = (
 	})
 }
 
-export const allLanguageOptions = makeLanguageOptions(Object.keys(languages))
+export const allLanguageOptions = opts(Object.keys(languages))
 
 export default languages
