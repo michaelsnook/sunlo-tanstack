@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, ReactNode } from '@tanstack/react-router'
 import { ShowError } from 'components/errors'
 import Loading from 'components/loading'
 import SuccessCheckmark from 'components/SuccessCheckmark'
@@ -8,7 +8,7 @@ import languages from 'lib/languages'
 import supabase from 'lib/supabase-client'
 import { useProfile } from 'lib/use-profile'
 import { cn } from 'lib/utils'
-import { type FormEvent, SyntheticEvent, useState } from 'react'
+import { type FormEvent, useState } from 'react'
 import toast from 'react-hot-toast'
 
 export const Route = createFileRoute('/_user/getting-started')({
@@ -159,7 +159,12 @@ function ShowSuccess({ tempDeckToAdd }: { tempDeckToAdd?: string }) {
 	)
 }
 
-const SetPrimaryLanguageStep = ({ value, set }) => {
+interface SetValueStepProps {
+	value: string
+	set: (value: string) => void
+}
+
+const SetPrimaryLanguageStep = ({ value, set }: SetValueStepProps) => {
 	const [closed, setClosed] = useState<boolean>(true)
 	return closed && value?.length > 0 ?
 			<Completed>
@@ -173,6 +178,7 @@ const SetPrimaryLanguageStep = ({ value, set }) => {
 				onSubmit={(e: FormEvent<HTMLFormElement>) => {
 					e.preventDefault()
 					setClosed(true)
+					// @ts-expect-error
 					set(e.target['language_primary'].value)
 				}}
 			>
@@ -212,13 +218,7 @@ const SetPrimaryLanguageStep = ({ value, set }) => {
 			</form>
 }
 
-const CreateFirstDeckStep = ({
-	value,
-	set,
-}: {
-	value: string
-	set: (value: string) => void
-}) => {
+const CreateFirstDeckStep = ({ value, set }: SetValueStepProps) => {
 	const langs = useProfile()?.data?.deckLanguages
 
 	const [closed, setClosed] = useState(true)
@@ -296,13 +296,7 @@ const CreateFirstDeckStep = ({
 			</form>
 }
 
-const SetUsernameStep = ({
-	value,
-	set,
-}: {
-	value: string
-	set: (value: string) => void
-}) => {
+const SetUsernameStep = ({ value, set }: SetValueStepProps) => {
 	const [closed, setClosed] = useState(true)
 	return closed && value ?
 			<Completed>
@@ -315,6 +309,7 @@ const SetUsernameStep = ({
 				className="card-white mb-16"
 				onSubmit={(e: FormEvent<HTMLFormElement>) => {
 					e.preventDefault()
+					// @ts-expect-error
 					if (e.target['username'].value) setClosed(true)
 				}}
 			>
@@ -340,7 +335,12 @@ const SetUsernameStep = ({
 			</form>
 }
 
-const X = ({ set, plus = false }: { set: () => void; plus?: boolean }) => (
+interface XProps {
+	set: () => void
+	plus?: boolean
+}
+
+const X = ({ set, plus = false }: XProps) => (
 	<button
 		onClick={() => set()}
 		className={cn(
@@ -365,7 +365,7 @@ const X = ({ set, plus = false }: { set: () => void; plus?: boolean }) => (
 	</button>
 )
 
-const Completed = ({ children }: { children: React.ReactNode }) => (
+const Completed = ({ children }: { children: Array<ReactNode> }) => (
 	<div className="glass mb-8 flex flex-row justify-between gap-x-4 rounded-xl px-6 py-4 text-white">
 		<div>{children[0]}</div>
 		<div className="place-self-center">{children[1]}</div>

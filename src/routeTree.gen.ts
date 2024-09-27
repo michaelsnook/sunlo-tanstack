@@ -19,6 +19,7 @@ import { Route as AuthImport } from './routes/_auth'
 import { Route as LearnIndexImport } from './routes/learn/index'
 import { Route as LearnQuickSearchImport } from './routes/learn/quick-search'
 import { Route as LearnAddDeckImport } from './routes/learn/add-deck'
+import { Route as UserProfileImport } from './routes/_user/profile'
 import { Route as UserGettingStartedImport } from './routes/_user/getting-started'
 import { Route as AuthLoginImport } from './routes/_auth/login'
 import { Route as LearnLangIndexImport } from './routes/learn/$lang/index'
@@ -27,13 +28,14 @@ import { Route as LearnLangSearchImport } from './routes/learn/$lang/search'
 import { Route as LearnLangReviewImport } from './routes/learn/$lang/review'
 import { Route as LearnLangBrowseImport } from './routes/learn/$lang/browse'
 import { Route as LearnLangAddPhraseImport } from './routes/learn/$lang/add-phrase'
+import { Route as UserProfileChangePasswordImport } from './routes/_user/profile.change-password'
+import { Route as UserProfileChangeEmailImport } from './routes/_user/profile.change-email'
 
 // Create Virtual Routes
 
 const PrivacyPolicyLazyImport = createFileRoute('/privacy-policy')()
 const AboutLazyImport = createFileRoute('/about')()
 const IndexLazyImport = createFileRoute('/')()
-const UserProfileLazyImport = createFileRoute('/_user/profile')()
 const AuthSignupLazyImport = createFileRoute('/_auth/signup')()
 const AuthSetNewPasswordLazyImport = createFileRoute(
   '/_auth/set-new-password',
@@ -79,11 +81,6 @@ const LearnIndexRoute = LearnIndexImport.update({
   getParentRoute: () => LearnRoute,
 } as any)
 
-const UserProfileLazyRoute = UserProfileLazyImport.update({
-  path: '/profile',
-  getParentRoute: () => UserRoute,
-} as any).lazy(() => import('./routes/_user/profile.lazy').then((d) => d.Route))
-
 const AuthSignupLazyRoute = AuthSignupLazyImport.update({
   path: '/signup',
   getParentRoute: () => AuthRoute,
@@ -111,6 +108,11 @@ const LearnQuickSearchRoute = LearnQuickSearchImport.update({
 const LearnAddDeckRoute = LearnAddDeckImport.update({
   path: '/add-deck',
   getParentRoute: () => LearnRoute,
+} as any)
+
+const UserProfileRoute = UserProfileImport.update({
+  path: '/profile',
+  getParentRoute: () => UserRoute,
 } as any)
 
 const UserGettingStartedRoute = UserGettingStartedImport.update({
@@ -151,6 +153,16 @@ const LearnLangBrowseRoute = LearnLangBrowseImport.update({
 const LearnLangAddPhraseRoute = LearnLangAddPhraseImport.update({
   path: '/$lang/add-phrase',
   getParentRoute: () => LearnRoute,
+} as any)
+
+const UserProfileChangePasswordRoute = UserProfileChangePasswordImport.update({
+  path: '/change-password',
+  getParentRoute: () => UserProfileRoute,
+} as any)
+
+const UserProfileChangeEmailRoute = UserProfileChangeEmailImport.update({
+  path: '/change-email',
+  getParentRoute: () => UserProfileRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -213,6 +225,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserGettingStartedImport
       parentRoute: typeof UserImport
     }
+    '/_user/profile': {
+      id: '/_user/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof UserProfileImport
+      parentRoute: typeof UserImport
+    }
     '/learn/add-deck': {
       id: '/learn/add-deck'
       path: '/add-deck'
@@ -248,19 +267,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignupLazyImport
       parentRoute: typeof AuthImport
     }
-    '/_user/profile': {
-      id: '/_user/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof UserProfileLazyImport
-      parentRoute: typeof UserImport
-    }
     '/learn/': {
       id: '/learn/'
       path: '/'
       fullPath: '/learn/'
       preLoaderRoute: typeof LearnIndexImport
       parentRoute: typeof LearnImport
+    }
+    '/_user/profile/change-email': {
+      id: '/_user/profile/change-email'
+      path: '/change-email'
+      fullPath: '/profile/change-email'
+      preLoaderRoute: typeof UserProfileChangeEmailImport
+      parentRoute: typeof UserProfileImport
+    }
+    '/_user/profile/change-password': {
+      id: '/_user/profile/change-password'
+      path: '/change-password'
+      fullPath: '/profile/change-password'
+      preLoaderRoute: typeof UserProfileChangePasswordImport
+      parentRoute: typeof UserProfileImport
     }
     '/learn/$lang/add-phrase': {
       id: '/learn/$lang/add-phrase'
@@ -319,7 +345,10 @@ export const routeTree = rootRoute.addChildren({
   }),
   UserRoute: UserRoute.addChildren({
     UserGettingStartedRoute,
-    UserProfileLazyRoute,
+    UserProfileRoute: UserProfileRoute.addChildren({
+      UserProfileChangeEmailRoute,
+      UserProfileChangePasswordRoute,
+    }),
   }),
   LearnRoute: LearnRoute.addChildren({
     LearnAddDeckRoute,
@@ -399,6 +428,14 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_user/getting-started.tsx",
       "parent": "/_user"
     },
+    "/_user/profile": {
+      "filePath": "_user/profile.tsx",
+      "parent": "/_user",
+      "children": [
+        "/_user/profile/change-email",
+        "/_user/profile/change-password"
+      ]
+    },
     "/learn/add-deck": {
       "filePath": "learn/add-deck.tsx",
       "parent": "/learn"
@@ -419,13 +456,17 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_auth/signup.lazy.tsx",
       "parent": "/_auth"
     },
-    "/_user/profile": {
-      "filePath": "_user/profile.lazy.tsx",
-      "parent": "/_user"
-    },
     "/learn/": {
       "filePath": "learn/index.tsx",
       "parent": "/learn"
+    },
+    "/_user/profile/change-email": {
+      "filePath": "_user/profile.change-email.tsx",
+      "parent": "/_user/profile"
+    },
+    "/_user/profile/change-password": {
+      "filePath": "_user/profile.change-password.tsx",
+      "parent": "/_user/profile"
     },
     "/learn/$lang/add-phrase": {
       "filePath": "learn/$lang/add-phrase.tsx",
