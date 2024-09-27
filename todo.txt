@@ -2,10 +2,8 @@ ISSUES
 1. auth guard is always redirecting to login and back
 
 RADIX
-1. ✅ replace react-modal with Radix primitives/ShadCN
 1. ✅ replace the DaisyUI expandos
 		tweak it so you can click without open-close (no bubble)
-1. replace react-select
 
 PRIMARY CARD INTERACTIONS
 1. bring over the new structure for relations
