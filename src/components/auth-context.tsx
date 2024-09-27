@@ -13,6 +13,7 @@ export type AuthState = {
 	isAuth: boolean
 	userId: uuid | null
 	userEmail: string | null
+	isLoaded: boolean
 }
 
 export const AuthContext = createContext<AuthState>(undefined)
@@ -20,6 +21,8 @@ export const AuthContext = createContext<AuthState>(undefined)
 export function AuthProvider({ children }: PropsWithChildren) {
 	const queryClient = useQueryClient()
 	const [sessionState, setSessionState] = useState<Session>(null)
+	const [isLoaded, setIsLoaded] = useState(false)
+	const setLoaded = () => setIsLoaded(true)
 
 	/*
     This effect should run once when the app first mounts (the context provider), and then
@@ -40,12 +43,13 @@ export function AuthProvider({ children }: PropsWithChildren) {
 		}
 		const { data: listener } = supabase.auth.onAuthStateChange(
 			(event, session) => {
-				console.log(`Auth state changed: ${event}`, session)
+				console.log(`User auth event: ${event}`)
 				// if we've logged out or no user comes back, we should remove user data from cache
 				if (event === 'SIGNED_OUT' || !session?.user) {
 					queryClient.removeQueries({ queryKey: ['user'] })
 				}
 				setSessionState(session)
+				setLoaded()
 			}
 		)
 
@@ -60,5 +64,9 @@ export function AuthProvider({ children }: PropsWithChildren) {
 		userEmail: sessionState?.user.email,
 	}
 
-	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+	return (
+		<AuthContext.Provider value={{ ...value, isLoaded }}>
+			{isLoaded ? children : null}
+		</AuthContext.Provider>
+	)
 }

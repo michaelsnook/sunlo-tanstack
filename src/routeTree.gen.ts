@@ -14,11 +14,12 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as LearnImport } from './routes/learn'
-import { Route as GettingStartedImport } from './routes/getting-started'
+import { Route as UserImport } from './routes/_user'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as LearnIndexImport } from './routes/learn/index'
 import { Route as LearnQuickSearchImport } from './routes/learn/quick-search'
 import { Route as LearnAddDeckImport } from './routes/learn/add-deck'
+import { Route as UserGettingStartedImport } from './routes/_user/getting-started'
 import { Route as AuthLoginImport } from './routes/_auth/login'
 import { Route as LearnLangIndexImport } from './routes/learn/$lang/index'
 import { Route as LearnLangSettingsImport } from './routes/learn/$lang/settings'
@@ -29,10 +30,10 @@ import { Route as LearnLangAddPhraseImport } from './routes/learn/$lang/add-phra
 
 // Create Virtual Routes
 
-const ProfileLazyImport = createFileRoute('/profile')()
 const PrivacyPolicyLazyImport = createFileRoute('/privacy-policy')()
 const AboutLazyImport = createFileRoute('/about')()
 const IndexLazyImport = createFileRoute('/')()
+const UserProfileLazyImport = createFileRoute('/_user/profile')()
 const AuthSignupLazyImport = createFileRoute('/_auth/signup')()
 const AuthSetNewPasswordLazyImport = createFileRoute(
   '/_auth/set-new-password',
@@ -40,11 +41,6 @@ const AuthSetNewPasswordLazyImport = createFileRoute(
 const AuthForgotPasswordLazyImport = createFileRoute('/_auth/forgot-password')()
 
 // Create/Update Routes
-
-const ProfileLazyRoute = ProfileLazyImport.update({
-  path: '/profile',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/profile.lazy').then((d) => d.Route))
 
 const PrivacyPolicyLazyRoute = PrivacyPolicyLazyImport.update({
   path: '/privacy-policy',
@@ -63,8 +59,8 @@ const LearnRoute = LearnImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const GettingStartedRoute = GettingStartedImport.update({
-  path: '/getting-started',
+const UserRoute = UserImport.update({
+  id: '/_user',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -82,6 +78,11 @@ const LearnIndexRoute = LearnIndexImport.update({
   path: '/',
   getParentRoute: () => LearnRoute,
 } as any)
+
+const UserProfileLazyRoute = UserProfileLazyImport.update({
+  path: '/profile',
+  getParentRoute: () => UserRoute,
+} as any).lazy(() => import('./routes/_user/profile.lazy').then((d) => d.Route))
 
 const AuthSignupLazyRoute = AuthSignupLazyImport.update({
   path: '/signup',
@@ -110,6 +111,11 @@ const LearnQuickSearchRoute = LearnQuickSearchImport.update({
 const LearnAddDeckRoute = LearnAddDeckImport.update({
   path: '/add-deck',
   getParentRoute: () => LearnRoute,
+} as any)
+
+const UserGettingStartedRoute = UserGettingStartedImport.update({
+  path: '/getting-started',
+  getParentRoute: () => UserRoute,
 } as any)
 
 const AuthLoginRoute = AuthLoginImport.update({
@@ -165,11 +171,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthImport
       parentRoute: typeof rootRoute
     }
-    '/getting-started': {
-      id: '/getting-started'
-      path: '/getting-started'
-      fullPath: '/getting-started'
-      preLoaderRoute: typeof GettingStartedImport
+    '/_user': {
+      id: '/_user'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof UserImport
       parentRoute: typeof rootRoute
     }
     '/learn': {
@@ -193,19 +199,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyPolicyLazyImport
       parentRoute: typeof rootRoute
     }
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileLazyImport
-      parentRoute: typeof rootRoute
-    }
     '/_auth/login': {
       id: '/_auth/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof AuthLoginImport
       parentRoute: typeof AuthImport
+    }
+    '/_user/getting-started': {
+      id: '/_user/getting-started'
+      path: '/getting-started'
+      fullPath: '/getting-started'
+      preLoaderRoute: typeof UserGettingStartedImport
+      parentRoute: typeof UserImport
     }
     '/learn/add-deck': {
       id: '/learn/add-deck'
@@ -241,6 +247,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/signup'
       preLoaderRoute: typeof AuthSignupLazyImport
       parentRoute: typeof AuthImport
+    }
+    '/_user/profile': {
+      id: '/_user/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof UserProfileLazyImport
+      parentRoute: typeof UserImport
     }
     '/learn/': {
       id: '/learn/'
@@ -304,7 +317,10 @@ export const routeTree = rootRoute.addChildren({
     AuthSetNewPasswordLazyRoute,
     AuthSignupLazyRoute,
   }),
-  GettingStartedRoute,
+  UserRoute: UserRoute.addChildren({
+    UserGettingStartedRoute,
+    UserProfileLazyRoute,
+  }),
   LearnRoute: LearnRoute.addChildren({
     LearnAddDeckRoute,
     LearnQuickSearchRoute,
@@ -318,7 +334,6 @@ export const routeTree = rootRoute.addChildren({
   }),
   AboutLazyRoute,
   PrivacyPolicyLazyRoute,
-  ProfileLazyRoute,
 })
 
 /* prettier-ignore-end */
@@ -331,11 +346,10 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/",
         "/_auth",
-        "/getting-started",
+        "/_user",
         "/learn",
         "/about",
-        "/privacy-policy",
-        "/profile"
+        "/privacy-policy"
       ]
     },
     "/": {
@@ -350,8 +364,12 @@ export const routeTree = rootRoute.addChildren({
         "/_auth/signup"
       ]
     },
-    "/getting-started": {
-      "filePath": "getting-started.tsx"
+    "/_user": {
+      "filePath": "_user.tsx",
+      "children": [
+        "/_user/getting-started",
+        "/_user/profile"
+      ]
     },
     "/learn": {
       "filePath": "learn.tsx",
@@ -373,12 +391,13 @@ export const routeTree = rootRoute.addChildren({
     "/privacy-policy": {
       "filePath": "privacy-policy.lazy.tsx"
     },
-    "/profile": {
-      "filePath": "profile.lazy.tsx"
-    },
     "/_auth/login": {
       "filePath": "_auth/login.tsx",
       "parent": "/_auth"
+    },
+    "/_user/getting-started": {
+      "filePath": "_user/getting-started.tsx",
+      "parent": "/_user"
     },
     "/learn/add-deck": {
       "filePath": "learn/add-deck.tsx",
@@ -399,6 +418,10 @@ export const routeTree = rootRoute.addChildren({
     "/_auth/signup": {
       "filePath": "_auth/signup.lazy.tsx",
       "parent": "/_auth"
+    },
+    "/_user/profile": {
+      "filePath": "_user/profile.lazy.tsx",
+      "parent": "/_user"
     },
     "/learn/": {
       "filePath": "learn/index.tsx",

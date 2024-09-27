@@ -11,7 +11,7 @@ import { cn } from 'lib/utils'
 import { type FormEvent, SyntheticEvent, useState } from 'react'
 import toast from 'react-hot-toast'
 
-export const Route = createFileRoute('/getting-started')({
+export const Route = createFileRoute('/_user/getting-started')({
 	component: GettingStartedPage,
 })
 
