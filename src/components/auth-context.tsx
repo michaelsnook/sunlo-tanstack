@@ -13,7 +13,6 @@ export type AuthState = {
 	isAuth: boolean
 	userId: uuid | null
 	userEmail: string | null
-	isLoaded: boolean
 }
 
 export const AuthContext = createContext<AuthState>(undefined)
@@ -65,7 +64,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 	}
 
 	return (
-		<AuthContext.Provider value={{ ...value, isLoaded }}>
+		<AuthContext.Provider value={value}>
 			{isLoaded ? children : null}
 		</AuthContext.Provider>
 	)
