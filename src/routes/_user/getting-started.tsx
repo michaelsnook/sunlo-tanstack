@@ -8,7 +8,7 @@ import languages from 'lib/languages'
 import supabase from 'lib/supabase-client'
 import { useProfile } from 'lib/use-profile'
 import { cn } from 'lib/utils'
-import { type FormEvent, useState } from 'react'
+import { type FormEvent, SyntheticEvent, useState } from 'react'
 import toast from 'react-hot-toast'
 
 export const Route = createFileRoute('/_user/getting-started')({
@@ -117,11 +117,27 @@ function GettingStartedPage() {
 						set={setTempLanguagePrimary}
 					/>
 					<CreateFirstDeckStep value={tempDeckToAdd} set={setTempDeckToAdd} />
-					{tempLanguagePrimaryToUse &&
+					{(
+						tempLanguagePrimaryToUse &&
 						(tempDeckToAdd || deckLanguages?.length > 0) &&
-						tempUsernameToUse && (
-							<div className="my-6 flex flex-row-reverse items-center justify-around"></div>
-						)}
+						tempUsernameToUse
+					) ?
+						<div className="my-6 flex flex-row-reverse items-center justify-around">
+							<button
+								onClick={(event: SyntheticEvent<HTMLButtonElement>): void => {
+									event.preventDefault()
+									mainForm.mutate()
+								}}
+								className="btn btn-accent md:btn-lg"
+								disabled={mainForm.isPending}
+							>
+								Confirm and get started!
+							</button>
+							<button onClick={reset} className="btn btn-primary">
+								Reset page
+							</button>
+						</div>
+					:	<></>}
 				</div>
 				<ShowError show={!!mainForm?.error}>
 					Problem inserting profile or making deck:{' '}
@@ -151,7 +167,7 @@ function ShowSuccess({ tempDeckToAdd }: { tempDeckToAdd?: string }) {
 						&nbsp;&rarr;
 					</Link>
 				:	null}
-				<Link href="/profile" className="btn btn-ghost mx-auto">
+				<Link to="/profile" className="btn btn-ghost mx-auto">
 					Go to your profile&nbsp;&rarr;
 				</Link>
 			</div>
