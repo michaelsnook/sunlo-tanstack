@@ -3,7 +3,7 @@ import { createLazyFileRoute } from '@tanstack/react-router'
 import { Link } from '@tanstack/react-router'
 import { useMutation } from '@tanstack/react-query'
 import { cn } from 'lib/utils'
-import { ErrorShow } from 'components/errors'
+import { ShowError } from 'components/errors'
 import supabase from 'lib/supabase-client'
 import { Session } from 'inspector/promises'
 import toast from 'react-hot-toast'
@@ -93,9 +93,9 @@ function SignUp() {
 							Already have an account?
 						</Link>
 					</div>
-					<ErrorShow show={!!useSignUp.error}>
+					<ShowError show={!!useSignUp.error}>
 						Problem signing up: {useSignUp.error?.message}
-					</ErrorShow>
+					</ShowError>
 				</fieldset>
 			</form>
 		</>
