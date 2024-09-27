@@ -1,6 +1,6 @@
 import { useProfile } from 'lib/use-profile'
 import Loading from './loading'
-import { allLanguageOptions, makeLanguageOptions } from 'lib/languages'
+import { opts } from 'lib/languages'
 import { SelectOption } from 'types/main'
 import { Popover, PopoverContent, PopoverTrigger } from 'components/ui/popover'
 import {
@@ -28,7 +28,7 @@ export default function SelectLanguageYouKnow({
 	const { data, isPending } = useProfile()
 	if (isPending) return <Loading />
 	const languages_spoken = data?.languages_spoken || []
-	const selectOptions: SelectOption[] = makeLanguageOptions(languages_spoken)
+	const selectOptions: SelectOption[] = opts(languages_spoken)
 	const [open, setOpen] = useState(false)
 	const [value, setValue] = useState('')
 

@@ -7,13 +7,13 @@ import { useMutation } from '@tanstack/react-query'
 import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-hot-toast'
 import supabase from 'lib/supabase-client'
-import languages from 'lib/languages'
 import { ShowError } from 'components/errors'
 import SelectMultipleLanguagesInput from 'components/select-multiple-languages'
 import Loading from 'components/loading'
 import { useProfile } from 'lib/use-profile'
 
 import AvatarEditor from './avatar-editor'
+import { SelectOneLanguage } from 'components/select-one-language'
 
 export default function UpdateProfileForm() {
 	const { data, isPending, error } = useProfile()
@@ -21,7 +21,7 @@ export default function UpdateProfileForm() {
 	if (isPending) return <Loading className="mt-0" />
 
 	return data.uid ?
-			<Form
+			<PrefilledForm
 				initialData={{
 					avatar_url: data.avatar_url,
 					username: data.username,
@@ -33,12 +33,12 @@ export default function UpdateProfileForm() {
 		:	<></>
 }
 
-interface FormProps {
+interface PrefilledFormProps {
 	initialData: ProfileInsert
 	uid: uuid
 }
 
-function Form({ initialData, uid }: FormProps) {
+function PrefilledForm({ initialData, uid }: PrefilledFormProps) {
 	const queryClient = useQueryClient()
 
 	const [formData, setFormData] = useState<ProfileInsert>(initialData)
@@ -68,6 +68,8 @@ function Form({ initialData, uid }: FormProps) {
 		setFormData({ ...formData, avatar_url: val })
 	const setSelectedLanguages = (val: Array<string>) =>
 		setFormData({ ...formData, languages_spoken: val })
+	const setLanguagePrimary = (val: string) =>
+		setFormData({ ...formData, language_primary: val })
 	const handleInputChange = (
 		e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
 	) => {
@@ -101,20 +103,10 @@ function Form({ initialData, uid }: FormProps) {
 					<label htmlFor="language_primary" className="px-3 font-bold">
 						Primary language
 					</label>
-					<select
-						id="language_primary"
-						name="language_primary"
-						onChange={handleInputChange}
-						defaultValue={formData.language_primary}
-						className="s-input"
-					>
-						<option value="">-- select one --</option>
-						{Object.keys(languages).map((k) => (
-							<option key={`language-primary-${k}`} value={k}>
-								{languages[k]}
-							</option>
-						))}
-					</select>
+					<SelectOneLanguage
+						value={formData.language_primary}
+						setValue={setLanguagePrimary}
+					/>
 				</div>
 				<div className="flex flex-col">
 					<SelectMultipleLanguagesInput
