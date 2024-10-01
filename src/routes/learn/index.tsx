@@ -5,6 +5,7 @@ import type { NavbarData } from 'types/main'
 import { profileQuery, useProfile } from 'lib/use-profile'
 import languages from 'lib/languages'
 import Loading from 'components/loading'
+import { Button } from 'components/ui/button'
 
 export const Route = createFileRoute('/learn/')({
 	loader: async ({ context: { queryClient, auth } }) => {
@@ -49,6 +50,14 @@ export default function Page() {
 							</Link>
 						</li>
 					))}
+					<div className="flex flex-col items-center py-6">
+						<p>Starting something new?</p>
+						<Button variant="outline" asChild>
+							<Link to="/learn/add-deck" className="mt-2">
+								Learn a New Language
+							</Link>
+						</Button>
+					</div>
 				</ol>
 			}
 		</main>
