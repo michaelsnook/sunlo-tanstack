@@ -52,7 +52,7 @@
 		--secondary-foreground: 210 40% 98%;
 		--muted: 217.2 32.6% 17.5%;
 		--muted-foreground: 215 20.2% 65.1%;
-		--accent: 217.2 32.6% 17.5%;
+		--accent: 174, 100%, 41%;
 		--accent-foreground: 210 40% 98%;
 		--destructive: 0 62.8% 30.6%;
 		--destructive-foreground: 210 40% 98%;
@@ -73,7 +73,7 @@
 		@apply mx-auto w-full max-w-[40rem]; /* outline outline-dashed outline-white/50; */
 	}
 	.s-link {
-		@apply link cursor-pointer decoration-base-content/50 hover:decoration-inherit;
+		@apply cursor-pointer decoration-accent dark:decoration-warning underline-offset-2 hover:underline-offset-1 underline hover:decoration-2 decoration-1 transition-all;
 	}
 	.nav-link {
 		@apply transition-all;
