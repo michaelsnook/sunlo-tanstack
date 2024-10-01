@@ -1,26 +1,36 @@
-import type { ChangeEvent, FormEvent } from 'react'
-import type { QueryError } from '@supabase/supabase-js'
-import type { ProfileInsert, ProfileRow, uuid } from 'types/main'
-
-import { useState } from 'react'
-import { useMutation } from '@tanstack/react-query'
-import { useQueryClient } from '@tanstack/react-query'
+import type { uuid } from 'types/main'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-hot-toast'
 import supabase from 'lib/supabase-client'
 import { ShowError } from 'components/errors'
 import SelectMultipleLanguagesInput from 'components/select-multiple-languages'
 import Loading from 'components/loading'
 import { useProfile } from 'lib/use-profile'
-
 import AvatarEditor from './avatar-editor'
 import { SelectOneLanguage } from 'components/select-one-language'
+import Form from 'react-formal'
+import * as yup from 'yup'
+import { Button } from 'components/ui/button'
+
+const ProfileEditableSchema = yup.object().shape({
+	username: yup
+		.string()
+		.required('Username is required')
+		.min(3, 'Username must be at least 3 characters'),
+	language_primary: yup.string().required('Primary language is required'),
+	languages_spoken: yup
+		.array()
+		.of(yup.string())
+		.min(1, 'Select at least one language'),
+	avatar_url: yup.string().url('Invalid URL for avatar'),
+})
 
 export default function UpdateProfileForm() {
 	const { data, isPending, error } = useProfile()
 	if (error) return <ShowError>{error.message}</ShowError>
 	if (isPending) return <Loading className="mt-0" />
 
-	return data.uid ?
+	return data?.uid ?
 			<PrefilledForm
 				initialData={{
 					avatar_url: data.avatar_url,
@@ -30,27 +40,27 @@ export default function UpdateProfileForm() {
 				}}
 				uid={data.uid}
 			/>
-		:	<></>
+		:	null
 }
 
+type ProfileEditable = yup.InferType<typeof ProfileEditableSchema>
+
 interface PrefilledFormProps {
-	initialData: ProfileInsert
+	initialData: ProfileEditable
 	uid: uuid
 }
 
 function PrefilledForm({ initialData, uid }: PrefilledFormProps) {
 	const queryClient = useQueryClient()
 
-	const [formData, setFormData] = useState<ProfileInsert>(initialData)
-
-	const updateProfile = useMutation<ProfileRow, QueryError>({
-		mutationFn: async () => {
-			const { data } = await supabase
+	const updateProfile = useMutation<ProfileEditable, Error>({
+		mutationFn: async (updatedData: ProfileEditable) => {
+			const { data, error } = await supabase
 				.from('user_profile')
-				.update(formData)
+				.update(updatedData)
 				.match({ uid })
 				.select()
-				.throwOnError()
+			if (error) throw error
 			return data[0]
 		},
 		onSuccess: () => {
@@ -59,28 +69,13 @@ function PrefilledForm({ initialData, uid }: PrefilledFormProps) {
 		},
 	})
 
-	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault()
-		updateProfile.mutate()
-	}
-
-	const setNewAvatarUrl = (val: string) =>
-		setFormData({ ...formData, avatar_url: val })
-	const setSelectedLanguages = (val: Array<string>) =>
-		setFormData({ ...formData, languages_spoken: val })
-	const setLanguagePrimary = (val: string) =>
-		setFormData({ ...formData, language_primary: val })
-	const handleInputChange = (
-		e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
-	) => {
-		setFormData({
-			...formData,
-			[e.target.id]: e.target.value,
-		})
-	}
-
 	return (
-		<form className="space-y-4" onSubmit={handleSubmit}>
+		<Form
+			schema={ProfileEditableSchema}
+			defaultValue={initialData}
+			onSubmit={updateProfile.mutate}
+			className="space-y-4"
+		>
 			<fieldset
 				className="grid grid-cols-1 gap-4 sm:grid-cols-2"
 				disabled={updateProfile.isPending}
@@ -89,48 +84,59 @@ function PrefilledForm({ initialData, uid }: PrefilledFormProps) {
 					<label htmlFor="username" className="px-3 font-bold">
 						Your nickname
 					</label>
-					<input
-						id="username"
-						name="username"
-						type="text"
-						className="s-input"
-						tabIndex={1}
-						defaultValue={formData.username}
-						onChange={handleInputChange}
-					/>
+					<Form.Field name="username" className="s-input" tabIndex={1} />
+					<Form.Message for="username" className="text-red-500 text-sm mt-1" />
 				</div>
 				<div className="flex flex-col">
 					<label htmlFor="language_primary" className="px-3 font-bold">
 						Primary language
 					</label>
-					<SelectOneLanguage
-						value={formData.language_primary}
-						setValue={setLanguagePrimary}
+					<Form.Field name="language_primary">
+						{({ value, onChange }) => (
+							<SelectOneLanguage value={value} setValue={onChange} />
+						)}
+					</Form.Field>
+					<Form.Message
+						for="language_primary"
+						className="text-red-500 text-sm mt-1"
 					/>
 				</div>
 				<div className="flex flex-col">
-					<SelectMultipleLanguagesInput
-						selectedLanguages={formData.languages_spoken}
-						setSelectedLanguages={setSelectedLanguages}
-						except={formData.language_primary}
+					<Form.Field name="languages_spoken">
+						{({ value, onChange }) => (
+							<SelectMultipleLanguagesInput
+								selectedLanguages={value}
+								setSelectedLanguages={onChange}
+								except={initialData.language_primary}
+							/>
+						)}
+					</Form.Field>
+					<Form.Message
+						for="languages_spoken"
+						className="text-red-500 text-sm mt-1"
 					/>
 				</div>
 				<div className="flex flex-col">
 					<label className="px-3 font-bold">Profile picture</label>
-					<AvatarEditor url={formData.avatar_url} onUpload={setNewAvatarUrl} />
+					<Form.Field name="avatar_url">
+						{({ value, onChange }) => (
+							<AvatarEditor url={value} onUpload={onChange} />
+						)}
+					</Form.Field>
+					<Form.Message
+						for="avatar_url"
+						className="text-red-500 text-sm mt-1"
+					/>
 				</div>
 				<div className="flex flex-col-reverse">
-					<button
-						className="btn btn-primary"
-						disabled={updateProfile.isPending}
-					>
-						Save changes
-					</button>
+					<Form.Submit>
+						<Button disabled={updateProfile.isPending}>Save changes</Button>
+					</Form.Submit>
 				</div>
 				<ShowError show={!!updateProfile.error}>
 					Problem updating profile: {updateProfile.error?.message}
 				</ShowError>
 			</fieldset>
-		</form>
+		</Form>
 	)
 }
