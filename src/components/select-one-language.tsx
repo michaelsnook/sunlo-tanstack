@@ -17,9 +17,14 @@ import { allLanguageOptions } from 'lib/languages'
 interface SelectOneLanguageProps {
 	value: string
 	setValue: (value: string) => void
+	disabled?: string[]
 }
 
-export function SelectOneLanguage({ value, setValue }: SelectOneLanguageProps) {
+export function SelectOneLanguage({
+	value,
+	setValue,
+	disabled,
+}: SelectOneLanguageProps) {
 	const [open, setOpen] = React.useState(false)
 
 	return (
@@ -52,6 +57,7 @@ export function SelectOneLanguage({ value, setValue }: SelectOneLanguageProps) {
 										setValue(currentValue === value ? '' : currentValue)
 										setOpen(false)
 									}}
+									disabled={disabled?.includes(language.value)}
 								>
 									<Check
 										className={cn(
