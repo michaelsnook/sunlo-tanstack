@@ -80,7 +80,7 @@ export default function Sidebar() {
 					'top-0 z-30 h-screen w-72 flex-col gap-4 overflow-y-auto overflow-x-hidden bg-base-300 p-6 text-base-content'
 				)}
 			>
-				<Link href="/" className="h4 flex flex-row items-center">
+				<Link to="/" className="h4 flex flex-row items-center">
 					<Garlic size={50} />
 					Sunlo
 				</Link>
