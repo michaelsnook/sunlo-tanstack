@@ -86,8 +86,12 @@ function PrefilledForm({ initialData, uid }: PrefilledFormProps) {
 		},
 		// Add a validator to support Zod usage in Form and Field
 		validatorAdapter: zodValidator(),
-		validators: { onSubmit: profileEditFormSchema },
+		validators: {
+			onSubmit: profileEditFormSchema,
+			onChange: profileEditFormSchema,
+		},
 	})
+
 
 	return (
 		<form
@@ -129,9 +133,9 @@ function PrefilledForm({ initialData, uid }: PrefilledFormProps) {
 					name="language_primary"
 					children={(field) => (
 						<div className="flex flex-col">
-							<label htmlFor="language_primary" className="font-bold">
+							<Label htmlFor="language_primary" className="font-bold">
 								Primary language
-							</label>
+							</Label>
 							<SelectOneLanguage
 								tabIndex={2}
 								value={field.state.value}
@@ -146,6 +150,9 @@ function PrefilledForm({ initialData, uid }: PrefilledFormProps) {
 					name="languages_spoken"
 					children={(field) => (
 						<div className="flex flex-col">
+							<Label htmlFor="languages_spoken" className="font-bold">
+								Do you know other languages?
+							</Label>
 							<SelectMultipleLanguagesInput
 								selectedLanguages={field.state.value}
 								setSelectedLanguages={field.handleChange}
@@ -160,7 +167,7 @@ function PrefilledForm({ initialData, uid }: PrefilledFormProps) {
 					name="avatar_url"
 					children={(field) => (
 						<div className="flex flex-col">
-							<label className="font-bold">Profile picture</label>
+							<Label className="font-bold">Profile picture</Label>
 							<AvatarEditor
 								url={field.state.value}
 								onUpload={field.handleChange}
