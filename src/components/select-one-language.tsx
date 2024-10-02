@@ -18,12 +18,14 @@ interface SelectOneLanguageProps {
 	value: string
 	setValue: (value: string) => void
 	disabled?: string[]
+	tabIndex?: number
 }
 
 export function SelectOneLanguage({
 	value,
 	setValue,
 	disabled,
+	tabIndex,
 }: SelectOneLanguageProps) {
 	const [open, setOpen] = React.useState(false)
 
@@ -32,6 +34,7 @@ export function SelectOneLanguage({
 			<PopoverTrigger asChild className="w-full">
 				<Button
 					variant="outline"
+					tabIndex={tabIndex}
 					role="combobox"
 					aria-expanded={open}
 					className="justify-between text-base"

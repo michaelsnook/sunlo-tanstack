@@ -147,7 +147,7 @@ function PrefilledForm({ initialData, uid }: PrefilledFormProps) {
 					name="avatar_url"
 					children={(field) => (
 						<div className="flex flex-col">
-							<label className="px-3 font-bold">Profile picture</label>
+							<label className="font-bold">Profile picture</label>
 							<AvatarEditor
 								url={field.state.value}
 								onUpload={field.handleChange}

@@ -42,7 +42,7 @@ export default function SelectMultipleLanguagesInput({
 
 	return (
 		<>
-			<label htmlFor="languages_spoken" className="px-3 font-bold">
+			<label htmlFor="languages_spoken" className="font-bold">
 				{label}
 			</label>
 			<div className="h-40 overflow-auto rounded border py-3">
