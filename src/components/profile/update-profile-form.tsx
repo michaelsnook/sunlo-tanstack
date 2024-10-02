@@ -129,9 +129,14 @@ function PrefilledForm({ initialData, uid }: PrefilledFormProps) {
 					/>
 				</div>
 				<div className="flex flex-col-reverse">
-					<Form.Submit>
-						<Button disabled={updateProfile.isPending}>Save changes</Button>
-					</Form.Submit>
+					<Form.Submit
+						type="submit"
+						as={() => (
+							<Button variant="default" disabled={updateProfile.isPending}>
+								Save changes
+							</Button>
+						)}
+					></Form.Submit>
 				</div>
 				<ShowError show={!!updateProfile.error}>
 					Problem updating profile: {updateProfile.error?.message}
