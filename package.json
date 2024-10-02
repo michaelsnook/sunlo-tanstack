@@ -22,15 +22,18 @@
 		"@radix-ui/react-popover": "^1.1.1",
 		"@radix-ui/react-slot": "^1.1.0",
 		"@supabase/supabase-js": "^2.45.1",
+		"@tanstack/react-form": "^0.33.0",
 		"@tanstack/react-query": "^5.51.23",
 		"@tanstack/react-router": "^1.47.1",
+		"@tanstack/zod-form-adapter": "^0.33.0",
 		"class-variance-authority": "^0.7.0",
 		"cmdk": "1.0.0",
 		"lucide-react": "^0.441.0",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
 		"react-hot-toast": "^2.4.1",
-		"tailwindcss-animate": "^1.0.7"
+		"tailwindcss-animate": "^1.0.7",
+		"zod": "^3.23.8"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.8.0",

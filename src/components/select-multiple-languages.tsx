@@ -17,12 +17,16 @@ export default function SelectMultipleLanguagesInput({
 	const handleSelectedLanguage = (lang: string) => {
 		setSelectedLanguages([
 			lang,
-			...selectedLanguages.filter((lan: string) => lan !== lang),
+			...selectedLanguages.filter(
+				(lan: string) => lan !== null && lan !== lang
+			),
 		])
 	}
 	const handleRemoveLanguage = (lang: string) => {
 		setSelectedLanguages([
-			...selectedLanguages.filter((lan: string) => lan !== lang),
+			...selectedLanguages.filter(
+				(lan: string) => lan !== null && lan !== lang
+			),
 		])
 	}
 
