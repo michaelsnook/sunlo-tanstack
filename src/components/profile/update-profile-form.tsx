@@ -28,7 +28,7 @@ const profileEditFormSchema = z.object({
 		.min(3, { message: 'Username must be 3 letters or more' }),
 	language_primary: z
 		.string()
-		.length(1, { message: 'A primary language is required' }),
+		.length(3, { message: 'A primary language is required' }),
 	languages_spoken: z.array(z.string()),
 	avatar_url: z.string().optional(),
 })
@@ -91,7 +91,6 @@ function PrefilledForm({ initialData, uid }: PrefilledFormProps) {
 			onChange: profileEditFormSchema,
 		},
 	})
-
 
 	return (
 		<form
