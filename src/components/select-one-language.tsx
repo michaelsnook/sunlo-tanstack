@@ -15,6 +15,7 @@ import { Popover, PopoverContent, PopoverTrigger } from 'components/ui/popover'
 import { allLanguageOptions } from 'lib/languages'
 
 interface SelectOneLanguageProps {
+	hasError: boolean
 	value: string
 	setValue: (value: string) => void
 	disabled?: string[]
@@ -22,6 +23,7 @@ interface SelectOneLanguageProps {
 }
 
 export function SelectOneLanguage({
+	hasError,
 	value,
 	setValue,
 	disabled,
@@ -37,7 +39,10 @@ export function SelectOneLanguage({
 					tabIndex={tabIndex}
 					role="combobox"
 					aria-expanded={open}
-					className="justify-between text-base"
+					className={cn(
+						'justify-between text-base',
+						hasError && 'border-error'
+					)}
 				>
 					{value ?
 						allLanguageOptions.find((language) => language.value === value)
