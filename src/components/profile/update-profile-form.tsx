@@ -1,19 +1,32 @@
-import type { ChangeEvent, FormEvent } from 'react'
-import type { QueryError } from '@supabase/supabase-js'
-import type { ProfileInsert, ProfileRow, uuid } from 'types/main'
+import type { uuid } from 'types/main'
 
-import { useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { useQueryClient } from '@tanstack/react-query'
+import { useForm } from '@tanstack/react-form'
+import { zodValidator } from '@tanstack/zod-form-adapter'
+import { z } from 'zod'
+
 import { toast } from 'react-hot-toast'
 import supabase from 'lib/supabase-client'
 import { ShowError } from 'components/errors'
-import SelectMultipleLanguagesInput from 'components/select-multiple-languages'
 import Loading from 'components/loading'
 import { useProfile } from 'lib/use-profile'
 
 import AvatarEditor from './avatar-editor'
+import SelectMultipleLanguagesInput from 'components/select-multiple-languages'
 import { SelectOneLanguage } from 'components/select-one-language'
+import { FieldInfo } from 'components/field-info'
+
+const profileEditFormSchema = z.object({
+	username: z.string().min(3, { message: 'Username requires 3 chars or more' }),
+	language_primary: z
+		.string()
+		.length(1, { message: 'We need to know your primary language' }),
+	languages_spoken: z.array(z.string()),
+	avatar_url: z.string().optional(),
+})
+
+type ProfileEditForm = z.infer<typeof profileEditFormSchema>
 
 export default function UpdateProfileForm() {
 	const { data, isPending, error } = useProfile()
@@ -34,91 +47,115 @@ export default function UpdateProfileForm() {
 }
 
 interface PrefilledFormProps {
-	initialData: ProfileInsert
+	initialData: ProfileEditForm
 	uid: uuid
 }
 
 function PrefilledForm({ initialData, uid }: PrefilledFormProps) {
 	const queryClient = useQueryClient()
 
-	const [formData, setFormData] = useState<ProfileInsert>(initialData)
-
-	const updateProfile = useMutation<ProfileRow, QueryError>({
-		mutationFn: async () => {
+	const updateProfile = useMutation({
+		mutationFn: async (value: ProfileEditForm) => {
 			const { data } = await supabase
 				.from('user_profile')
-				.update(formData)
-				.match({ uid })
+				.update(value)
+				.eq('uid', uid)
 				.select()
 				.throwOnError()
-			return data[0]
+			return data
 		},
 		onSuccess: () => {
 			toast.success(`Successfully updated your profile`)
-			queryClient.invalidateQueries({ queryKey: ['user', 'profile'] })
+			queryClient.invalidateQueries({ queryKey: ['user'] })
 		},
 	})
 
-	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault()
-		updateProfile.mutate()
-	}
-
-	const setNewAvatarUrl = (val: string) =>
-		setFormData({ ...formData, avatar_url: val })
-	const setSelectedLanguages = (val: Array<string>) =>
-		setFormData({ ...formData, languages_spoken: val })
-	const setLanguagePrimary = (val: string) =>
-		setFormData({ ...formData, language_primary: val })
-	const handleInputChange = (
-		e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
-	) => {
-		setFormData({
-			...formData,
-			[e.target.id]: e.target.value,
-		})
-	}
+	const form = useForm({
+		defaultValues: initialData,
+		onSubmit: ({ value }) => {
+			// Do something with form data
+			console.log(`submitting`, value)
+			updateProfile.mutate(value)
+		},
+		// Add a validator to support Zod usage in Form and Field
+		validatorAdapter: zodValidator(),
+	})
 
 	return (
-		<form className="space-y-4" onSubmit={handleSubmit}>
+		<form
+			className="space-y-4"
+			onSubmit={(e) => {
+				e.preventDefault()
+				e.stopPropagation()
+				form.handleSubmit()
+			}}
+		>
 			<fieldset
 				className="grid grid-cols-1 gap-4 sm:grid-cols-2"
 				disabled={updateProfile.isPending}
 			>
-				<div className="flex flex-col">
-					<label htmlFor="username" className="px-3 font-bold">
-						Your nickname
-					</label>
-					<input
-						id="username"
-						name="username"
-						type="text"
-						className="s-input"
-						tabIndex={1}
-						defaultValue={formData.username}
-						onChange={handleInputChange}
-					/>
-				</div>
-				<div className="flex flex-col">
-					<label htmlFor="language_primary" className="px-3 font-bold">
-						Primary language
-					</label>
-					<SelectOneLanguage
-						value={formData.language_primary}
-						setValue={setLanguagePrimary}
-					/>
-				</div>
-				<div className="flex flex-col">
-					<SelectMultipleLanguagesInput
-						selectedLanguages={formData.languages_spoken}
-						setSelectedLanguages={setSelectedLanguages}
-						except={formData.language_primary}
-					/>
-				</div>
-				<div className="flex flex-col">
-					<label className="px-3 font-bold">Profile picture</label>
-					<AvatarEditor url={formData.avatar_url} onUpload={setNewAvatarUrl} />
-				</div>
+				<form.Field
+					name="username"
+					children={(field) => (
+						<div className="flex flex-col">
+							<label htmlFor="username" className="px-3 font-bold">
+								Your nickname
+							</label>
+							<input
+								type="text"
+								tabIndex={1}
+								className="s-input"
+								id={field.name}
+								name={field.name}
+								value={field.state.value}
+								onBlur={field.handleBlur}
+								onChange={(e) => field.handleChange(e.target.value)}
+							/>
+							<FieldInfo field={field} />
+						</div>
+					)}
+				/>
+				<form.Field
+					name="language_primary"
+					children={(field) => (
+						<div className="flex flex-col">
+							<label htmlFor="language_primary" className="px-3 font-bold">
+								Primary language
+							</label>
+							<SelectOneLanguage
+								value={field.state.value}
+								setValue={field.handleChange}
+							/>
+							<FieldInfo field={field} />
+						</div>
+					)}
+				/>
+				<form.Field
+					name="languages_spoken"
+					children={(field) => (
+						<div className="flex flex-col">
+							<SelectMultipleLanguagesInput
+								selectedLanguages={field.state.value}
+								setSelectedLanguages={field.handleChange}
+								except={field.state.value}
+							/>
+							<FieldInfo field={field} />
+						</div>
+					)}
+				/>
+				<form.Field
+					name="avatar_url"
+					children={(field) => (
+						<div className="flex flex-col">
+							<label className="px-3 font-bold">Profile picture</label>
+							<AvatarEditor
+								url={field.state.value}
+								onUpload={field.handleChange}
+							/>
+							<FieldInfo field={field} />
+						</div>
+					)}
+				/>
 				<div className="flex flex-col-reverse">
 					<button
 						className="btn btn-primary"
