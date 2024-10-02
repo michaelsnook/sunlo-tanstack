@@ -12,6 +12,10 @@ import { ShowError } from 'components/errors'
 import Loading from 'components/loading'
 import { useProfile } from 'lib/use-profile'
 
+import { Input } from 'components/ui/input'
+import { Button } from 'components/ui/button'
+import { Label } from 'components/ui/label'
+
 import AvatarEditor from './avatar-editor'
 import SelectMultipleLanguagesInput from 'components/select-multiple-languages'
 import { SelectOneLanguage } from 'components/select-one-language'
@@ -102,10 +106,8 @@ function PrefilledForm({ initialData, uid }: PrefilledFormProps) {
 					name="username"
 					children={(field) => (
 						<div className="flex flex-col">
-							<label htmlFor="username" className="font-bold">
-								Your nickname
-							</label>
-							<input
+							<Label htmlFor="username">Your nickname</Label>
+							<Input
 								type="text"
 								tabIndex={1}
 								className={cn(
@@ -168,12 +170,7 @@ function PrefilledForm({ initialData, uid }: PrefilledFormProps) {
 					)}
 				/>
 				<div className="flex flex-col-reverse">
-					<button
-						className="btn btn-primary"
-						disabled={updateProfile.isPending}
-					>
-						Save changes
-					</button>
+					<Button disabled={updateProfile.isPending}>Save changes</Button>
 				</div>
 				<ShowError show={!!updateProfile.error}>
 					Problem updating profile: {updateProfile.error?.message}
