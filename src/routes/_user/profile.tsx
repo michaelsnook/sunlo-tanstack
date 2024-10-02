@@ -15,7 +15,7 @@ function ProfilePage() {
 		<div className="w-app space-y-4 py-6">
 			<AvatarSection />
 			<div className="w-full text-center">
-				<Link to="/getting-started" className="s-link text-xl">
+				<Link to="/getting-started" className="s-link text-xl" tabIndex={-1}>
 					Get Started <ArrowRightIcon className="inline-block w-4 h-4 ml-1" />
 				</Link>
 			</div>
