@@ -16,12 +16,15 @@ import AvatarEditor from './avatar-editor'
 import SelectMultipleLanguagesInput from 'components/select-multiple-languages'
 import { SelectOneLanguage } from 'components/select-one-language'
 import { FieldInfo } from 'components/field-info'
+import { cn } from 'lib/utils'
 
 const profileEditFormSchema = z.object({
-	username: z.string().min(3, { message: 'Username requires 3 chars or more' }),
+	username: z
+		.string()
+		.min(3, { message: 'Username must be 3 letters or more' }),
 	language_primary: z
 		.string()
-		.length(1, { message: 'We need to know your primary language' }),
+		.length(1, { message: 'A primary language is required' }),
 	languages_spoken: z.array(z.string()),
 	avatar_url: z.string().optional(),
 })
@@ -79,6 +82,7 @@ function PrefilledForm({ initialData, uid }: PrefilledFormProps) {
 		},
 		// Add a validator to support Zod usage in Form and Field
 		validatorAdapter: zodValidator(),
+		validators: { onSubmit: profileEditFormSchema },
 	})
 
 	return (
@@ -98,13 +102,17 @@ function PrefilledForm({ initialData, uid }: PrefilledFormProps) {
 					name="username"
 					children={(field) => (
 						<div className="flex flex-col">
-							<label htmlFor="username" className="px-3 font-bold">
+							<label htmlFor="username" className="font-bold">
 								Your nickname
 							</label>
 							<input
 								type="text"
 								tabIndex={1}
-								className="s-input"
+								className={cn(
+									's-input',
+									!!field.state.meta.errors.length &&
+										'border-error outline-error ring-error forcus:ring-error'
+								)}
 								id={field.name}
 								name={field.name}
 								value={field.state.value}
@@ -119,12 +127,14 @@ function PrefilledForm({ initialData, uid }: PrefilledFormProps) {
 					name="language_primary"
 					children={(field) => (
 						<div className="flex flex-col">
-							<label htmlFor="language_primary" className="px-3 font-bold">
+							<label htmlFor="language_primary" className="font-bold">
 								Primary language
 							</label>
 							<SelectOneLanguage
+								tabIndex={2}
 								value={field.state.value}
 								setValue={field.handleChange}
+								hasError={!!field.state.meta.errors.length}
 							/>
 							<FieldInfo field={field} />
 						</div>
@@ -138,6 +148,7 @@ function PrefilledForm({ initialData, uid }: PrefilledFormProps) {
 								selectedLanguages={field.state.value}
 								setSelectedLanguages={field.handleChange}
 								except={field.state.value}
+								hasError={!!field.state.meta.errors.length}
 							/>
 							<FieldInfo field={field} />
 						</div>
