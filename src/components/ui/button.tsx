@@ -14,7 +14,7 @@ const buttonVariants = cva(
 				soft: 'bg-base-300 hover:bg-primary/30',
 				ghost: 'hover:bg-base-100/20',
 				outline:
-					'border-primary/80 border focus-within:ring active:ring hover:bg-primary/30',
+					'border-primary border focus-within:ring active:ring text-primary dark:text-white hover:bg-primary/30',
 				white:
 					'bg-white hover:bg-primary text-primary hover:text-white border-primary border-2',
 				action:

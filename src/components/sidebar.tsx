@@ -7,7 +7,9 @@ import { Garlic } from 'components/garlic'
 import { useProfile } from 'lib/use-profile'
 import { useAuth, useSignOut } from 'lib/hooks'
 import { cn } from 'lib/utils'
-import Loading from './loading'
+import Loading from 'components/loading'
+import { Button } from 'components/ui/button'
+import { LogOut } from 'lucide-react'
 
 const staticMenu: MenuType = {
 	name: 'Menu',
@@ -75,8 +77,7 @@ export default function Sidebar() {
 			<nav
 				aria-label="Main navigation"
 				className={cn(
-					isOpen ? 'fixed' : 'hidden',
-					!isOpen ? '' : 'md:sticky md:flex',
+					isOpen ? 'fixed md:sticky flex' : 'hidden',
 					'top-0 z-30 h-screen w-72 flex-col gap-4 overflow-y-auto overflow-x-hidden bg-base-300 p-6 text-base-content'
 				)}
 			>
@@ -86,7 +87,7 @@ export default function Sidebar() {
 				</Link>
 				<DeckMenu />
 				<GenericMenu menu={staticMenu} />
-				<p>
+				<p className="mt-auto mb-[1.1rem] ml-auto">
 					<SignOutButton shy />
 				</p>
 			</nav>
@@ -129,8 +130,8 @@ function SignOutButton({ shy = false }) {
 	const { isAuth } = useAuth()
 
 	return shy === false || isAuth === true ?
-			<button
-				className="btn btn-ghost"
+			<Button
+				variant="outline"
 				type="button"
 				onClick={(event) => {
 					event.preventDefault()
@@ -139,7 +140,8 @@ function SignOutButton({ shy = false }) {
 				disabled={signOut.isPending || !isAuth}
 			>
 				Sign out
-			</button>
+				<LogOut className="ms-2 h-4 w-4" />
+			</Button>
 		:	null
 }
 
