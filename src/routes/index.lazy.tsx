@@ -1,10 +1,37 @@
 import { createLazyFileRoute, Link } from '@tanstack/react-router'
 import { GarlicBroccoli } from 'components/garlic'
 import { Button } from 'components/ui/button'
+import {
+	NavigationMenu,
+	NavigationMenuItem,
+	NavigationMenuList,
+} from 'components/ui/navigation-menu'
+import { Code, FileText, LogIn, UserPlus, UsersIcon } from 'lucide-react'
 
 export const Route = createLazyFileRoute('/')({
 	component: Index,
 })
+
+const className = 'mr-2 h-6 w-4'
+
+const footerNavigationItems = [
+	<a href="https://github.com/michaelsnook/sunlo-nextjs">
+		<Code className={className} />
+		GitHub
+	</a>,
+	<Link to="/privacy-policy" from="/">
+		<FileText className={className} />
+		Privacy Policy
+	</Link>,
+	<Link to="/login" from="/">
+		<LogIn className={className} />
+		Login
+	</Link>,
+	<Link to="/signup" from="/">
+		<UserPlus className={className} />
+		Signup
+	</Link>,
+]
 
 function Index() {
 	return (
@@ -58,7 +85,7 @@ function Index() {
 					<div className="card basis-80 bg-base-200 shadow-xl">
 						<div className="card-body">
 							<h3 className="card-title">
-								<SocialIcon /> Social Learning
+								<UsersIcon /> Social Learning
 							</h3>
 							<p>
 								We don&apos;t learn languages to earn gems or score points – we
@@ -277,22 +304,20 @@ function Index() {
 					</p>
 				</div>
 			</section>
-			<footer className="my-16 flex flex-row flex-wrap justify-center gap-8 pb-16 pt-4 @lg:pt-10">
-				<a
-					className="btn btn-ghost"
-					href="https://github.com/michaelsnook/sunlo-nextjs"
-				>
-					<CodeIcon /> &nbsp;GitHub
-				</a>
-				<a className="btn btn-ghost" href="/privacy-policy">
-					<PencilIcon /> &nbsp;Privacy Policy
-				</a>
-				<a className="btn btn-ghost" href="/login">
-					<LoginIcon /> &nbsp;Login
-				</a>
-				<a className="btn btn-ghost" href="/signup">
-					<SignupIcon /> &nbsp;Signup
-				</a>
+			<footer className="flex justify-center">
+				<NavigationMenu aria-label="Footer Navigation">
+					<NavigationMenuList className="my-16 flex flex-row flex-wrap justify-center gap-8 pb-16 pt-4 @lg:pt-10">
+						<>
+							{footerNavigationItems.map((item, i) => (
+								<NavigationMenuItem key={`nav-link-${i}`}>
+									<Button variant="ghost" asChild>
+										{item}
+									</Button>
+								</NavigationMenuItem>
+							))}
+						</>
+					</NavigationMenuList>
+				</NavigationMenu>
 			</footer>
 		</>
 	)
@@ -311,23 +336,6 @@ const PhraseIcon = () => (
 			strokeLinecap="round"
 			strokeLinejoin="round"
 			d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"
-		/>
-	</svg>
-)
-
-const SocialIcon = () => (
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		fill="none"
-		viewBox="0 0 24 24"
-		strokeWidth={1.5}
-		stroke="currentColor"
-		className="size-6"
-	>
-		<path
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"
 		/>
 	</svg>
 )
@@ -396,74 +404,6 @@ const FriendIcon = () => (
 			strokeLinecap="round"
 			strokeLinejoin="round"
 			d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z"
-		/>
-	</svg>
-)
-
-const CodeIcon = () => (
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		fill="none"
-		viewBox="0 0 24 24"
-		strokeWidth={1.5}
-		stroke="currentColor"
-		className="size-6"
-	>
-		<path
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"
-		/>
-	</svg>
-)
-
-const PencilIcon = () => (
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		fill="none"
-		viewBox="0 0 24 24"
-		strokeWidth={1.5}
-		stroke="currentColor"
-		className="size-6"
-	>
-		<path
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
-		/>
-	</svg>
-)
-
-const LoginIcon = () => (
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		fill="none"
-		viewBox="0 0 24 24"
-		strokeWidth={1.5}
-		stroke="currentColor"
-		className="size-6"
-	>
-		<path
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25"
-		/>
-	</svg>
-)
-
-const SignupIcon = () => (
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		fill="none"
-		viewBox="0 0 24 24"
-		strokeWidth={1.5}
-		stroke="currentColor"
-		className="size-6"
-	>
-		<path
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Zm1.294 6.336a6.721 6.721 0 0 1-3.17.789 6.721 6.721 0 0 1-3.168-.789 3.376 3.376 0 0 1 6.338 0Z"
 		/>
 	</svg>
 )
