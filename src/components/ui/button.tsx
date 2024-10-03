@@ -12,7 +12,7 @@ const buttonVariants = cva(
 				default:
 					'bg-primary text-white hover:opacity-70 aria-expanded:bg-primary transition-opacity',
 				soft: 'bg-base-300 hover:bg-primary/30',
-				ghost: 'hover:bg-base-100/20',
+				ghost: 'hover:bg-base-100/20 dark:hover:bg-white/10',
 				outline:
 					'border-primary border focus-within:ring active:ring text-primary dark:text-white hover:bg-primary/30',
 				white:
