@@ -15,7 +15,7 @@ import { Popover, PopoverContent, PopoverTrigger } from 'components/ui/popover'
 import { allLanguageOptions } from 'lib/languages'
 
 interface SelectOneLanguageProps {
-	hasError: boolean
+	hasError?: boolean
 	value: string
 	setValue: (value: string) => void
 	disabled?: string[]
@@ -23,7 +23,7 @@ interface SelectOneLanguageProps {
 }
 
 export function SelectOneLanguage({
-	hasError,
+	hasError = false,
 	value,
 	setValue,
 	disabled,

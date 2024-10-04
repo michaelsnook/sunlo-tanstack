@@ -12,6 +12,7 @@ import toast from 'react-hot-toast'
 import { ShowError } from 'components/errors'
 import { TranslationRow, SelectOption, PhraseFull } from 'types/main'
 import { PostgrestError, QueryResult } from '@supabase/supabase-js'
+import { Button } from './ui/button'
 
 interface ModalProps {
 	phrase: PhraseFull
@@ -76,15 +77,15 @@ export default function AddTranslationsModal({ phrase, close }: ModalProps) {
               Is there a more literal translation that might help understand the
               meaning?
             </div>*/}
-					<button
+					<Button
 						type="submit"
-						className="btn btn-primary"
+						variant="default"
 						disabled={addTranslation.isPending}
 					>
 						{addTranslation.isPending ?
 							<Loading />
 						:	`Submit translation`}
-					</button>
+					</Button>
 					<ShowError show={!!addTranslation.error}>
 						{addTranslation.error?.['code'] === '23505' ?
 							`This translation already exists for this phrase`
