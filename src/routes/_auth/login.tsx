@@ -1,10 +1,5 @@
 import { type FormEvent, useEffect } from 'react'
-import {
-	createFileRoute,
-	useNavigate,
-	useSearch,
-	Link,
-} from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 
@@ -12,6 +7,9 @@ import supabase from 'lib/supabase-client'
 import { cn } from 'lib/utils'
 import { useAuth } from 'lib/hooks'
 import { ShowError } from 'components/errors'
+import { Button } from 'components/ui/button'
+import { Label } from 'components/ui/label'
+import { Input } from 'components/ui/input'
 
 interface LoginSearchParams {
 	redirectedFrom?: string
@@ -75,18 +73,13 @@ export default function LoginForm() {
 					disabled={useLogin.isPending}
 				>
 					<div>
-						<label htmlFor="email">Email</label>
-						<input
+						<Label htmlFor="email">Email</Label>
+						<Input
 							id="email"
 							name="email"
 							required={true}
 							pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
-							// pattern = "[a-zA-Z0-9.+_-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+"
 							// aria-invalid={login.error?.email ? true : false}
-							className={cn(
-								// login.error?.email ? 'border-error/60' : '',
-								's-input'
-							)}
 							tabIndex={1}
 							type="email"
 							placeholder="email@domain"
@@ -94,40 +87,33 @@ export default function LoginForm() {
 					</div>
 					<div>
 						<p>
-							<label htmlFor="password">Password</label>
+							<Label htmlFor="password">Password</Label>
 						</p>
-						<input
+						<Input
 							id="password"
 							name="password"
 							required={true}
 							// aria-invalid={login.error?.password ? 'true' : 'false'}
-							className={cn(
-								's-input'
-								// login.error?.password ? 'border-error/60' : ''
-							)}
 							tabIndex={2}
 							type="password"
 							placeholder="* * * * * * * *"
 						/>
 					</div>
 					<div className="flex flex-row justify-between">
-						<button
+						<Button
 							tabIndex={3}
-							className="btn btn-primary"
+							variant="default"
 							type="submit"
 							disabled={useLogin.isPending}
 							aria-disabled={useLogin.isPending}
 						>
 							Log in
-						</button>
-						<Link
-							tabIndex={4}
-							to="/signup"
-							from={Route.fullPath}
-							className="btn btn-ghost"
-						>
-							Create account
-						</Link>
+						</Button>
+						<Button tabIndex={4} variant="soft" asChild>
+							<Link to="/signup" from={Route.fullPath}>
+								Create account
+							</Link>
+						</Button>
 					</div>
 					<ShowError show={!!useLogin.error}>
 						Problem logging in: {useLogin.error?.message}
