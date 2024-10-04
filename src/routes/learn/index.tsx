@@ -50,7 +50,7 @@ export default function Page() {
 							</Link>
 						</li>
 					))}
-					<div className="flex flex-col items-center py-6">
+					<div className="flex flex-col items-center py-6 dark">
 						<p>Starting something new?</p>
 						<Button variant="outline" asChild>
 							<Link to="/learn/add-deck" className="mt-2">
