@@ -18,7 +18,7 @@ const buttonVariants = cva(
 				white:
 					'bg-white hover:bg-primary text-primary hover:text-white border-primary border-2',
 				action:
-					'bg-primary text-white border-primary border-2 font-semibold sm:w-[60%] sm:mx-auto hover:opacity-90 hover:ring',
+					'bg-primary text-white border-primary border-2 font-semibold sm:min-w-[60%] sm:mx-auto hover:opacity-90 hover:ring',
 				destructive:
 					'bg-error text-white border-error border-2 hover:opacity-90 hover:ring',
 			},
@@ -26,7 +26,7 @@ const buttonVariants = cva(
 				default: 'h-10 px-4 py-2',
 				sm: 'h-10 rounded px-3 text-sm',
 				lg: 'h-11 rounded-md px-8 text-lg btn-lg',
-				icon: 'h-6 w-6',
+				icon: 'h-6 w-6 rounded-full',
 			},
 		},
 		defaultVariants: {

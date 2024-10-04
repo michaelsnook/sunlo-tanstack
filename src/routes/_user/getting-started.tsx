@@ -1,13 +1,16 @@
+import { Label } from '@radix-ui/react-dropdown-menu'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute, Link, ReactNode } from '@tanstack/react-router'
 import { ShowError } from 'components/errors'
 import Loading from 'components/loading'
 import SuccessCheckmark from 'components/SuccessCheckmark'
+import { Button } from 'components/ui/button'
+import { Input } from 'components/ui/input'
 import { useAuth } from 'lib/hooks'
 import languages from 'lib/languages'
 import supabase from 'lib/supabase-client'
 import { useProfile } from 'lib/use-profile'
-import { cn } from 'lib/utils'
+import { PlusIcon } from 'lucide-react'
 import { type FormEvent, SyntheticEvent, useState } from 'react'
 import toast from 'react-hot-toast'
 
@@ -123,19 +126,22 @@ function GettingStartedPage() {
 						tempUsernameToUse
 					) ?
 						<div className="my-6 flex flex-row-reverse items-center justify-around">
-							<button
+							<Button
 								onClick={(event: SyntheticEvent<HTMLButtonElement>): void => {
 									event.preventDefault()
 									mainForm.mutate()
 								}}
-								className="btn btn-accent md:btn-lg"
 								disabled={mainForm.isPending}
 							>
 								Confirm and get started!
-							</button>
-							<button onClick={reset} className="btn btn-primary">
+							</Button>
+							<Button
+								onClick={reset}
+								disabled={mainForm.isPending}
+								variant="outline"
+							>
 								Reset page
-							</button>
+							</Button>
 						</div>
 					:	<></>}
 				</div>
@@ -200,7 +206,7 @@ const SetPrimaryLanguageStep = ({ value, set }: SetValueStepProps) => {
 			>
 				<h2 className="h2">Set primary language</h2>
 				<div className="flex flex-col">
-					<label className="py-2 font-bold">The language you know best</label>
+					<Label className="py-2 font-bold">The language you know best</Label>
 					<select
 						value={value || ''}
 						name="language_primary"
@@ -276,9 +282,7 @@ const CreateFirstDeckStep = ({ value, set }: SetValueStepProps) => {
 					</p>
 				:	null}
 				<div className="flex flex-col">
-					<label className="py-2 font-bold">
-						The language you want to learn
-					</label>
+					<Label>The language you want to learn</Label>
 					<select
 						value={value || ''}
 						name="language_primary"
@@ -331,10 +335,8 @@ const SetUsernameStep = ({ value, set }: SetValueStepProps) => {
 			>
 				<h2 className="h2">Pick a username</h2>
 				<div className="flex flex-col">
-					<label className="py-2 font-bold">
-						Username for your public profile
-					</label>
-					<input
+					<Label>Username for your public profile</Label>
+					<Input
 						type="text"
 						className="s-input"
 						name="username"
@@ -345,9 +347,9 @@ const SetUsernameStep = ({ value, set }: SetValueStepProps) => {
 						}}
 					/>
 				</div>
-				<button className="btn btn-ghost my-4" type="submit">
-					Do the thing
-				</button>
+				<Button className="my-4" variant="default" type="submit">
+					Continue
+				</Button>
 			</form>
 }
 
@@ -357,28 +359,9 @@ interface XProps {
 }
 
 const X = ({ set, plus = false }: XProps) => (
-	<button
-		onClick={() => set()}
-		className={cn(
-			'btn btn-ghost block flex-none rounded-full',
-			plus ? 'rotate-45' : ''
-		)}
-	>
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			className="h-4 w-4 text-white"
-			fill="none"
-			viewBox="0 0 24 24"
-			stroke="currentColor"
-		>
-			<path
-				strokeLinecap="round"
-				strokeLinejoin="round"
-				strokeWidth={2}
-				d="M6 18L18 6M6 6l12 12"
-			/>
-		</svg>
-	</button>
+	<Button onClick={() => set()} size="icon" variant="ghost">
+		<PlusIcon className={plus ? '' : 'rotate-45'} />
+	</Button>
 )
 
 const Completed = ({ children }: { children: Array<ReactNode> }) => (
