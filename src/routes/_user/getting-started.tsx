@@ -3,8 +3,8 @@ import toast from 'react-hot-toast'
 import { createFileRoute, Link, ReactNode } from '@tanstack/react-router'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import { ArrowLeftIcon, PlusIcon } from 'lucide-react'
-import { Button } from 'components/ui/button'
+import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from 'lucide-react'
+import { Button, buttonVariants } from 'components/ui/button'
 import { Input } from 'components/ui/input'
 import { Label } from 'components/ui/label'
 
@@ -112,7 +112,7 @@ function GettingStartedPage() {
 		<>
 			<main className="p2 text-white md:p-6 lg:p-10">
 				<h1 className="d1 @md:text-center">Welcome to Sunlo</h1>
-				<div className="w-app">
+				<div className="w-app space-y-10">
 					<p className="my-4 mb-10 text-2xl @md:text-center">
 						Let&apos;s get started
 					</p>
@@ -127,7 +127,17 @@ function GettingStartedPage() {
 						(tempDeckToAdd || deckLanguages?.length > 0) &&
 						tempUsernameToUse
 					) ?
-						<div className="my-6 flex flex-row-reverse items-center justify-around">
+						<div className="flex flex-row items-center justify-between">
+							<Button
+								onClick={(event: SyntheticEvent<HTMLButtonElement>): void => {
+									event.preventDefault()
+									mainForm.mutate()
+								}}
+								size="lg"
+								disabled={mainForm.isPending}
+							>
+								Confirm and get started!
+							</Button>
 							<Button
 								onClick={reset}
 								disabled={mainForm.isPending}
@@ -135,30 +145,21 @@ function GettingStartedPage() {
 							>
 								Reset page
 							</Button>
-							<Button
-								onClick={(event: SyntheticEvent<HTMLButtonElement>): void => {
-									event.preventDefault()
-									mainForm.mutate()
-								}}
-								disabled={mainForm.isPending}
-							>
-								Confirm and get started!
-							</Button>
 						</div>
 					:	<></>}
+					{!profile.data?.uid ? null : (
+						<div className="">
+							<Link to="/profile" className="s-link text-xl" tabIndex={-1}>
+								<ArrowLeftIcon className="inline-block w-4 h-4 ml-1" />
+								Back to profile page
+							</Link>
+						</div>
+					)}
+					<ShowError show={!!mainForm?.error}>
+						Problem inserting profile or making deck:{' '}
+						{mainForm?.error?.message || 'unknown error, sorry. call m.'}
+					</ShowError>
 				</div>
-				{!profile.data?.uid ? null : (
-					<div className="w-full text-center">
-						<Link to="/profile" className="s-link text-xl" tabIndex={-1}>
-							<ArrowLeftIcon className="inline-block w-4 h-4 ml-1" />
-							Back to profile page
-						</Link>
-					</div>
-				)}
-				<ShowError show={!!mainForm?.error}>
-					Problem inserting profile or making deck:{' '}
-					{mainForm?.error?.message || 'unknown error, sorry. call m.'}
-				</ShowError>
 			</main>
 		</>
 	)
@@ -171,21 +172,30 @@ function ShowSuccess({ tempDeckToAdd }: { tempDeckToAdd?: string }) {
 				<SuccessCheckmark />
 				<h1 className="h1">You&apos;re all set!</h1>
 			</div>
-			<div className="flex flex-col space-y-4">
+			<div className="space-y-4 text-center">
 				{typeof tempDeckToAdd === 'string' ?
-					<Link
-						to={`/learn/$lang`}
-						params={{ lang: tempDeckToAdd }}
-						from={Route.fullPath}
-						className="btn btn-secondary mx-auto"
-					>
-						Get started learning {languages[tempDeckToAdd]}
-						&nbsp;&rarr;
-					</Link>
+					<p>
+						<Link
+							to={`/learn/$lang`}
+							params={{ lang: tempDeckToAdd }}
+							from={Route.fullPath}
+							className={buttonVariants({ variant: 'action', size: 'lg' })}
+						>
+							Get started learning {languages[tempDeckToAdd]}
+							<ArrowRightIcon className="w-4 h-4 ml-2" />
+						</Link>
+					</p>
 				:	null}
-				<Link to="/profile" className="btn btn-ghost mx-auto">
-					Go to your profile&nbsp;&rarr;
-				</Link>
+				<p>
+					<Link
+						to="/profile"
+						from={Route.fullPath}
+						className={buttonVariants({ variant: 'outline' })}
+					>
+						Go to your profile
+						<ArrowRightIcon className="w-4 h-4 ml-2" />
+					</Link>
+				</p>
 			</div>
 		</main>
 	)
@@ -206,7 +216,7 @@ const SetPrimaryLanguageStep = ({ value, set }: SetValueStepProps) => {
 				<X set={() => setClosed(false)} />
 			</Completed>
 		:	<form
-				className="card-white mb-16"
+				className="card-white"
 				onSubmit={(e: FormEvent<HTMLFormElement>) => {
 					e.preventDefault()
 					setClosed(true)
@@ -281,7 +291,7 @@ const CreateFirstDeckStep = ({ value, set }: SetValueStepProps) => {
 					}}
 				/>
 			</Completed>
-		:	<form className="card-white mb-16">
+		:	<form className="card-white">
 				<h2 className="h2">
 					Create {langs.length === 0 ? 'your first deck' : 'another deck'}
 				</h2>
@@ -336,7 +346,7 @@ const SetUsernameStep = ({ value, set }: SetValueStepProps) => {
 				<X set={() => setClosed(false)} />
 			</Completed>
 		:	<form
-				className="card-white mb-16"
+				className="card-white"
 				onSubmit={(e: FormEvent<HTMLFormElement>) => {
 					e.preventDefault()
 					// @ts-expect-error
@@ -368,7 +378,13 @@ interface XProps {
 }
 
 const X = ({ set, plus = false }: XProps) => (
-	<Button onClick={() => set()} size="icon" variant="ghost">
+	<Button
+		onClick={() => set()}
+		size="icon"
+		variant="ghost"
+		asChild
+		className="h-10 w-10 p-2"
+	>
 		<PlusIcon className={plus ? '' : 'rotate-45'} />
 	</Button>
 )
