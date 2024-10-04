@@ -3,6 +3,9 @@ import { useMutation } from '@tanstack/react-query'
 import { toast } from 'react-hot-toast'
 import supabase from 'lib/supabase-client'
 import { ShowError } from 'components/errors'
+import { Label } from 'components/ui/label'
+import { Input } from 'components/ui'
+import { UploadIcon } from 'lucide-react'
 
 const avatarFullUrl = (fullPath: string): string =>
 	`https://hepudeougzlgnuqvybrj.supabase.co/storage/v1/object/public/${fullPath}`
@@ -60,7 +63,7 @@ export default function AvatarEditor({ url, onUpload }: AvatarEditorProps) {
 
 	return (
 		<div className="relative h-40 flex-shrink border border-dashed p-2">
-			<label
+			<Label
 				htmlFor="avatarUploadInput"
 				className="fit-content relative z-10 flex h-full flex-col rounded text-center"
 			>
@@ -74,7 +77,7 @@ export default function AvatarEditor({ url, onUpload }: AvatarEditorProps) {
 						/>
 					</span>
 				)}
-				<input
+				<Input
 					className="z-90 absolute bottom-0 left-0 right-0 top-0 opacity-0"
 					type="file"
 					id="avatarUploadInput"
@@ -83,13 +86,20 @@ export default function AvatarEditor({ url, onUpload }: AvatarEditorProps) {
 					onChange={sendImage.mutate}
 					disabled={sendImage.isPending}
 				/>
-				<div className="fit-content absolute bottom-0 left-0 right-0 top-0 flex h-full flex-col justify-center bg-base-100/50 opacity-0 backdrop-blur hover:opacity-100">
-					<h3 className="text-base-content">drag &amp; drop image or</h3>
-					<a className="btn btn-primary mx-auto">
-						{sendImage.isPending ? 'Uploading ...' : 'Browse Files'}
-					</a>
+				<div className="absolute flex h-full flex-col justify-center bg-base-100/50 opacity-0 backdrop-blur hover:opacity-100">
+					<p className="text-base-content place-content-center">
+						{sendImage.isPending ?
+							<>Uploading ...</>
+						:	<>
+								<UploadIcon className="mx-auto h-6 w-6 mb-2" />
+								<span>
+									drag & drop an image or click here to browse your files
+								</span>
+							</>
+						}
+					</p>
 				</div>
-			</label>
+			</Label>
 			<ShowError show={!!sendImage.error}>
 				Error uploading image: {sendImage.error?.message}
 			</ShowError>
