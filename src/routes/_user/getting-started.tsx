@@ -1,18 +1,20 @@
-import { Label } from '@radix-ui/react-dropdown-menu'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { createFileRoute, Link, ReactNode } from '@tanstack/react-router'
-import { ShowError } from 'components/errors'
-import Loading from 'components/loading'
-import SuccessCheckmark from 'components/SuccessCheckmark'
-import { Button } from 'components/ui/button'
-import { Input } from 'components/ui/input'
-import { useAuth } from 'lib/hooks'
-import languages from 'lib/languages'
-import supabase from 'lib/supabase-client'
-import { useProfile } from 'lib/use-profile'
-import { ArrowLeftIcon, PlusIcon } from 'lucide-react'
 import { type FormEvent, SyntheticEvent, useState } from 'react'
 import toast from 'react-hot-toast'
+import { createFileRoute, Link, ReactNode } from '@tanstack/react-router'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+
+import { ArrowLeftIcon, PlusIcon } from 'lucide-react'
+import { Button } from 'components/ui/button'
+import { Input } from 'components/ui/input'
+import { Label } from 'components/ui/label'
+
+import supabase from 'lib/supabase-client'
+import { useAuth } from 'lib/hooks'
+import { useProfile } from 'lib/use-profile'
+import { ShowError } from 'components/errors'
+import Loading from 'components/loading'
+import languages from 'lib/languages'
+import SuccessCheckmark from 'components/SuccessCheckmark'
 
 export const Route = createFileRoute('/_user/getting-started')({
 	component: GettingStartedPage,
@@ -346,7 +348,6 @@ const SetUsernameStep = ({ value, set }: SetValueStepProps) => {
 					<Label>Username for your public profile</Label>
 					<Input
 						type="text"
-						className="s-input"
 						name="username"
 						placeholder="Lernie McSanders"
 						value={value || ''}
