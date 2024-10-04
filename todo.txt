@@ -1,9 +1,10 @@
 ISSUES
-1. auth guard is always redirecting to login and back
+
 
 RADIX
 1. ✅ replace the DaisyUI expandos
 		tweak it so you can click without open-close (no bubble)
+1. Replace all the buttons, labels, and inputs
 
 PRIMARY CARD INTERACTIONS
 1. bring over the new structure for relations
@@ -30,8 +31,11 @@ UX
 1. When a loader awaits, this is a time to show blank shell and transition in
 
 BETTER FORMS
-1. Try Zod https://v0.dev/chat/cddhdPsiX7x (this ex is for login form inputs)
-1. Try react-formal https://jquense.github.io/react-formal/getting-started/
+1. ✅ Try Zod https://v0.dev/chat/cddhdPsiX7x (this ex is for login form inputs)
+1. ✅ Try react-formal https://jquense.github.io/react-formal/getting-started/
+1. ✅ Try tanstack-form https://tanstack.com/form/latest/getting-started/react/overview
+1. Convert the login form to use tanstack-form (with error handling)
+1. Convert the signup form to use tanstack-form (with error handling)
 
 DATA LOADING
 1. ✅ replace useLang with router feature
