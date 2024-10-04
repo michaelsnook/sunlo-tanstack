@@ -10,7 +10,7 @@ import { useAuth } from 'lib/hooks'
 import languages from 'lib/languages'
 import supabase from 'lib/supabase-client'
 import { useProfile } from 'lib/use-profile'
-import { PlusIcon } from 'lucide-react'
+import { ArrowLeftIcon, PlusIcon } from 'lucide-react'
 import { type FormEvent, SyntheticEvent, useState } from 'react'
 import toast from 'react-hot-toast'
 
@@ -127,6 +127,13 @@ function GettingStartedPage() {
 					) ?
 						<div className="my-6 flex flex-row-reverse items-center justify-around">
 							<Button
+								onClick={reset}
+								disabled={mainForm.isPending}
+								variant="outline"
+							>
+								Reset page
+							</Button>
+							<Button
 								onClick={(event: SyntheticEvent<HTMLButtonElement>): void => {
 									event.preventDefault()
 									mainForm.mutate()
@@ -135,16 +142,17 @@ function GettingStartedPage() {
 							>
 								Confirm and get started!
 							</Button>
-							<Button
-								onClick={reset}
-								disabled={mainForm.isPending}
-								variant="outline"
-							>
-								Reset page
-							</Button>
 						</div>
 					:	<></>}
 				</div>
+				{!profile.data?.uid ? null : (
+					<div className="w-full text-center">
+						<Link to="/profile" className="s-link text-xl" tabIndex={-1}>
+							<ArrowLeftIcon className="inline-block w-4 h-4 ml-1" />
+							Back to profile page
+						</Link>
+					</div>
+				)}
 				<ShowError show={!!mainForm?.error}>
 					Problem inserting profile or making deck:{' '}
 					{mainForm?.error?.message || 'unknown error, sorry. call m.'}
