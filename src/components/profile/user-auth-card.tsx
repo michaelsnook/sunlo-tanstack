@@ -1,4 +1,7 @@
+import { Label } from '@radix-ui/react-dropdown-menu'
 import { Link } from '@tanstack/react-router'
+import { Button } from 'components/ui/button'
+import { Input } from 'components/ui/input'
 import { useAuth } from 'lib/hooks'
 
 export default function UserAuthCard() {
@@ -6,39 +9,29 @@ export default function UserAuthCard() {
 
 	return (
 		<>
-			<div className="flex w-full flex-col">
-				<label className="px-3 font-bold">Your email</label>
-				<div className="flex flex-row gap-4">
-					<input
-						type="text"
-						className="flex-grow rounded border bg-base-300 p-3 text-base-content/70"
-						value={userEmail ?? 'loading...'}
-						disabled
-					/>
-					<Link
-						to="/profile/change-email"
-						className="btn btn-link hover:bg-base-200"
-					>
-						Change
-					</Link>
-				</div>
+			<Label>Your email</Label>
+			<div className="flex flex-row gap-2">
+				<Input
+					type="text"
+					className="flex-grow rounded border bg-base-300 p-3 text-base-content/70"
+					value={userEmail ?? 'loading...'}
+					disabled
+				/>
+				<Button variant="soft" className="my-auto" asChild>
+					<Link to="/profile/change-email">Change</Link>
+				</Button>
 			</div>
-			<div className="flex flex-col">
-				<label className="px-3 font-bold">Your password</label>
-				<div className="flex flex-row gap-4">
-					<input
-						type="text"
-						className="flex-grow rounded border bg-base-300 p-3 text-base-content/70"
-						value="***************"
-						disabled
-					/>
-					<Link
-						to="/profile/change-password"
-						className="btn btn-link hover:bg-base-200"
-					>
-						Change
-					</Link>
-				</div>
+			<Label>Your password</Label>
+			<div className="flex flex-row gap-2">
+				<Input
+					type="text"
+					className="flex-grow rounded border bg-base-300 p-3 text-base-content/70"
+					value="***************"
+					disabled
+				/>
+				<Button variant="soft" className="my-auto" asChild>
+					<Link to="/profile/change-password">Change</Link>
+				</Button>
 			</div>
 		</>
 	)
