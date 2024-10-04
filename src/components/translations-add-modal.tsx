@@ -70,7 +70,7 @@ export default function AddTranslationsModal({ phrase, close }: ModalProps) {
 					</div>
 					<div className="form-control">
 						<label>What is the translation?</label>
-						<textarea className="s-input" name="translation_text" />
+						<textarea name="translation_text" />
 					</div>
 					{/*<div className="text-sm">
               Is there a more literal translation that might help understand the
