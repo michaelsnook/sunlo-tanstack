@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { ShowError } from 'components/errors'
 import { SelectOneLanguage } from 'components/select-one-language'
+import { Button } from 'components/ui/button'
 import { useNewDeckMutation } from 'lib/mutate-deck'
 import { useProfile } from 'lib/use-profile'
 import { useState } from 'react'
@@ -28,8 +29,8 @@ function NewDeckForm() {
 	}
 
 	return (
-		<main className="w-app space-y-4 py-6 px-2">
-			<form name="new-deck" onSubmit={handleSubmit}>
+		<main className="w-app px-3 @sm:px-[6%] space-y-4 py-6">
+			<form name="new-deck" onSubmit={handleSubmit} className="max-w-[30rem]">
 				<h2 className="h3">What language would you like to learn?</h2>
 				<SelectOneLanguage
 					value={lang}
@@ -37,13 +38,14 @@ function NewDeckForm() {
 					disabled={deckLanguages}
 				/>
 
-				<button
+				<Button
 					type="submit"
-					className="btn btn-primary my-6 rounded"
+					variant="default"
+					className="my-6"
 					disabled={createNewDeck.isPending}
 				>
 					{createNewDeck.isPending ? 'Starting...' : 'Start learning'}
-				</button>
+				</Button>
 			</form>
 			<ShowError>{createNewDeck.error?.message}</ShowError>
 		</main>
