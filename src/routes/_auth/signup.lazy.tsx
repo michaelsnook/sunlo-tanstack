@@ -5,8 +5,9 @@ import { useMutation } from '@tanstack/react-query'
 import { cn } from 'lib/utils'
 import { ShowError } from 'components/errors'
 import supabase from 'lib/supabase-client'
-import { Session } from 'inspector/promises'
 import toast from 'react-hot-toast'
+import { Button } from 'components/ui/button'
+import { Input, Label } from 'components/ui'
 
 export const Route = createLazyFileRoute('/_auth/signup')({
 	component: SignUp,
@@ -53,13 +54,12 @@ function SignUp() {
 				>
 					<div>
 						<p>
-							<label htmlFor="email">Email</label>
+							<Label htmlFor="email">Email</Label>
 						</p>
-						<input
+						<Input
 							id="email"
 							name="email"
 							required={true}
-							className={cn('s-input')}
 							tabIndex={1}
 							type="email"
 							placeholder="email@domain"
@@ -67,28 +67,27 @@ function SignUp() {
 					</div>
 					<div>
 						<p>
-							<label htmlFor="password">Password</label>
+							<Label htmlFor="password">Password</Label>
 						</p>
-						<input
+						<Input
 							id="password"
 							name="password"
 							required={true}
-							className={cn('s-input')}
 							tabIndex={2}
 							type="password"
 							placeholder="* * * * * * * *"
 						/>
 					</div>
 					<div className="flex flex-row justify-between">
-						<button
+						<Button
 							tabIndex={3}
-							className="btn btn-primary"
+							variant="default"
 							type="submit"
 							disabled={useSignUp.isPending}
 							aria-disabled={useSignUp.isPending}
 						>
 							Sign Up
-						</button>
+						</Button>
 						<Link tabIndex={4} to="/login" className="btn btn-ghost">
 							Already have an account?
 						</Link>
