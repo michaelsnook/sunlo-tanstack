@@ -6,7 +6,7 @@ import { useDeck, useDeckMeta } from 'lib/use-deck'
 import { useLanguage } from 'lib/use-language'
 import { useProfile } from 'lib/use-profile'
 import ModalWithOpener from 'components/modal-with-opener'
-import { Button } from 'components/ui/button'
+import { buttonVariants } from 'components/ui/button'
 import { LanguagePhrasesAccordionComponent } from 'components/language-phrases-accordion'
 
 export const Route = createFileRoute('/learn/$lang/')({
@@ -59,11 +59,15 @@ function Page() {
 				factors, so we are really just trying to push them toward starting a
 				"review" session.
 			</p>
-			<Button variant="action" asChild>
-				<Link to="/learn/$lang/review" params={{ lang }} from={Route.fullPath}>
-					Time To Start Today&apos;s Deck
-				</Link>
-			</Button>
+
+			<Link
+				to="/learn/$lang/review"
+				params={{ lang }}
+				from={Route.fullPath}
+				className={buttonVariants({ variant: 'action' })}
+			>
+				Time To Start Today&apos;s Deck
+			</Link>
 
 			<div className="space-y-4">
 				{!lang ?

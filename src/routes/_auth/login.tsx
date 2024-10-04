@@ -4,10 +4,9 @@ import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 
 import supabase from 'lib/supabase-client'
-import { cn } from 'lib/utils'
 import { useAuth } from 'lib/hooks'
 import { ShowError } from 'components/errors'
-import { Button } from 'components/ui/button'
+import { Button, buttonVariants } from 'components/ui/button'
 import { Label } from 'components/ui/label'
 import { Input } from 'components/ui/input'
 
@@ -109,11 +108,15 @@ export default function LoginForm() {
 						>
 							Log in
 						</Button>
-						<Button tabIndex={4} variant="soft" asChild>
-							<Link to="/signup" from={Route.fullPath}>
-								Create account
-							</Link>
-						</Button>
+
+						<Link
+							to="/signup"
+							from={Route.fullPath}
+							className={buttonVariants({ variant: 'soft' })}
+							tabIndex={4}
+						>
+							Create account
+						</Link>
 					</div>
 					<ShowError show={!!useLogin.error}>
 						Problem logging in: {useLogin.error?.message}
