@@ -20,7 +20,6 @@ import AvatarEditor from './avatar-editor'
 import SelectMultipleLanguagesInput from 'components/select-multiple-languages'
 import { SelectOneLanguage } from 'components/select-one-language'
 import { FieldInfo } from 'components/field-info'
-import { cn } from 'lib/utils'
 
 const profileEditFormSchema = z.object({
 	username: z
@@ -113,11 +112,10 @@ function PrefilledForm({ initialData, uid }: PrefilledFormProps) {
 							<Input
 								type="text"
 								tabIndex={1}
-								className={cn(
-									's-input',
+								className={
 									!!field.state.meta.errors.length &&
-										'border-error outline-error ring-error forcus:ring-error'
-								)}
+									'border-error outline-error ring-error forcus:ring-error'
+								}
 								id={field.name}
 								name={field.name}
 								value={field.state.value}
