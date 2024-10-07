@@ -1,14 +1,17 @@
-import { z } from 'zod'
-
 import { Link, createLazyFileRoute, useRouter } from '@tanstack/react-router'
 import { useMutation } from '@tanstack/react-query'
 import { useForm } from '@tanstack/react-form'
-import { ShowError } from 'components/errors'
-import supabase from 'lib/supabase-client'
-import toast from 'react-hot-toast'
-import { Button, buttonVariants } from 'components/ui/button'
-import { Input, Label } from 'components/ui'
+import { z } from 'zod'
 import { zodValidator } from '@tanstack/zod-form-adapter'
+import toast from 'react-hot-toast'
+
+import { Button, buttonVariants } from 'components/ui/button'
+import { Input } from 'components/ui/input'
+import { Label } from 'components/ui/label'
+
+import supabase from 'lib/supabase-client'
+import { ShowError } from 'components/errors'
+import { LabelInputInfo } from 'components/LabelInputInfo'
 
 export const Route = createLazyFileRoute('/_auth/signup')({
 	component: SignUp,
@@ -21,7 +24,8 @@ const SignUpSchema = z.object({
 
 const useSignUp = () =>
 	useMutation({
-		mutationFn: async (values: FormData) => {
+		mutationKey: ['signup'],
+		mutationFn: async (values: z.infer<typeof SignUpSchema>) => {
 			const { email, password } = SignUpSchema.parse(values)
 			const { data, error } = await supabase.auth.signUp({
 				email,
@@ -45,7 +49,7 @@ const useSignUp = () =>
 
 function SignUp() {
 	const router = useRouter()
-	const useSignupMutation = useSignUp()
+	const signupMutation = useSignUp()
 
 	const form = useForm<z.infer<typeof SignUpSchema>>({
 		defaultValues: {
@@ -57,8 +61,8 @@ function SignUp() {
 			onSubmit: SignUpSchema,
 			onChange: SignUpSchema,
 		},
-		onSubmit: (values) => {
-			useSignupMutation.mutate(values, {
+		onSubmit: ({ value }) => {
+			signupMutation.mutate(value, {
 				onSuccess: (data) => {
 					toast.success(`Signed up as ${data.user?.email}`, {
 						position: 'bottom-center',
@@ -80,54 +84,64 @@ function SignUp() {
 					e.stopPropagation()
 					form.handleSubmit()
 				}}
+				noValidate
 			>
 				<fieldset
 					className="flex flex-col gap-y-4"
-					disabled={useSignUp.isPending}
+					disabled={signupMutation.isPending}
 				>
 					<form.Field
 						name="email"
-						children={(field) => (
-							<div>
-								<p>
-									<Label htmlFor={field.name}>Email</Label>
-								</p>
-								<Input
-									id={field.name}
-									name={field.name}
-									required={true}
-									tabIndex={1}
-									type="email"
-									placeholder="email@domain"
-								/>
-							</div>
-						)}
+						children={(field) => {
+							const showAsError =
+								field.state.meta.errors.length > 0 && field.state.meta.isDirty
+							return (
+								<LabelInputInfo field={field} label="Email">
+									<Input
+										id={field.name}
+										name={field.name}
+										inputMode="email"
+										aria-invalid={showAsError}
+										className={showAsError ? 'bg-error/20' : ''}
+										required={true}
+										tabIndex={1}
+										type="email"
+										onChange={(e) => field.handleChange(e.target.value)}
+										placeholder="email@domain"
+									/>
+								</LabelInputInfo>
+							)
+						}}
 					/>
 					<form.Field
 						name="password"
-						children={(field) => (
-							<div>
-								<p>
-									<Label htmlFor={field.name}>Password</Label>
-								</p>
-								<Input
-									id={field.name}
-									name={field.name}
-									required={true}
-									tabIndex={2}
-									type="password"
-									placeholder="* * * * * * * *"
-								/>
-							</div>
-						)}
+						children={(field) => {
+							const showAsError =
+								field.state.meta.errors.length > 0 && field.state.meta.isDirty
+							return (
+								<LabelInputInfo field={field} label="Password">
+									<Input
+										id={field.name}
+										name={field.name}
+										aria-invalid={showAsError}
+										className={showAsError ? 'bg-error/20' : ''}
+										required={true}
+										tabIndex={2}
+										type="password"
+										onChange={(e) => field.handleChange(e.target.value)}
+										placeholder="* * * * * * * *"
+									/>
+								</LabelInputInfo>
+							)
+						}}
 					/>
 					<div className="flex flex-row justify-between">
 						<Button
 							tabIndex={3}
 							variant="default"
 							type="submit"
-							disabled={useSignUp.isPending}
-							aria-disabled={useSignUp.isPending}
+							disabled={signupMutation.isPending}
+							aria-disabled={signupMutation.isPending}
 						>
 							Sign Up
 						</Button>
@@ -139,8 +153,8 @@ function SignUp() {
 							Already have an account?
 						</Link>
 					</div>
-					<ShowError show={!!useSignUp.error}>
-						Problem signing up: {useSignUp.error?.message}
+					<ShowError show={!!signupMutation.error}>
+						Problem signing up: {signupMutation.error?.message}
 					</ShowError>
 				</fieldset>
 			</form>
