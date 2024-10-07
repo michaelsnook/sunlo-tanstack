@@ -66,6 +66,9 @@
 		padding-top: env(safe-area-inset-top);
 		padding-bottom: env(safe-area-inset-bottom);
 	}
+	main {
+		@apply px-1;
+	}
 }
 
 @layer components {

@@ -109,59 +109,57 @@ function GettingStartedPage() {
 	const { deckLanguages } = profile.data
 
 	return (
-		<>
-			<main className="p2 text-white md:p-6 lg:p-10">
-				<h1 className="d1 @md:text-center">Welcome to Sunlo</h1>
-				<div className="w-app space-y-10">
-					<p className="my-4 mb-10 text-2xl @md:text-center">
-						Let&apos;s get started
-					</p>
-					<SetUsernameStep value={tempUsernameToUse} set={setTempUsername} />
-					<SetPrimaryLanguageStep
-						value={tempLanguagePrimaryToUse}
-						set={setTempLanguagePrimary}
-					/>
-					<CreateFirstDeckStep value={tempDeckToAdd} set={setTempDeckToAdd} />
-					{(
-						tempLanguagePrimaryToUse &&
-						(tempDeckToAdd || deckLanguages?.length > 0) &&
-						tempUsernameToUse
-					) ?
-						<div className="flex flex-row items-center justify-between">
-							<Button
-								onClick={(event: SyntheticEvent<HTMLButtonElement>): void => {
-									event.preventDefault()
-									mainForm.mutate()
-								}}
-								size="lg"
-								disabled={mainForm.isPending}
-							>
-								Confirm and get started!
-							</Button>
-							<Button
-								onClick={reset}
-								disabled={mainForm.isPending}
-								variant="outline"
-							>
-								Reset page
-							</Button>
-						</div>
-					:	<></>}
-					{!profile.data?.uid ? null : (
-						<div className="">
-							<Link to="/profile" className="s-link text-xl" tabIndex={-1}>
-								<ArrowLeftIcon className="inline-block w-4 h-4 ml-1" />
-								Back to profile page
-							</Link>
-						</div>
-					)}
-					<ShowError show={!!mainForm?.error}>
-						Problem inserting profile or making deck:{' '}
-						{mainForm?.error?.message || 'unknown error, sorry. call m.'}
-					</ShowError>
-				</div>
-			</main>
-		</>
+		<main className="text-white p-4 @md:p-6 @lg:p-10 pb-10">
+			<h1 className="d1 @md:text-center">Welcome to Sunlo</h1>
+			<div className="w-app space-y-10">
+				<p className="my-4 mb-10 text-2xl @md:text-center">
+					Let&apos;s get started
+				</p>
+				<SetUsernameStep value={tempUsernameToUse} set={setTempUsername} />
+				<SetPrimaryLanguageStep
+					value={tempLanguagePrimaryToUse}
+					set={setTempLanguagePrimary}
+				/>
+				<CreateFirstDeckStep value={tempDeckToAdd} set={setTempDeckToAdd} />
+				{(
+					tempLanguagePrimaryToUse &&
+					(tempDeckToAdd || deckLanguages?.length > 0) &&
+					tempUsernameToUse
+				) ?
+					<div className="flex flex-col @md:flex-row items-center md:justify-between gap-4">
+						<Button
+							onClick={(event: SyntheticEvent<HTMLButtonElement>): void => {
+								event.preventDefault()
+								mainForm.mutate()
+							}}
+							size="lg"
+							disabled={mainForm.isPending}
+						>
+							Confirm and get started!
+						</Button>
+						<Button
+							onClick={reset}
+							disabled={mainForm.isPending}
+							variant="outline"
+						>
+							Reset page
+						</Button>
+					</div>
+				:	<></>}
+				{!profile.data?.uid ? null : (
+					<div className="text-center @md:text-start">
+						<Link to="/profile" className="s-link text-xl" tabIndex={-1}>
+							<ArrowLeftIcon className="inline-block w-4 h-4 ml-1" />
+							Back to profile page
+						</Link>
+					</div>
+				)}
+				<ShowError show={!!mainForm?.error}>
+					Problem inserting profile or making deck:{' '}
+					{mainForm?.error?.message || 'unknown error, sorry. call m.'}
+				</ShowError>
+			</div>
+		</main>
 	)
 }
 
