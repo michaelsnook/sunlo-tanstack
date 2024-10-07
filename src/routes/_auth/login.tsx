@@ -2,16 +2,16 @@ import { useLayoutEffect } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useMutation } from '@tanstack/react-query'
 import { z } from 'zod'
-import { FieldApi, useForm } from '@tanstack/react-form'
+import { useForm } from '@tanstack/react-form'
 import { zodValidator } from '@tanstack/zod-form-adapter'
 import toast from 'react-hot-toast'
 
+import { Input } from 'components/ui/input'
+import { Button, buttonVariants } from 'components/ui/button'
 import supabase from 'lib/supabase-client'
 import { useAuth } from 'lib/hooks'
 import { ShowError } from 'components/errors'
-import { Button, buttonVariants } from 'components/ui/button'
-import { Label } from 'components/ui/label'
-import { Input } from 'components/ui/input'
+import { LabelInputInfo } from 'components/LabelInputInfo'
 
 export const Route = createFileRoute('/_auth/login')({
 	validateSearch: (search: Record<string, unknown>): LoginSearchParams => {
@@ -21,25 +21,6 @@ export const Route = createFileRoute('/_auth/login')({
 	},
 	component: LoginForm,
 })
-
-interface LabelInputInfoProps {
-	field: FieldApi<any, any, any, any, any>
-	label: string
-	children: React.ReactNode
-}
-
-const LabelInputInfo = ({ field, label, children }: LabelInputInfoProps) => {
-	const error = field.state.meta.errors.join(', ')
-	return (
-		<div>
-			<Label className={error ? 'text-error' : ''} htmlFor={field.name}>
-				{label}
-			</Label>
-			{children}
-			{!error ? null : <p className="text-sm text-error">{error}</p>}
-		</div>
-	)
-}
 
 interface LoginSearchParams {
 	redirectedFrom?: string
@@ -125,7 +106,8 @@ export default function LoginForm() {
 					<form.Field
 						name="email"
 						children={(field) => {
-							const showAsError = field.state.meta.errors.length > 0
+							const showAsError =
+								field.state.meta.errors.length > 0 && field.state.meta.isDirty
 							return (
 								<LabelInputInfo field={field} label="Email">
 									<Input
@@ -133,9 +115,7 @@ export default function LoginForm() {
 										name={field.name}
 										inputMode="email"
 										aria-invalid={showAsError}
-										className={
-											showAsError ? 'border-error border-2 bg-red-500' : ''
-										}
+										className={showAsError ? 'bg-error/20' : ''}
 										tabIndex={1}
 										type="email"
 										onChange={(e) => field.handleChange(e.target.value)}
@@ -147,21 +127,26 @@ export default function LoginForm() {
 					/>
 					<form.Field
 						name="password"
-						children={(field) => (
-							<LabelInputInfo field={field} label="Password">
-								<Input
-									id={field.name}
-									name={field.name}
-									inputMode="text"
-									required={true}
-									aria-invalid={field.state.meta.errors.length > 0}
-									tabIndex={2}
-									type="password"
-									onChange={(e) => field.handleChange(e.target.value)}
-									placeholder="* * * * * * * *"
-								/>
-							</LabelInputInfo>
-						)}
+						children={(field) => {
+							const showAsError =
+								field.state.meta.errors.length > 0 && field.state.meta.isDirty
+							return (
+								<LabelInputInfo field={field} label="Password">
+									<Input
+										id={field.name}
+										name={field.name}
+										inputMode="text"
+										required={true}
+										aria-invalid={field.state.meta.errors.length > 0}
+										className={showAsError ? 'bg-error/20' : ''}
+										tabIndex={2}
+										type="password"
+										onChange={(e) => field.handleChange(e.target.value)}
+										placeholder="* * * * * * * *"
+									/>
+								</LabelInputInfo>
+							)
+						}}
 					/>
 					<div className="flex flex-row justify-between">
 						<Button

@@ -104,8 +104,6 @@ function GettingStartedPage() {
 
 	// if (mainForm.error) console.log(`Error logging:`, mainForm)
 	if (mainForm.isSuccess) return <ShowSuccess tempDeckToAdd={tempDeckToAdd} />
-	if (profile.isPending) return <Loading />
-	if (!profile.data) return <>no data; you are nicht profile-y: "{userId}"</>
 	const { deckLanguages } = profile.data
 
 	return (
