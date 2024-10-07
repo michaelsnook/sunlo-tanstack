@@ -1,11 +1,10 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { useQuery } from '@tanstack/react-query'
+import { Star, Users } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card'
 
 import type { NavbarData } from 'types/main'
 import { profileQuery, useProfile } from 'lib/use-profile'
-import languages from 'lib/languages'
 import Loading from 'components/loading'
-import { buttonVariants } from 'components/ui/button'
 
 export const Route = createFileRoute('/learn/')({
 	loader: async ({ context: { queryClient, auth } }) => {
@@ -39,28 +38,46 @@ export default function Page() {
 	const { data: profile, isPending } = useProfile()
 
 	return (
-		<main className="flex flex-col gap-4 px-4">
+		<main className="grid gap-4 @lg:grid-cols-2">
 			{isPending ?
 				<Loading />
-			:	<ol>
-					{profile?.deckLanguages.map((lang: string) => (
-						<li key={lang} className="glass my-2 rounded p-2 text-center">
-							<Link from={Route.fullPath} to="/learn/$lang" params={{ lang }}>
-								<p className="py-2 text-xl">{languages[lang]}</p>
-							</Link>
-						</li>
-					))}
-					<div className="flex flex-col items-center py-6 dark space-y-2">
-						<p>Starting something new?</p>
-
-						<Link
-							to="/learn/add-deck"
-							className={buttonVariants({ variant: 'outline' })}
-						>
-							Learn a New Language
-						</Link>
-					</div>
-				</ol>
+			:	Object.entries(profile?.decksMap).map(([key, deck]) => (
+					<Link
+						key={key}
+						to="/learn/$lang"
+						params={{ lang: key }}
+						className="block transition-transform rounded hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+					>
+						<Card key={deck.language} className="overflow-hidden h-full">
+							<CardHeader className="bg-primary text-white">
+								<CardTitle>
+									{deck.language}{' '}
+									<span className="text-xs text-white/50">{key}</span>
+								</CardTitle>
+							</CardHeader>
+							<CardContent className="p-4 space-y-2">
+								<div>
+									<p className="text-sm text-base-content/70">
+										{deck.cards_active} active cards
+									</p>
+									<p className="text-sm text-base-content/70">
+										Last studied: {deck.most_recent_review_at || 'never'}
+									</p>
+								</div>
+								<div className="flex items-center justify-between">
+									<div className="flex items-center space-x-1">
+										<Users className="h-4 w-4 text-info" />
+										<span className="text-sm">{0} friends studying</span>
+									</div>
+									<div className="flex items-center space-x-1">
+										<Star className="h-4 w-4 text-warning" />
+										<span className="text-sm">{4.5}</span>
+									</div>
+								</div>
+							</CardContent>
+						</Card>
+					</Link>
+				))
 			}
 		</main>
 	)
