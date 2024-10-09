@@ -7,7 +7,6 @@ import toast from 'react-hot-toast'
 
 import { Button, buttonVariants } from 'components/ui/button'
 import { Input } from 'components/ui/input'
-import { Label } from 'components/ui/label'
 
 import supabase from 'lib/supabase-client'
 import { ShowError } from 'components/errors'
@@ -59,7 +58,7 @@ function SignUp() {
 		validatorAdapter: zodValidator(),
 		validators: {
 			onSubmit: SignUpSchema,
-			onChange: SignUpSchema,
+			// onChange: SignUpSchema,
 		},
 		onSubmit: ({ value }) => {
 			signupMutation.mutate(value, {

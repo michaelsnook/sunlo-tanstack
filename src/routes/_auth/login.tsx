@@ -75,7 +75,7 @@ export default function LoginForm() {
 		validatorAdapter: zodValidator(),
 		validators: {
 			onSubmit: LoginSchema,
-			onChange: LoginSchema,
+			// onChange: LoginSchema,
 		},
 	})
 
@@ -83,9 +83,7 @@ export default function LoginForm() {
 		return <p>You are logged in; please wait while we redirect you.</p>
 	console.log('form state', form.state, loginMutation)
 	const submitButtonShouldBeDisabled =
-		loginMutation.isPending ||
-		form.state.isSubmitting ||
-		(form.state.isTouched && Object.keys(form.state.errors).length > 0)
+		loginMutation.isPending || form.state.isSubmitting
 
 	return (
 		<>
