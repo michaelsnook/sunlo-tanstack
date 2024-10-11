@@ -160,7 +160,7 @@ export default function LoginForm() {
 						<Link
 							to="/signup"
 							from={Route.fullPath}
-							className={buttonVariants({ variant: 'soft' })}
+							className={buttonVariants({ variant: 'secondary' })}
 						>
 							Create account
 						</Link>
