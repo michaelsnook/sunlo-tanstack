@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createLazyFileRoute } from '@tanstack/react-router'
 import {
 	Accordion,
 	AccordionContent,
@@ -64,7 +64,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from 'components/ui/popover'
 import { ScrollArea } from 'components/ui/scroll-area'
 
-export const Route = createFileRoute('/components')({
+export const Route = createLazyFileRoute('/components')({
 	component: ComponentsPage,
 })
 
