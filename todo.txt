@@ -17,7 +17,7 @@ COMPONENTS (ShadCN/Radix)
 1. use <ReloadIcon className="mr-2 h-4 w-4 animate-spin" /> for loading buttons
 1. Move all form inputs into their own special fancy components that take the FieldApi as a prop
 	1. replace FieldInfo with LabelInputInfo
-
+1. Okay fine switch to react-hook-form bc it integrates nicely w ShadCN
 
 PRIMARY CARD INTERACTIONS
 1. bring over the new structure for relations
