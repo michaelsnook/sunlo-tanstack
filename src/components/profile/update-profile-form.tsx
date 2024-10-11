@@ -114,7 +114,7 @@ function PrefilledForm({ initialData, uid }: PrefilledFormProps) {
 								tabIndex={1}
 								className={
 									!!field.state.meta.errors.length &&
-									'border-error outline-error ring-error forcus:ring-error'
+									'border-destructive outline-destructive ring-destructive forcus:ring-destructive'
 								}
 								id={field.name}
 								name={field.name}

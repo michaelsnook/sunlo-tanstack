@@ -113,7 +113,7 @@ export default function LoginForm() {
 										name={field.name}
 										inputMode="email"
 										aria-invalid={showAsError}
-										className={showAsError ? 'bg-error/20' : ''}
+										className={showAsError ? 'bg-destructive/20' : ''}
 										tabIndex={1}
 										type="email"
 										onChange={(e) => field.handleChange(e.target.value)}
@@ -136,7 +136,7 @@ export default function LoginForm() {
 										inputMode="text"
 										required={true}
 										aria-invalid={field.state.meta.errors.length > 0}
-										className={showAsError ? 'bg-error/20' : ''}
+										className={showAsError ? 'bg-destructive/20' : ''}
 										tabIndex={2}
 										type="password"
 										onChange={(e) => field.handleChange(e.target.value)}

@@ -41,7 +41,7 @@ export function SelectOneLanguage({
 					aria-expanded={open}
 					className={cn(
 						'justify-between text-base',
-						hasError && 'border-error'
+						hasError && 'border-destructive'
 					)}
 				>
 					{value ?
