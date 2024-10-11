@@ -126,9 +126,9 @@ function ComponentsPage() {
 							<Button>Default</Button>
 							<Button variant="secondary">Secondary</Button>
 							<Button variant="ghost">Ghost</Button>
-							<Button variant="soft">Soft</Button>
 							<Button variant="outline">Outline</Button>
 							<Button variant="destructive">Destructive</Button>
+							<Button variant="white">White</Button>
 						</div>
 					</CardContent>
 				</Card>

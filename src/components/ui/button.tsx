@@ -11,16 +11,16 @@ const buttonVariants = cva(
 			variant: {
 				default:
 					'bg-primary text-white hover:opacity-70 aria-expanded:bg-primary',
-				soft: 'bg-base-300 hover:bg-primary/30',
-				ghost: 'hover:bg-base-100/20 dark:hover:bg-white/10',
+				secondary:
+					'bg-foreground/10 dark:bg-background/10 hover:bg-primary/30 dark:hover:bg-primary/40',
+				destructive:
+					'bg-destructive text-white hover:opacity-70 aria-expanded:bg-primary',
+				ghost:
+					'hover:bg-foreground/10 dark:hover:bg-background/20 text-muted-foreground',
 				outline:
 					'border-primary border focus-within:ring active:ring text-primary dark:text-white hover:bg-primary/30',
 				white:
 					'bg-white hover:bg-primary text-primary hover:text-white border-primary border-2',
-				action:
-					'bg-primary text-white border-primary border-2 hover:opacity-90 hover:ring',
-				destructive:
-					'bg-error text-white border-error border-2 hover:opacity-90 hover:ring',
 			},
 			size: {
 				default: 'h-10 px-4 py-2',

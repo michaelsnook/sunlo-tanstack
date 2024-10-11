@@ -17,7 +17,7 @@ export default function UserAuthCard() {
 					value={userEmail ?? 'loading...'}
 					disabled
 				/>
-				<Button variant="soft" className="my-auto" asChild>
+				<Button variant="secondary" className="my-auto" asChild>
 					<Link to="/profile/change-email">Change</Link>
 				</Button>
 			</div>
@@ -29,7 +29,7 @@ export default function UserAuthCard() {
 					value="***************"
 					disabled
 				/>
-				<Button variant="soft" className="my-auto" asChild>
+				<Button variant="secondary" className="my-auto" asChild>
 					<Link to="/profile/change-password">Change</Link>
 				</Button>
 			</div>
