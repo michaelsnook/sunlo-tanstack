@@ -12,6 +12,7 @@ import supabase from 'lib/supabase-client'
 import { useAuth } from 'lib/hooks'
 import { ShowError } from 'components/errors'
 import { LabelInputInfo } from 'components/LabelInputInfo'
+import { CardContent, CardHeader, CardTitle } from 'components/ui/card'
 
 export const Route = createFileRoute('/_auth/login')({
 	validateSearch: (search: Record<string, unknown>): LoginSearchParams => {
@@ -87,65 +88,71 @@ export default function LoginForm() {
 
 	return (
 		<>
-			<h1 className="h3 text-base-content/90">Please log in</h1>
-			<form
-				role="form"
-				onSubmit={(event) => {
-					event.preventDefault()
-					event.stopPropagation()
-					form.handleSubmit()
-				}}
-				noValidate
-			>
-				<fieldset
-					className="flex flex-col gap-y-4"
-					disabled={loginMutation.isPending}
+			<CardHeader>
+				<CardTitle>Please log in</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<form
+					role="form"
+					className="space-y-4"
+					onSubmit={(event) => {
+						event.preventDefault()
+						event.stopPropagation()
+						form.handleSubmit()
+					}}
+					noValidate
 				>
-					<form.Field
-						name="email"
-						children={(field) => {
-							const showAsError =
-								field.state.meta.errors.length > 0 && field.state.meta.isDirty
-							return (
-								<LabelInputInfo field={field} label="Email">
-									<Input
-										id={field.name}
-										name={field.name}
-										inputMode="email"
-										aria-invalid={showAsError}
-										className={showAsError ? 'bg-destructive/20' : ''}
-										tabIndex={1}
-										type="email"
-										onChange={(e) => field.handleChange(e.target.value)}
-										placeholder="email@domain"
-									/>
-								</LabelInputInfo>
-							)
-						}}
-					/>
-					<form.Field
-						name="password"
-						children={(field) => {
-							const showAsError =
-								field.state.meta.errors.length > 0 && field.state.meta.isDirty
-							return (
-								<LabelInputInfo field={field} label="Password">
-									<Input
-										id={field.name}
-										name={field.name}
-										inputMode="text"
-										required={true}
-										aria-invalid={field.state.meta.errors.length > 0}
-										className={showAsError ? 'bg-destructive/20' : ''}
-										tabIndex={2}
-										type="password"
-										onChange={(e) => field.handleChange(e.target.value)}
-										placeholder="* * * * * * * *"
-									/>
-								</LabelInputInfo>
-							)
-						}}
-					/>
+					<fieldset
+						className="flex flex-col gap-y-4"
+						disabled={loginMutation.isPending}
+					>
+						<form.Field
+							name="email"
+							children={(field) => {
+								const showAsError =
+									field.state.meta.errors.length > 0 && field.state.meta.isDirty
+								return (
+									<LabelInputInfo field={field} label="Email">
+										<Input
+											id={field.name}
+											name={field.name}
+											inputMode="email"
+											aria-invalid={showAsError}
+											className={showAsError ? 'bg-destructive/20' : ''}
+											tabIndex={1}
+											type="email"
+											onChange={(e) => field.handleChange(e.target.value)}
+											placeholder="email@domain"
+										/>
+									</LabelInputInfo>
+								)
+							}}
+						/>
+						<form.Field
+							name="password"
+							children={(field) => {
+								const showAsError =
+									field.state.meta.errors.length > 0 && field.state.meta.isDirty
+								return (
+									<LabelInputInfo field={field} label="Password">
+										<Input
+											id={field.name}
+											name={field.name}
+											inputMode="text"
+											required={true}
+											aria-invalid={field.state.meta.errors.length > 0}
+											className={showAsError ? 'bg-destructive/20' : ''}
+											tabIndex={2}
+											type="password"
+											onChange={(e) => field.handleChange(e.target.value)}
+											placeholder="* * * * * * * *"
+										/>
+									</LabelInputInfo>
+								)
+							}}
+						/>
+					</fieldset>
+
 					<div className="flex flex-row justify-between">
 						<Button
 							tabIndex={3}
@@ -177,8 +184,8 @@ export default function LoginForm() {
 							Forgot password?
 						</Link>
 					</p>
-				</fieldset>
-			</form>
+				</form>
+			</CardContent>
 		</>
 	)
 }
