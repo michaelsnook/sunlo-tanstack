@@ -10,8 +10,8 @@ COMPONENTS (ShadCN/Radix)
 	1. replace dark:decoration-accent/warning
 	1. disable active link (removed class `disabled`)
 	1. 🪲 - .page-card .card-white .card .alert
-	1. use <ReloadIcon className="mr-2 h-4 w-4 animate-spin" /> for loading buttons
-1. Fix dark mode (possibly use blocking JS to apply the class, and then fix the colors)
+1. Fix dark mode (possibly use blocking JS to apply the class, and then fix the colors). 
+		We currently have Tailwind using system mode and shadcn using classes 🙈
 1. use <ReloadIcon className="mr-2 h-4 w-4 animate-spin" /> for loading buttons
 
 
