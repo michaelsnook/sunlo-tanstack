@@ -39,8 +39,8 @@ export default function ModalWithOpener({
 		<AlertDialog open={open} onOpenChange={handleOpenChange}>
 			<AlertDialogTrigger asChild>
 				{opener ?
-					<Button variant="default">{opener}</Button>
-				:	<Button variant="soft" size="icon">
+					<Button>{opener}</Button>
+				:	<Button variant="secondary" size="icon">
 						<Ellipsis className="h-4 w-4" />
 						<span className="sr-only">Show more</span>
 					</Button>

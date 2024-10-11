@@ -146,9 +146,10 @@ function SignOutButton({ shy = false }) {
 }
 
 const SidebarOpener = ({ isOpen = false, toggle = () => {} }) => (
-	<button
-		className={`btn-outline btn-primary fixed bottom-4 left-3 z-50 rounded-full border border-primary bg-white p-2`}
-		role="button"
+	<Button
+		className={`fixed bottom-4 left-3 z-50 rounded-full h-10 w-10`}
+		variant="white"
+		size="icon"
 		aria-haspopup={true}
 		aria-label="Toggle main menu"
 		aria-expanded={isOpen ? true : false}
@@ -170,7 +171,7 @@ const SidebarOpener = ({ isOpen = false, toggle = () => {} }) => (
 				d="M4 8h16M4 16h16"
 			/>
 		</svg>
-	</button>
+	</Button>
 )
 
 const ProfileIcon = () => {
