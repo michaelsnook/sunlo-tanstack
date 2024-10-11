@@ -1,6 +1,6 @@
 import { type FormEvent, SyntheticEvent, useState } from 'react'
 import toast from 'react-hot-toast'
-import { createFileRoute, Link, ReactNode } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from 'lucide-react'
@@ -12,13 +12,15 @@ import supabase from 'lib/supabase-client'
 import { useAuth } from 'lib/hooks'
 import { useProfile } from 'lib/use-profile'
 import { ShowError } from 'components/errors'
-import Loading from 'components/loading'
 import languages from 'lib/languages'
 import SuccessCheckmark from 'components/SuccessCheckmark'
+import { Card, CardContent } from 'components/ui/card'
 
 export const Route = createFileRoute('/_user/getting-started')({
 	component: GettingStartedPage,
 })
+
+const cardClass = 'mb-8 rounded-xl px-6 py-4'
 
 function GettingStartedPage() {
 	const { userId } = useAuth()
@@ -113,12 +115,24 @@ function GettingStartedPage() {
 				<p className="my-4 mb-10 text-2xl @md:text-center">
 					Let&apos;s get started
 				</p>
-				<SetUsernameStep value={tempUsernameToUse} set={setTempUsername} />
-				<SetPrimaryLanguageStep
-					value={tempLanguagePrimaryToUse}
-					set={setTempLanguagePrimary}
-				/>
-				<CreateFirstDeckStep value={tempDeckToAdd} set={setTempDeckToAdd} />
+				<Card className={cardClass}>
+					<SetUsernameStep
+						value={tempUsernameToUse}
+						setValue={setTempUsername}
+					/>
+				</Card>
+				<Card className={cardClass}>
+					<SetPrimaryLanguageStep
+						value={tempLanguagePrimaryToUse}
+						setValue={setTempLanguagePrimary}
+					/>
+				</Card>
+				<Card className={cardClass}>
+					<CreateFirstDeckStep
+						value={tempDeckToAdd}
+						setValue={setTempDeckToAdd}
+					/>
+				</Card>
 				{(
 					tempLanguagePrimaryToUse &&
 					(tempDeckToAdd || deckLanguages?.length > 0) &&
@@ -138,7 +152,8 @@ function GettingStartedPage() {
 						<Button
 							onClick={reset}
 							disabled={mainForm.isPending}
-							variant="outline"
+							variant="secondary"
+							size="lg"
 						>
 							Reset page
 						</Button>
@@ -175,7 +190,7 @@ function ShowSuccess({ tempDeckToAdd }: { tempDeckToAdd?: string }) {
 							to={`/learn/$lang`}
 							params={{ lang: tempDeckToAdd }}
 							from={Route.fullPath}
-							className={buttonVariants({ variant: 'action', size: 'lg' })}
+							className={buttonVariants({ variant: 'default', size: 'lg' })}
 						>
 							Get started learning {languages[tempDeckToAdd]}
 							<ArrowRightIcon className="w-4 h-4 ml-2" />
@@ -186,7 +201,7 @@ function ShowSuccess({ tempDeckToAdd }: { tempDeckToAdd?: string }) {
 					<Link
 						to="/profile"
 						from={Route.fullPath}
-						className={buttonVariants({ variant: 'outline' })}
+						className={buttonVariants({ variant: 'default' })}
 					>
 						Go to your profile
 						<ArrowRightIcon className="w-4 h-4 ml-2" />
@@ -199,71 +214,72 @@ function ShowSuccess({ tempDeckToAdd }: { tempDeckToAdd?: string }) {
 
 interface SetValueStepProps {
 	value: string
-	set: (value: string) => void
+	setValue: (value: string) => void
 }
 
-const SetPrimaryLanguageStep = ({ value, set }: SetValueStepProps) => {
+const SetPrimaryLanguageStep = ({ value, setValue }: SetValueStepProps) => {
 	const [closed, setClosed] = useState<boolean>(true)
 	return closed && value?.length > 0 ?
-			<Completed>
+			<CardContent className="flex flex-row justify-between gap-x-4 pb-1">
 				<p className="h4">
 					Your primary language is <Highlight>{languages[value]}</Highlight>
 				</p>
 				<X set={() => setClosed(false)} />
-			</Completed>
-		:	<form
-				className="card-white"
-				onSubmit={(e: FormEvent<HTMLFormElement>) => {
-					e.preventDefault()
-					setClosed(true)
-					// @ts-expect-error
-					set(e.target['language_primary'].value)
-				}}
-			>
-				<h2 className="h2">Set primary language</h2>
-				<div className="flex flex-col">
-					<Label className="py-2 font-bold">The language you know best</Label>
-					<select
-						value={value || ''}
-						name="language_primary"
-						onChange={(e) => {
-							set(e.target.value)
-							setClosed(true)
-						}}
-						className="mb-6 rounded border bg-base-100 p-3 text-base-content"
-					>
-						<option value="">-- select one --</option>
-						<option value="eng">English</option>
-						{Object.keys(languages).map((k) => {
-							return k === 'eng' ? null : (
-									<option key={`language-dropdown-option-${k}`} value={k}>
-										{languages[k]}
-									</option>
-								)
-						})}
-					</select>
-					{value ?
-						<a
-							className="s-link"
-							onClick={() => {
+			</CardContent>
+		:	<CardContent>
+				<form
+					onSubmit={(e: FormEvent<HTMLFormElement>) => {
+						e.preventDefault()
+						setClosed(true)
+						// @ts-expect-error
+						setValue(e.target['language_primary'].value)
+					}}
+				>
+					<h2 className="h2">Set primary language</h2>
+					<div className="flex flex-col">
+						<Label className="py-2 font-bold">The language you know best</Label>
+						<select
+							value={value || ''}
+							name="language_primary"
+							onChange={(e) => {
+								setValue(e.target.value)
 								setClosed(true)
 							}}
+							className="mb-6 rounded border p-3"
 						>
-							Continue with {languages[value]}
-						</a>
-					:	null}
-				</div>
-			</form>
+							<option value="">-- select one --</option>
+							<option value="eng">English</option>
+							{Object.keys(languages).map((k) => {
+								return k === 'eng' ? null : (
+										<option key={`language-dropdown-option-${k}`} value={k}>
+											{languages[k]}
+										</option>
+									)
+							})}
+						</select>
+						{value ?
+							<a
+								className="s-link"
+								onClick={() => {
+									setClosed(true)
+								}}
+							>
+								Continue with {languages[value]}
+							</a>
+						:	null}
+					</div>
+				</form>
+			</CardContent>
 }
 
-const CreateFirstDeckStep = ({ value, set }: SetValueStepProps) => {
+function CreateFirstDeckStep({ value, setValue }: SetValueStepProps) {
 	const langs = useProfile()?.data?.deckLanguages
 
 	const [closed, setClosed] = useState(true)
 	return closed && langs.length ?
-			<Completed>
-				<h2 className="h4 flex-none">
-					{!value && langs.length > 0 ?
+			<CardContent className="flex flex-row justify-between gap-x-4 pb-1">
+				<p className="h4">
+					{!value && langs.length ?
 						<>
 							You&apos;re working on{' '}
 							<Highlight>
@@ -277,95 +293,98 @@ const CreateFirstDeckStep = ({ value, set }: SetValueStepProps) => {
 							<Highlight>{languages[value]}</Highlight> phrases
 						</>
 					}
-				</h2>
+				</p>
 
 				<X
 					plus={!value && langs.length > 0}
 					set={(v = '') => {
-						set(v)
+						setValue(v)
 						setClosed(false)
 					}}
 				/>
-			</Completed>
-		:	<form className="card-white">
-				<h2 className="h2">
-					Create {langs.length === 0 ? 'your first deck' : 'another deck'}
-				</h2>
-				{langs.length > 0 ?
-					<p className="py-2">
-						FYI you&apos;re already learning{' '}
-						{langs.map((lang) => languages[lang]).join(', ')}
-					</p>
-				:	null}
-				<div className="flex flex-col">
-					<Label>The language you want to learn</Label>
-					<select
-						value={value || ''}
-						name="language_primary"
-						onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-							set(e.target.value)
-							setClosed(true)
-						}}
-						className="mb-6 rounded border bg-base-100 p-3 text-base-content"
-					>
-						<option value="">-- select one --</option>
-						{Object.keys(languages).map((k) => {
-							const isInLearningSet = langs.indexOf(k) >= 0 ? true : false
-							return (
-								<option
-									key={`language-dropdown-option-${k}`}
-									value={k}
-									disabled={isInLearningSet}
-									className={isInLearningSet ? 'bg-gray-500/20' : ''}
-								>
-									{languages[k]}
-								</option>
-							)
-						})}
-					</select>
-					{langs.length > 0 && !value ?
-						<a onClick={() => setClosed(true)} className="s-link">
-							Skip this step
-						</a>
+			</CardContent>
+		:	<CardContent>
+				<form>
+					<h2 className="h2">
+						Create {langs.length === 0 ? 'your first deck' : 'another deck'}
+					</h2>
+					{langs.length > 0 ?
+						<p className="py-2">
+							FYI you&apos;re already learning{' '}
+							{langs.map((lang) => languages[lang]).join(', ')}
+						</p>
 					:	null}
-				</div>
-			</form>
+					<div className="flex flex-col">
+						<Label>The language you want to learn</Label>
+						<select
+							value={value || ''}
+							name="language_primary"
+							onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+								setValue(e.target.value)
+								setClosed(true)
+							}}
+							className="mb-6 rounded border bg-base-100 p-3 text-base-content"
+						>
+							<option value="">-- select one --</option>
+							{Object.keys(languages).map((k) => {
+								const isInLearningSet = langs.indexOf(k) >= 0 ? true : false
+								return (
+									<option
+										key={`language-dropdown-option-${k}`}
+										value={k}
+										disabled={isInLearningSet}
+										className={isInLearningSet ? 'bg-gray-500/20' : ''}
+									>
+										{languages[k]}
+									</option>
+								)
+							})}
+						</select>
+						{langs.length > 0 && !value ?
+							<a onClick={() => setClosed(true)} className="s-link">
+								Skip this step
+							</a>
+						:	null}
+					</div>
+				</form>
+			</CardContent>
 }
 
-const SetUsernameStep = ({ value, set }: SetValueStepProps) => {
+function SetUsernameStep({ value, setValue }: SetValueStepProps) {
 	const [closed, setClosed] = useState(true)
 	return closed && value ?
-			<Completed>
+			<CardContent className="flex flex-row justify-between gap-x-4 pb-1">
 				<p className="h4 block">
 					Your username is <Highlight>{value}</Highlight>
 				</p>
 				<X set={() => setClosed(false)} />
-			</Completed>
-		:	<form
-				className="card-white"
-				onSubmit={(e: FormEvent<HTMLFormElement>) => {
-					e.preventDefault()
-					// @ts-expect-error
-					if (e.target['username'].value) setClosed(true)
-				}}
-			>
-				<h2 className="h2">Pick a username</h2>
-				<div className="flex flex-col">
-					<Label>Username for your public profile</Label>
-					<Input
-						type="text"
-						name="username"
-						placeholder="Lernie McSanders"
-						value={value || ''}
-						onChange={(e) => {
-							set(e.target.value)
-						}}
-					/>
-				</div>
-				<Button className="my-4" variant="default" type="submit">
-					Continue
-				</Button>
-			</form>
+			</CardContent>
+		:	<CardContent>
+				<form
+					onSubmit={(e: FormEvent<HTMLFormElement>) => {
+						e.preventDefault()
+						// @ts-expect-error
+						if (e.target['username'].value) setClosed(true)
+					}}
+				>
+					<h2 className="h2">Pick a username</h2>
+					<div className="flex flex-col">
+						<Label>Username for your public profile</Label>
+						<Input
+							type="text"
+							name="username"
+							placeholder="Lernie McSanders"
+							value={value || ''}
+							onChange={(e) => {
+								setValue(e.target.value)
+							}}
+						/>
+					</div>
+					<Button className="my-4" variant="default" type="submit">
+						Continue
+					</Button>
+				</form>
+			</CardContent>
 }
 
 interface XProps {
@@ -373,27 +392,24 @@ interface XProps {
 	plus?: boolean
 }
 
-const X = ({ set, plus = false }: XProps) => (
-	<Button
-		onClick={() => set()}
-		size="icon"
-		variant="ghost"
-		asChild
-		className="h-10 w-10 p-2"
-	>
-		<PlusIcon className={plus ? '' : 'rotate-45'} />
-	</Button>
-)
+function X({ set, plus = false }: XProps) {
+	return (
+		<Button
+			onClick={() => set()}
+			size="icon"
+			variant="ghost"
+			asChild
+			className="h-10 w-10 p-2 flex-none"
+		>
+			<PlusIcon className={plus ? '' : 'rotate-45'} />
+		</Button>
+	)
+}
 
-const Completed = ({ children }: { children: Array<ReactNode> }) => (
-	<div className="glass mb-8 flex flex-row justify-between gap-x-4 rounded-xl px-6 py-4 text-white">
-		<div>{children[0]}</div>
-		<div className="place-self-center">{children[1]}</div>
-	</div>
-)
-
-const Highlight = ({ children }: { children: React.ReactNode }) => (
-	<span className="inline bg-accent bg-opacity-60 px-1 font-bold">
-		{children}
-	</span>
-)
+function Highlight({ children }: { children: React.ReactNode }) {
+	return (
+		<span className="inline bg-accent bg-opacity-60 px-1 font-bold">
+			{children}
+		</span>
+	)
+}
