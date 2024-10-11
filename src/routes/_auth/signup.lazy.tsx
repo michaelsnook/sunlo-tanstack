@@ -11,6 +11,7 @@ import { Input } from 'components/ui/input'
 import supabase from 'lib/supabase-client'
 import { ShowError } from 'components/errors'
 import { LabelInputInfo } from 'components/LabelInputInfo'
+import { CardContent, CardHeader, CardTitle } from 'components/ui/card'
 
 export const Route = createLazyFileRoute('/_auth/signup')({
 	component: SignUp,
@@ -74,66 +75,70 @@ function SignUp() {
 
 	return (
 		<>
-			<h1 className="h3 text-base-content/90">Sign Up</h1>
-			<form
-				role="form"
-				className="form"
-				onSubmit={(e) => {
-					e.preventDefault()
-					e.stopPropagation()
-					form.handleSubmit()
-				}}
-				noValidate
-			>
-				<fieldset
-					className="flex flex-col gap-y-4"
-					disabled={signupMutation.isPending}
+			<CardHeader>
+				<CardTitle>Sign Up</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<form
+					role="form"
+					className="space-y-4"
+					onSubmit={(e) => {
+						e.preventDefault()
+						e.stopPropagation()
+						form.handleSubmit()
+					}}
+					noValidate
 				>
-					<form.Field
-						name="email"
-						children={(field) => {
-							const showAsError =
-								field.state.meta.errors.length > 0 && field.state.meta.isDirty
-							return (
-								<LabelInputInfo field={field} label="Email">
-									<Input
-										id={field.name}
-										name={field.name}
-										inputMode="email"
-										aria-invalid={showAsError}
-										className={showAsError ? 'bg-destructive/20' : ''}
-										required={true}
-										tabIndex={1}
-										type="email"
-										onChange={(e) => field.handleChange(e.target.value)}
-										placeholder="email@domain"
-									/>
-								</LabelInputInfo>
-							)
-						}}
-					/>
-					<form.Field
-						name="password"
-						children={(field) => {
-							const showAsError =
-								field.state.meta.errors.length > 0 && field.state.meta.isDirty
-							return (
-								<LabelInputInfo field={field} label="Password">
-									<Input
-										id={field.name}
-										name={field.name}
-										aria-invalid={showAsError}
-										className={showAsError ? 'bg-destructive/20' : ''}
-										required={true}
-										tabIndex={2}
-										type="password"
-										onChange={(e) => field.handleChange(e.target.value)}
-										placeholder="* * * * * * * *"
-									/>
-								</LabelInputInfo>
-							)
-						}}
-					/>
+					<fieldset
+						className="flex flex-col gap-y-4"
+						disabled={signupMutation.isPending}
+					>
+						<form.Field
+							name="email"
+							children={(field) => {
+								const showAsError =
+									field.state.meta.errors.length > 0 && field.state.meta.isDirty
+								return (
+									<LabelInputInfo field={field} label="Email">
+										<Input
+											id={field.name}
+											name={field.name}
+											inputMode="email"
+											aria-invalid={showAsError}
+											className={showAsError ? 'bg-destructive/20' : ''}
+											required={true}
+											tabIndex={1}
+											type="email"
+											onChange={(e) => field.handleChange(e.target.value)}
+											placeholder="email@domain"
+										/>
+									</LabelInputInfo>
+								)
+							}}
+						/>
+						<form.Field
+							name="password"
+							children={(field) => {
+								const showAsError =
+									field.state.meta.errors.length > 0 && field.state.meta.isDirty
+								return (
+									<LabelInputInfo field={field} label="Password">
+										<Input
+											id={field.name}
+											name={field.name}
+											aria-invalid={showAsError}
+											className={showAsError ? 'bg-destructive/20' : ''}
+											required={true}
+											tabIndex={2}
+											type="password"
+											onChange={(e) => field.handleChange(e.target.value)}
+											placeholder="* * * * * * * *"
+										/>
+									</LabelInputInfo>
+								)
+							}}
+						/>
+					</fieldset>
 					<div className="flex flex-row justify-between">
 						<Button
 							tabIndex={3}
@@ -155,8 +160,8 @@ function SignUp() {
 					<ShowError show={!!signupMutation.error}>
 						Problem signing up: {signupMutation.error?.message}
 					</ShowError>
-				</fieldset>
-			</form>
+				</form>
+			</CardContent>
 		</>
 	)
 }
