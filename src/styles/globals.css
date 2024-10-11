@@ -4,20 +4,6 @@
 
 @layer base {
 	:root {
-		--rounded-box: 0.5rem; /* border-radius for cards and other big elements */
-		--rounded-btn: 0.2rem; /* border-radius for buttons and similar elements */
-		--rounded-badge: 0.9rem; /* border-radius for badge and other small elements */
-		--animation-btn: 0.25s; /* bounce animation time for button */
-		--animation-input: 0.2s; /* bounce animation time for checkbox, toggle, etc */
-		--padding-card: 2rem; /* default card-body padding */
-		--btn-text-case: none; /* default text case for buttons */
-		--navbar-padding: 0.5rem; /* default padding for navbar */
-		--border-btn: 2px; /* default border size for button */
-		--btn-focus-scale: 0.5;
-
-		/*
-      for shadcn
-    */
 		--background: 0 0% 100%;
 		--foreground: 222.2 84% 4.9%;
 		--card: 0 0% 100%;
@@ -76,7 +62,7 @@
 		@apply mx-auto w-full max-w-[40rem]; /* outline outline-dashed outline-white/50; */
 	}
 	.s-link {
-		@apply cursor-pointer decoration-accent dark:decoration-warning underline-offset-2 hover:underline-offset-1 underline hover:decoration-2 decoration-1 transition-all;
+		@apply cursor-pointer decoration-accent underline-offset-2 hover:underline-offset-1 underline hover:decoration-2 decoration-1 transition-all;
 	}
 	.nav-link {
 		@apply transition-all;
@@ -85,18 +71,11 @@
 		@apply cursor-pointer hover:border-primary hover:border-l-4 hover:pl-2;
 	}
 	.nav-link.active {
-		@apply disabled border-l-4 border-base-content/50 pl-2 text-base-content/70;
-	}
-	.card-white {
-		@apply card card-body bg-base-100 text-base-content;
-	}
-	/* used for a whole page */
-	.page-card {
-		@apply card-white;
+		@apply border-l-4 border-opacity-50 pl-2 text-opacity-70;
 	}
 	.page-card > .h1,
 	.page-card > .h2 {
-		@apply text-base-content/90;
+		@apply text-opacity-90;
 	}
 }
 @layer utilities {
