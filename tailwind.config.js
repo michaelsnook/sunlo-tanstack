@@ -93,27 +93,6 @@ export default {
 		require('@tailwindcss/typography'),
 		require('@tailwindcss/container-queries'),
 		require('@tailwindcss/forms'),
-		require('daisyui'),
 		require('tailwindcss-animate'),
 	],
-	daisyui: {
-		styled: true,
-		themes: [
-			{
-				light: {
-					...require('daisyui/src/theming/themes')['light'],
-					primary: '#663399',
-				},
-			},
-			{
-				dark: {
-					...require('daisyui/src/theming/themes')['dark'],
-					primary: '#663399',
-				},
-			},
-		],
-		base: true,
-		utils: true,
-		logs: true,
-	},
 }

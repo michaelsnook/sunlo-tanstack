@@ -1,10 +1,18 @@
 ISSUES
 
 
-RADIX
+COMPONENTS (ShadCN/Radix)
+1. ✅ Add a Components page to keep track of / showcase all components
 1. ✅ replace the DaisyUI expandos
 		tweak it so you can click without open-close (no bubble)
 1. Replace all the buttons, labels, and inputs
+1. Remove daisyUI
+	1. replace dark:decoration-accent/warning
+	1. disable active link (removed class `disabled`)
+	1. 🪲 - .page-card .card-white .card .alert
+	1. use <ReloadIcon className="mr-2 h-4 w-4 animate-spin" /> for loading buttons
+	1. 
+
 
 PRIMARY CARD INTERACTIONS
 1. bring over the new structure for relations
