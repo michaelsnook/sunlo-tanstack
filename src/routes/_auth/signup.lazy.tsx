@@ -101,7 +101,7 @@ function SignUp() {
 										name={field.name}
 										inputMode="email"
 										aria-invalid={showAsError}
-										className={showAsError ? 'bg-error/20' : ''}
+										className={showAsError ? 'bg-destructive/20' : ''}
 										required={true}
 										tabIndex={1}
 										type="email"
@@ -123,7 +123,7 @@ function SignUp() {
 										id={field.name}
 										name={field.name}
 										aria-invalid={showAsError}
-										className={showAsError ? 'bg-error/20' : ''}
+										className={showAsError ? 'bg-destructive/20' : ''}
 										required={true}
 										tabIndex={2}
 										type="password"

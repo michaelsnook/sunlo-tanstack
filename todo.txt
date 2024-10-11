@@ -9,10 +9,14 @@ COMPONENTS (ShadCN/Radix)
 1. Remove daisyUI
 	1. replace dark:decoration-accent/warning
 	1. disable active link (removed class `disabled`)
-	1. 🪲 - .page-card .card-white .card .alert
+	1. 🪲 find-and-fid all these: .page-card .card-white .card .alert
+	1. fix color codes (text-base) in SelectOneLanguage
+	1. find-replace all these colors: text-base text-base-content etc
 1. Fix dark mode (possibly use blocking JS to apply the class, and then fix the colors). 
 		We currently have Tailwind using system mode and shadcn using classes 🙈
 1. use <ReloadIcon className="mr-2 h-4 w-4 animate-spin" /> for loading buttons
+1. Move all form inputs into their own special fancy components that take the FieldApi as a prop
+	1. replace FieldInfo with LabelInputInfo
 
 
 PRIMARY CARD INTERACTIONS

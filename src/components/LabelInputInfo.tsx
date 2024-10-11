@@ -15,11 +15,11 @@ export const LabelInputInfo = ({
 	const error = field.state.meta.errors.join(', ')
 	return (
 		<div>
-			<Label className={error ? 'text-error' : ''} htmlFor={field.name}>
+			<Label className={error ? 'text-destructive' : ''} htmlFor={field.name}>
 				{label}
 			</Label>
 			{children}
-			{!error ? null : <p className="text-sm text-error">{error}</p>}
+			{!error ? null : <p className="text-sm text-destructive">{error}</p>}
 		</div>
 	)
 }
