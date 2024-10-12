@@ -1,12 +1,13 @@
 import { createLazyFileRoute, Link } from '@tanstack/react-router'
 import { GarlicBroccoli } from 'components/garlic'
 import { Button } from 'components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card'
 import {
 	NavigationMenu,
 	NavigationMenuItem,
 	NavigationMenuList,
 } from 'components/ui/navigation-menu'
-import { Code, FileText, LogIn, UserPlus, UsersIcon } from 'lucide-react'
+import { Car, Code, FileText, LogIn, UserPlus, UsersIcon } from 'lucide-react'
 
 export const Route = createLazyFileRoute('/')({
 	component: Index,
@@ -56,20 +57,22 @@ function Index() {
 				</div>
 			</main>
 
-			<div className="w-app alert border-0 bg-black/30 text-center text-warning">
+			<div className="w-app card bg-black/30 text-center border-accent text-accent">
 				⚠️ Sunlo is under development; it is incomplete but most of what&apos;s
 				here should work, so if you do spot a problem, please let me know! ⚠️
 			</div>
-			<section className="card my-16 bg-base-100 px-1 pb-8 pt-4 text-base-content @lg:px-4 @lg:pb-16 @lg:pt-10">
+			<section className="my-16 bg-base-100 px-1 pb-8 pt-4 text-base-content @lg:px-4 @lg:pb-16 @lg:pt-10">
 				<h2 className="h2 px-4 text-center @lg:pb-6">
 					Our Approach to Language&nbsp;Learning
 				</h2>
 				<div className="flex flex-col justify-center gap-4 @xl:flex-row">
-					<div className="card basis-80 bg-base-200 shadow-xl">
-						<div className="card-body">
-							<h3 className="card-title">
+					<Card className="basis-80">
+						<CardHeader>
+							<CardTitle className="flex-row gap-2 flex">
 								<PhraseIcon /> Phrase Based
-							</h3>
+							</CardTitle>
+						</CardHeader>
+						<CardContent className="space-y-2">
 							<p>
 								Sunlo&apos;s approach is phrases-first, useful for people who
 								are immersed in a new language context and want to learn for
@@ -80,13 +83,15 @@ function Index() {
 								We think this is effective, and motivating – and it means you
 								can choose the areas you focus on to suit your goals.
 							</p>
-						</div>
-					</div>
-					<div className="card basis-80 bg-base-200 shadow-xl">
-						<div className="card-body">
-							<h3 className="card-title">
+						</CardContent>
+					</Card>
+					<Card className="basis-80">
+						<CardHeader>
+							<CardTitle className="flex-row gap-2 flex">
 								<UsersIcon /> Social Learning
-							</h3>
+							</CardTitle>
+						</CardHeader>
+						<CardContent className="space-y-2">
 							<p>
 								We don&apos;t learn languages to earn gems or score points – we
 								learn to connect with people.
@@ -98,13 +103,15 @@ function Index() {
 								&ldquo;Friend Mode&rdquo; so your new friends can send you all
 								their favourite phrases and help you along your journey.
 							</p>
-						</div>
-					</div>
-					<div className="card basis-80 bg-base-200 shadow-xl">
-						<div className="card-body">
-							<h3 className="card-title">
+						</CardContent>
+					</Card>
+					<Card className="basis-80">
+						<CardHeader>
+							<CardTitle className="flex-row gap-2 flex">
 								<CuriosityIcon /> Driven by Curiosity
-							</h3>
+							</CardTitle>
+						</CardHeader>
+						<CardContent className="space-y-2">
 							<p>
 								Often times, trying to translate literally from one language to
 								another doesn&apos;t really work, but if you spend enough time
@@ -115,19 +122,20 @@ function Index() {
 								that feeling of wonder and excitement keeps your brain in its
 								best learning space.
 							</p>
-						</div>
-					</div>
+						</CardContent>
+					</Card>
 				</div>
 			</section>
 			<section className="my-16 pb-16 pt-4 @lg:pt-10">
 				<h2 className="h2 px-4 pb-6 text-center">Who is Sunlo for?</h2>
 				<div className="flex flex-col justify-center gap-4 @xl:flex-row">
-					<div className="card basis-80 bg-black/20 shadow-xl">
-						<div className="card-body">
-							<h3 className="card-title">
-								<PlaneIcon />
-								Moving To a New Place
-							</h3>
+					<Card className="basis-80">
+						<CardHeader>
+							<CardTitle className="flex-row gap-2 flex">
+								<PlaneIcon /> Moving To a New Place
+							</CardTitle>
+						</CardHeader>
+						<CardContent className="space-y-2">
 							<p>
 								If you just moved to a new place, and you&apos;re surrounded by
 								people speaking another language, Sunlo is for you.
@@ -137,13 +145,15 @@ function Index() {
 								deploy your new skills and build on them – and when you have
 								friends, family or colleagues who are excited to help you learn.
 							</p>
-						</div>
-					</div>
-					<div className="card basis-80 bg-black/20 shadow-xl">
-						<div className="card-body">
-							<h3 className="card-title">
+						</CardContent>
+					</Card>
+					<Card className="basis-80">
+						<CardHeader>
+							<CardTitle className="flex-row gap-2 flex">
 								<FriendIcon /> The Friend / Guide
-							</h3>
+							</CardTitle>
+						</CardHeader>
+						<CardContent className="space-y-2">
 							<p>
 								If you&apos;re the one helping a friend or colleague learn{' '}
 								<em>your</em> language, Sunlo&apos;s &ldquo;Friend Mode&rdquo;
@@ -154,13 +164,16 @@ function Index() {
 								You can pick from our public pool of flash cards, or create new
 								ones that will help the whole community too.
 							</p>
-						</div>
-					</div>
-					<div className="card basis-80 bg-black/20 shadow-xl">
-						<div className="card-body">
-							<h3 className="card-title">
+						</CardContent>
+					</Card>
+
+					<Card className="basis-80">
+						<CardHeader>
+							<CardTitle className="flex-row gap-2 flex">
 								<HeartIcon /> Extended Family
-							</h3>
+							</CardTitle>
+						</CardHeader>
+						<CardContent className="space-y-2">
 							<p>
 								If you haven&apos;t yet learned your family&apos;s ancestral
 								language, and now you feel a barrier between yourself and your
@@ -172,8 +185,8 @@ function Index() {
 								parents or your fun cousin to join as a friend and help you
 								along the way.
 							</p>
-						</div>
-					</div>
+						</CardContent>
+					</Card>
 				</div>
 			</section>
 			<section className="my-10 pb-16 text-center">
@@ -185,85 +198,95 @@ function Index() {
 				</Button>
 			</section>
 
-			<section className="card my-16 bg-base-100 px-4 pb-16 pt-4 text-base-content @lg:px-8 @lg:pt-10">
-				<h2 className="h2 px-4 pb-6 text-center">The Story Behind Sunlo</h2>
-				<div className="columns-1 space-y-4 text-xl/8 @lg:columns-2">
-					<p>
-						Sunlo is a labour of love that started in 2015 when I came to India
-						and found tools like the owl app lacking. (You know the one...)
-					</p>
-					<p>
-						I found I didn&apos;t need to know the word for &ldquo;Tomato&rdquo;
-						as much as I needed to be able to point at the tomato and say
-						&ldquo;give me 6 of those (polite).&rdquo; When I learned to do
-						this, the rest started to fall into place.
-					</p>
-					<p>
-						As I tried other methods and researched the science of
-						language-learning I started to feel a lack of good tools for helping
-						people learn languages that are <em>different in structure</em> from
-						the ones they&apos;re raised on. Learning{' '}
-						<span className="underline decoration-accent decoration-[3px] dark:decoration-warning">
-							Spanish
-						</span>{' '}
-						from{' '}
-						<span className="underline decoration-accent decoration-[3px] dark:decoration-warning">
-							English
-						</span>{' '}
-						may be straight-forward with lessons on vocabulary and grammar, but
-						the same approach might not work to learn{' '}
-						<span className="underline decoration-accent decoration-[3px] dark:decoration-warning">
-							Arabic
-						</span>
-						,{' '}
-						<span className="underline decoration-accent decoration-[3px] dark:decoration-warning">
-							Xhosa
-						</span>{' '}
-						or{' '}
-						<span className="underline decoration-accent decoration-[3px] dark:decoration-warning">
-							Mandarin
-						</span>
-						, whose grammars and patterns may be too unfamiliar for me to
-						succeed with that formulaic approach.
-					</p>
-					<p>
-						The answer to this problem seems to be a phrase-based approach,
-						where you don&apos;t necessarily try to understand every meaning and
-						tense, you learn <em>chunks of meaning</em> that you can use in real
-						life. And when you do, it creates a reward in your brain and helps
-						you connect with others in your world, both of which aid in the
-						formation of lasting, usable memory.
-					</p>
-					<p>
-						There&apos;s a fantastic (and free) app called Anki – which I also
-						use and love! – which takes this phrase-based approach, and{' '}
-						<a
-							className="s-link"
-							href="https://docs.ankiweb.net/background.html"
-						>
-							their background doc
-						</a>{' '}
-						does a great job of explaining why it&apos;s so effective.{' '}
-					</p>
-					<p>
-						But the most important part of my learning journey was the friends I
-						made who were excited to help me. There are a couple of friends who
-						have an intuitive sense of how much I know and don&apos;t know, and
-						are able to speak to me in a way that they know I&apos;ll understand
-						enough of what they&apos;re saying that I can learn and figure out
-						the rest.
-					</p>
-					<p>
-						So Sunlo is a bit of a love song to those friends – the very reason
-						we learn in the first place – to make them main characters in the
-						play as well. It invites them to help curate your deck of flash
-						cards and find or create the ones they think you&apos;ll need and
-						use and love. If you&apos;re a friend helping a newcomer learn your
-						language – Sunlo is for you too. Thank you, and welcome! I hope you
-						love it.
-					</p>
-					<p className="text-center italic">– M</p>
-				</div>
+			<section className="light my-16 bg-base-100 px-4 pb-16 pt-4 text-base-content @lg:px-8 @lg:pt-10">
+				<Card className="[padding:clamp(0.5rem,2cqw,2rem)]">
+					<CardHeader>
+						<CardTitle className="h2 px-4 pb-6 text-center">
+							The Story Behind Sunlo
+						</CardTitle>
+					</CardHeader>
+					<CardContent>
+						<div className="columns-1 space-y-4 text-xl/8 @lg:columns-2">
+							<p>
+								Sunlo is a labour of love that started in 2015 when I came to
+								India and found tools like the owl app lacking. (You know the
+								one...)
+							</p>
+							<p>
+								I found I didn&apos;t need to know the word for
+								&ldquo;Tomato&rdquo; as much as I needed to be able to point at
+								the tomato and say &ldquo;give me 6 of those (polite).&rdquo;
+								When I learned to do this, the rest started to fall into place.
+							</p>
+							<p>
+								As I tried other methods and researched the science of
+								language-learning I started to feel a lack of good tools for
+								helping people learn languages that are{' '}
+								<em>different in structure</em> from the ones they&apos;re
+								raised on. Learning{' '}
+								<span className="underline decoration-accent decoration-[3px] dark:decoration-warning">
+									Spanish
+								</span>{' '}
+								from{' '}
+								<span className="underline decoration-accent decoration-[3px] dark:decoration-warning">
+									English
+								</span>{' '}
+								may be straight-forward with lessons on vocabulary and grammar,
+								but the same approach might not work to learn{' '}
+								<span className="underline decoration-accent decoration-[3px] dark:decoration-warning">
+									Arabic
+								</span>
+								,{' '}
+								<span className="underline decoration-accent decoration-[3px] dark:decoration-warning">
+									Xhosa
+								</span>{' '}
+								or{' '}
+								<span className="underline decoration-accent decoration-[3px] dark:decoration-warning">
+									Mandarin
+								</span>
+								, whose grammars and patterns may be too unfamiliar for me to
+								succeed with that formulaic approach.
+							</p>
+							<p>
+								The answer to this problem seems to be a phrase-based approach,
+								where you don&apos;t necessarily try to understand every meaning
+								and tense, you learn <em>chunks of meaning</em> that you can use
+								in real life. And when you do, it creates a reward in your brain
+								and helps you connect with others in your world, both of which
+								aid in the formation of lasting, usable memory.
+							</p>
+							<p>
+								There&apos;s a fantastic (and free) app called Anki – which I
+								also use and love! – which takes this phrase-based approach, and{' '}
+								<a
+									className="s-link"
+									href="https://docs.ankiweb.net/background.html"
+								>
+									their background doc
+								</a>{' '}
+								does a great job of explaining why it&apos;s so effective.{' '}
+							</p>
+							<p>
+								But the most important part of my learning journey was the
+								friends I made who were excited to help me. There are a couple
+								of friends who have an intuitive sense of how much I know and
+								don&apos;t know, and are able to speak to me in a way that they
+								know I&apos;ll understand enough of what they&apos;re saying
+								that I can learn and figure out the rest.
+							</p>
+							<p>
+								So Sunlo is a bit of a love song to those friends – the very
+								reason we learn in the first place – to make them main
+								characters in the play as well. It invites them to help curate
+								your deck of flash cards and find or create the ones they think
+								you&apos;ll need and use and love. If you&apos;re a friend
+								helping a newcomer learn your language – Sunlo is for you too.
+								Thank you, and welcome! I hope you love it.
+							</p>
+							<p className="text-center italic">– M</p>
+						</div>
+					</CardContent>
+				</Card>
 			</section>
 			<section className="my-16 pb-16 pt-4 @lg:pt-10">
 				<h2 className="h2 px-4 pb-6 text-center">
@@ -310,7 +333,7 @@ function Index() {
 						<>
 							{footerNavigationItems.map((item, i) => (
 								<NavigationMenuItem key={`nav-link-${i}`}>
-									<Button variant="ghost" asChild>
+									<Button variant="ghost" className="text-white/80" asChild>
 										{item}
 									</Button>
 								</NavigationMenuItem>
