@@ -35,12 +35,13 @@ const profileEditFormSchema = z.object({
 type ProfileEditForm = z.infer<typeof profileEditFormSchema>
 
 export default function UpdateProfileForm() {
-	const { data, isPending, error } = useProfile()
+	const { data, error } = useProfile()
 	if (error) return <ShowError>{error.message}</ShowError>
-	if (isPending) return <Loading className="mt-0" />
 
-	return data.uid ?
-			<PrefilledForm
+	// we use placeholders for the profile, so there's no isPending
+	return !data.uid ?
+			<Loading className="mt-0" />
+		:	<PrefilledForm
 				initialData={{
 					avatar_url: data.avatar_url,
 					username: data.username,
@@ -49,7 +50,6 @@ export default function UpdateProfileForm() {
 				}}
 				uid={data.uid}
 			/>
-		:	<></>
 }
 
 interface PrefilledFormProps {

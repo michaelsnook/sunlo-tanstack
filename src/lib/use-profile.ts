@@ -37,10 +37,9 @@ export const profileQuery = (userId?: string) =>
 			if (!userId) return emptyProfile
 			return await fetchAndShapeProfileFull()
 		},
-		initialData: emptyProfile,
 	})
 
 export const useProfile = () => {
 	const { userId } = useAuth()
-	return useQuery({ ...profileQuery(userId) })
+	return useQuery({ ...profileQuery(userId), initialData: emptyProfile })
 }
