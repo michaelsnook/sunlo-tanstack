@@ -6,11 +6,11 @@ export const Route = createLazyFileRoute('/privacy-policy')({
 
 function Page() {
 	return (
-		<div data-theme="light" className="card p-10">
+		<div data-theme="light" className="card-page p-10">
 			<div className="prose">
 				<h1>Privacy Policy</h1>
 				<em>Last updated: June 24, 2024</em>
-				<div className="card my-4 flex flex-col border border-info bg-info/20 px-8 text-xl">
+				<div className="card-page my-4 flex flex-col border border-info bg-info/20 px-8 text-xl">
 					<p>
 						<strong>tl;dr:</strong> In order to create an account you need to
 						enter an email address, and logging in leaves a cookie on your
