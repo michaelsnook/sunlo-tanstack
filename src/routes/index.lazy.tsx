@@ -62,11 +62,11 @@ function Index() {
 				here should work, so if you do spot a problem, please let me know! ⚠️
 			</div>
 			<section className="my-16 bg-base-100 px-1 pb-8 pt-4 text-base-content @lg:px-4 @lg:pb-16 @lg:pt-10">
-				<h2 className="h2 px-4 text-center @lg:pb-6">
+				<h2 className="h2 px-4 text-center @lg:mb-6">
 					Our Approach to Language&nbsp;Learning
 				</h2>
-				<div className="flex flex-col justify-center gap-4 @xl:flex-row">
-					<Card className="basis-80">
+				<div className="flex gap-4 flex-row flex-wrap">
+					<Card className="basis-80 flex-grow">
 						<CardHeader>
 							<CardTitle className="flex-row gap-2 flex">
 								<PhraseIcon /> Phrase Based
@@ -85,7 +85,7 @@ function Index() {
 							</p>
 						</CardContent>
 					</Card>
-					<Card className="basis-80">
+					<Card className="basis-80 flex-grow">
 						<CardHeader>
 							<CardTitle className="flex-row gap-2 flex">
 								<UsersIcon /> Social Learning
@@ -105,7 +105,7 @@ function Index() {
 							</p>
 						</CardContent>
 					</Card>
-					<Card className="basis-80">
+					<Card className="basis-80 flex-grow">
 						<CardHeader>
 							<CardTitle className="flex-row gap-2 flex">
 								<CuriosityIcon /> Driven by Curiosity
@@ -128,8 +128,8 @@ function Index() {
 			</section>
 			<section className="my-16 pb-16 pt-4 @lg:pt-10">
 				<h2 className="h2 px-4 pb-6 text-center">Who is Sunlo for?</h2>
-				<div className="flex flex-col justify-center gap-4 @xl:flex-row">
-					<Card className="basis-80">
+				<div className="flex justify-center gap-4 flex-row flex-wrap">
+					<Card className="basis-80 flex-grow">
 						<CardHeader>
 							<CardTitle className="flex-row gap-2 flex">
 								<PlaneIcon /> Moving To a New Place
@@ -147,7 +147,7 @@ function Index() {
 							</p>
 						</CardContent>
 					</Card>
-					<Card className="basis-80">
+					<Card className="basis-80 flex-grow">
 						<CardHeader>
 							<CardTitle className="flex-row gap-2 flex">
 								<FriendIcon /> The Friend / Guide
@@ -167,7 +167,7 @@ function Index() {
 						</CardContent>
 					</Card>
 
-					<Card className="basis-80">
+					<Card className="basis-80 flex-grow">
 						<CardHeader>
 							<CardTitle className="flex-row gap-2 flex">
 								<HeartIcon /> Extended Family
@@ -175,15 +175,16 @@ function Index() {
 						</CardHeader>
 						<CardContent className="space-y-2">
 							<p>
-								If you haven&apos;t yet learned your family&apos;s ancestral
-								language, and now you feel a barrier between yourself and your
-								grandparents or your cousins, this is the &ldquo;linguistic
-								generation gap.&rdquo;
+								Some people grow up speaking different languages than the rest
+								of their family, especially in the case of the linguistic
+								&ldquo;generation gap.&rdquo; Perhaps your grandparents speak a
+								more regional language and it can be difficult to find resources
+								or even apps that can help.
 							</p>
 							<p>
-								We are here to help – go ahead and dive into Sunlo, and ask your
-								parents or your fun cousin to join as a friend and help you
-								along the way.
+								Sunlo relies on user-generated content, so you can ask your
+								parents or your fun cousin and get started; no barriers will
+								stand in your way.
 							</p>
 						</CardContent>
 					</Card>
@@ -198,8 +199,8 @@ function Index() {
 				</Button>
 			</section>
 
-			<section className="light my-16 bg-base-100 px-4 pb-16 pt-4 text-base-content @lg:px-8 @lg:pt-10">
-				<Card className="[padding:clamp(0.5rem,2cqw,2rem)]">
+			<section className="my-16 px-2 pb-16 pt-4 @lg:px-8 @lg:pt-10">
+				<Card className="p-[4%]">
 					<CardHeader>
 						<CardTitle className="h2 px-4 pb-6 text-center">
 							The Story Behind Sunlo
