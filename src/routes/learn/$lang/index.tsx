@@ -51,7 +51,7 @@ export const Route = createFileRoute('/learn/$lang/')({
 function Page() {
 	const { lang } = Route.useParams()
 	return (
-		<main className="page-card my-4">
+		<main className="card-page my-4">
 			<p className="italic opacity-80">
 				This is meant as a place to just get the user going. They need to feel
 				comfortable and be reminded of the resources they have to lean on and
@@ -64,7 +64,7 @@ function Page() {
 				to="/learn/$lang/review"
 				params={{ lang }}
 				from={Route.fullPath}
-				className={buttonVariants({ variant: 'action' })}
+				className={buttonVariants({ variant: 'default' })}
 			>
 				Time To Start Today&apos;s Deck
 			</Link>
