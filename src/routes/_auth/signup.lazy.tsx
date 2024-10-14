@@ -152,7 +152,7 @@ function SignUp() {
 						<Link
 							tabIndex={4}
 							to="/login"
-							className={buttonVariants({ variant: 'secondary' })}
+							className={buttonVariants({ variant: 'link' })}
 						>
 							Already have an account?
 						</Link>

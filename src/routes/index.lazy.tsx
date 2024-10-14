@@ -61,7 +61,7 @@ function Index() {
 				⚠️ Sunlo is under development; it is incomplete but most of what&apos;s
 				here should work, so if you do spot a problem, please let me know! ⚠️
 			</div>
-			<section className="my-16 bg-base-100 px-1 pb-8 pt-4 text-base-content @lg:px-4 @lg:pb-16 @lg:pt-10">
+			<section className="my-16 px-1 pb-8 pt-4 @lg:px-4 @lg:pb-16 @lg:pt-10">
 				<h2 className="h2 px-4 text-center @lg:mb-6">
 					Our Approach to Language&nbsp;Learning
 				</h2>
@@ -126,9 +126,9 @@ function Index() {
 					</Card>
 				</div>
 			</section>
-			<section className="my-16 pb-16 pt-4 @lg:pt-10">
-				<h2 className="h2 px-4 pb-6 text-center">Who is Sunlo for?</h2>
-				<div className="flex justify-center gap-4 flex-row flex-wrap">
+			<section className="my-16 px-1 pb-8 pt-4 @lg:px-4 @lg:pb-16 @lg:pt-10">
+				<h2 className="h2 px-4 text-center @lg:mb-6">Who is Sunlo for?</h2>
+				<div className="flex gap-4 flex-row flex-wrap">
 					<Card className="basis-80 flex-grow">
 						<CardHeader>
 							<CardTitle className="flex-row gap-2 flex">

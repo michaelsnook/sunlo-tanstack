@@ -35,7 +35,7 @@ export function SelectOneLanguage({
 		<Popover open={open} onOpenChange={setOpen}>
 			<PopoverTrigger asChild className="w-full">
 				<Button
-					variant="outline"
+					variant="white"
 					tabIndex={tabIndex}
 					role="combobox"
 					aria-expanded={open}

@@ -36,14 +36,9 @@ export default function Navbar({ data }: NavbarProps) {
 	const [isOpen, setIsOpen] = useState(false)
 	return (
 		<nav className="flex items-center justify-between py-3 px-[1cqw] shadow-xl mb-4 bg-white/10">
-			<div className="flex items-center">
-				<Button
-					variant="ghost"
-					size="sm"
-					className="me-[1cqw] px-2"
-					onClick={onBackClick}
-				>
-					<ChevronLeft className="h-6 w-6" />
+			<div className="flex items-center gap-[1cqw]">
+				<Button variant="ghost" size="icon" onClick={onBackClick}>
+					<ChevronLeft />
 					<span className="sr-only">Back</span>
 				</Button>
 				<div className="flex flex-row items-center gap-[1cqw]">
@@ -62,8 +57,8 @@ export default function Navbar({ data }: NavbarProps) {
 			{!(data?.contextMenu?.length > 0) ? null : (
 				<DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
 					<DropdownMenuTrigger asChild>
-						<Button variant="ghost" size="sm" className="px-2">
-							<MoreVertical className="h-6 w-6" />
+						<Button variant="ghost" size="icon">
+							<MoreVertical />
 							<span className="sr-only">Open menu</span>
 						</Button>
 					</DropdownMenuTrigger>

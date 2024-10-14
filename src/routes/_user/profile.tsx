@@ -12,14 +12,14 @@ export const Route = createFileRoute('/_user/profile')({
 
 function ProfilePage() {
 	return (
-		<div className="w-app space-y-4 py-6">
+		<div className="w-app space-y-8 py-6">
 			<AvatarSection />
 			<div className="w-full text-center">
 				<Link to="/getting-started" className="s-link text-xl" tabIndex={-1}>
 					Get Started <ArrowRightIcon className="inline-block w-4 h-4 ml-1" />
 				</Link>
 			</div>
-			<div className="card-white">
+			<div className="card-page">
 				<div className="h3">
 					<h3>Edit Profile</h3>
 					<p>Update your profile information.</p>
@@ -27,7 +27,7 @@ function ProfilePage() {
 
 				<UpdateProfileForm />
 			</div>
-			<div className="card-white">
+			<div className="card-page">
 				<div className="h3">
 					<h3>Login Credentials</h3>
 					<p>Update your email or password (or signin method)</p>
