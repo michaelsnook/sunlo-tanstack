@@ -1,7 +1,7 @@
 import { useLayoutEffect } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useMutation } from '@tanstack/react-query'
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import toast from 'react-hot-toast'
@@ -91,7 +91,9 @@ export default function LoginForm() {
 					role="form"
 					noValidate
 					className="space-y-4"
-					onSubmit={handleSubmit((values) => loginMutation.mutate(values))}
+					onSubmit={handleSubmit(
+						loginMutation.mutate as SubmitHandler<FormInputs>
+					)}
 				>
 					<fieldset className="flex flex-col gap-y-4" disabled={isSubmitting}>
 						<EmailField register={register} error={errors.email} />

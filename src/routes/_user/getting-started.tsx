@@ -20,8 +20,6 @@ export const Route = createFileRoute('/_user/getting-started')({
 	component: GettingStartedPage,
 })
 
-const cardClass = 'mb-8 rounded-xl px-6 py-4'
-
 function GettingStartedPage() {
 	const { userId } = useAuth()
 	const profile = useProfile()
@@ -107,6 +105,8 @@ function GettingStartedPage() {
 	// if (mainForm.error) console.log(`Error logging:`, mainForm)
 	if (mainForm.isSuccess) return <ShowSuccess tempDeckToAdd={tempDeckToAdd} />
 	const { deckLanguages } = profile.data
+
+	const cardClass = 'mb-8 rounded px-6 py-4 border border-2'
 
 	return (
 		<main className="text-white p-4 @md:p-6 @lg:p-10 pb-10">
