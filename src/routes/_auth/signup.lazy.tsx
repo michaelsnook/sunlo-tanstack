@@ -1,32 +1,35 @@
 import { Link, createLazyFileRoute, useRouter } from '@tanstack/react-router'
 import { useMutation } from '@tanstack/react-query'
-import { useForm } from '@tanstack/react-form'
-import { z } from 'zod'
-import { zodValidator } from '@tanstack/zod-form-adapter'
+import { useForm } from 'react-hook-form'
+import * as z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 import toast from 'react-hot-toast'
 
 import { Button, buttonVariants } from 'components/ui/button'
-import { Input } from 'components/ui/input'
+import { CardContent, CardHeader, CardTitle } from 'components/ui/card'
 
 import supabase from 'lib/supabase-client'
 import { ShowError } from 'components/errors'
-import { LabelInputInfo } from 'components/LabelInputInfo'
-import { CardContent, CardHeader, CardTitle } from 'components/ui/card'
+import { EmailField, PasswordField } from 'components/inputs'
 
 export const Route = createLazyFileRoute('/_auth/signup')({
 	component: SignUp,
 })
 
-const SignUpSchema = z.object({
-	email: z.string().email('Invalid email address'),
+const FormSchema = z.object({
+	email: z
+		.string()
+		.min(1, `Email is required`)
+		.email(`Email is required to be a real email`),
 	password: z.string().min(8, 'Password must be at least 8 characters'),
 })
+
+type FormInputs = z.infer<typeof FormSchema>
 
 const useSignUp = () =>
 	useMutation({
 		mutationKey: ['signup'],
-		mutationFn: async (values: z.infer<typeof SignUpSchema>) => {
-			const { email, password } = SignUpSchema.parse(values)
+		mutationFn: async ({ email, password }: FormInputs) => {
 			const { data, error } = await supabase.auth.signUp({
 				email,
 				password,
@@ -40,37 +43,18 @@ const useSignUp = () =>
 			}
 			return data
 		},
-		onSuccess: (data) => {
-			toast.success(`as ${data.user?.email}`, {
-				position: 'bottom-center',
-			})
-		},
 	})
 
 function SignUp() {
 	const router = useRouter()
 	const signupMutation = useSignUp()
 
-	const form = useForm<z.infer<typeof SignUpSchema>>({
-		defaultValues: {
-			email: '',
-			password: '',
-		},
-		validatorAdapter: zodValidator(),
-		validators: {
-			onSubmit: SignUpSchema,
-			// onChange: SignUpSchema,
-		},
-		onSubmit: ({ value }) => {
-			signupMutation.mutate(value, {
-				onSuccess: (data) => {
-					toast.success(`Signed up as ${data.user?.email}`, {
-						position: 'bottom-center',
-					})
-					router.navigate({ to: '/getting-started', from: '/signup' })
-				},
-			})
-		},
+	const {
+		handleSubmit,
+		register,
+		formState: { errors, isSubmitting },
+	} = useForm<FormInputs>({
+		resolver: zodResolver(FormSchema),
 	})
 
 	return (
@@ -81,79 +65,26 @@ function SignUp() {
 			<CardContent>
 				<form
 					role="form"
-					className="space-y-4"
-					onSubmit={(e) => {
-						e.preventDefault()
-						e.stopPropagation()
-						form.handleSubmit()
-					}}
 					noValidate
+					className="space-y-4"
+					onSubmit={handleSubmit((values: FormInputs) => {
+						signupMutation.mutate(values, {
+							onSuccess: (data) => {
+								toast.success(`Signed up as ${data.user?.email}`, {
+									position: 'bottom-center',
+								})
+								router.navigate({ to: '/getting-started', from: '/signup' })
+							},
+						})
+					})}
 				>
-					<fieldset
-						className="flex flex-col gap-y-4"
-						disabled={signupMutation.isPending}
-					>
-						<form.Field
-							name="email"
-							children={(field) => {
-								const showAsError =
-									field.state.meta.errors.length > 0 && field.state.meta.isDirty
-								return (
-									<LabelInputInfo field={field} label="Email">
-										<Input
-											id={field.name}
-											name={field.name}
-											inputMode="email"
-											aria-invalid={showAsError}
-											className={showAsError ? 'bg-destructive/20' : ''}
-											required={true}
-											tabIndex={1}
-											type="email"
-											onChange={(e) => field.handleChange(e.target.value)}
-											placeholder="email@domain"
-										/>
-									</LabelInputInfo>
-								)
-							}}
-						/>
-						<form.Field
-							name="password"
-							children={(field) => {
-								const showAsError =
-									field.state.meta.errors.length > 0 && field.state.meta.isDirty
-								return (
-									<LabelInputInfo field={field} label="Password">
-										<Input
-											id={field.name}
-											name={field.name}
-											aria-invalid={showAsError}
-											className={showAsError ? 'bg-destructive/20' : ''}
-											required={true}
-											tabIndex={2}
-											type="password"
-											onChange={(e) => field.handleChange(e.target.value)}
-											placeholder="* * * * * * * *"
-										/>
-									</LabelInputInfo>
-								)
-							}}
-						/>
+					<fieldset className="flex flex-col gap-y-4" disabled={isSubmitting}>
+						<EmailField register={register} error={errors.email} />
+						<PasswordField register={register} error={errors.password} />
 					</fieldset>
 					<div className="flex flex-row justify-between">
-						<Button
-							tabIndex={3}
-							variant="default"
-							type="submit"
-							disabled={signupMutation.isPending}
-							aria-disabled={signupMutation.isPending}
-						>
-							Sign Up
-						</Button>
-						<Link
-							tabIndex={4}
-							to="/login"
-							className={buttonVariants({ variant: 'link' })}
-						>
+						<Button disabled={signupMutation.isPending}>Sign Up</Button>
+						<Link to="/login" className={buttonVariants({ variant: 'link' })}>
 							Already have an account?
 						</Link>
 					</div>
