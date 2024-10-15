@@ -1,6 +1,6 @@
 import { Link, createLazyFileRoute, useRouter } from '@tanstack/react-router'
 import { useMutation } from '@tanstack/react-query'
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import toast from 'react-hot-toast'
@@ -26,8 +26,9 @@ const FormSchema = z.object({
 
 type FormInputs = z.infer<typeof FormSchema>
 
-const useSignUp = () =>
-	useMutation({
+function SignUp() {
+	const { navigate } = useRouter()
+	const signupMutation = useMutation({
 		mutationKey: ['signup'],
 		mutationFn: async ({ email, password }: FormInputs) => {
 			const { data, error } = await supabase.auth.signUp({
@@ -43,11 +44,13 @@ const useSignUp = () =>
 			}
 			return data
 		},
+		onSuccess: (data) => {
+			toast.success(`Signed up as ${data.user?.email}`, {
+				position: 'bottom-center',
+			})
+			navigate({ to: '/getting-started', from: '/signup' })
+		},
 	})
-
-function SignUp() {
-	const router = useRouter()
-	const signupMutation = useSignUp()
 
 	const {
 		handleSubmit,
@@ -67,16 +70,9 @@ function SignUp() {
 					role="form"
 					noValidate
 					className="space-y-4"
-					onSubmit={handleSubmit((values: FormInputs) => {
-						signupMutation.mutate(values, {
-							onSuccess: (data) => {
-								toast.success(`Signed up as ${data.user?.email}`, {
-									position: 'bottom-center',
-								})
-								router.navigate({ to: '/getting-started', from: '/signup' })
-							},
-						})
-					})}
+					onSubmit={handleSubmit(
+						signupMutation.mutate as SubmitHandler<FormInputs>
+					)}
 				>
 					<fieldset className="flex flex-col gap-y-4" disabled={isSubmitting}>
 						<EmailField register={register} error={errors.email} />
