@@ -1,5 +1,6 @@
 ISSUES
-
+1. When you try to sign up using existing creds you get an error and then get logged in. We
+	should handle this. (inspect and special-case the error before throwing, and toast accordingly)
 
 COMPONENTS (ShadCN/Radix)
 1. ✅ Add a Components page to keep track of / showcase all components
