@@ -1,9 +1,9 @@
 import { useLayoutEffect } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useMutation } from '@tanstack/react-query'
-import { z } from 'zod'
-import { useForm } from '@tanstack/react-form'
-import { zodValidator } from '@tanstack/zod-form-adapter'
+import { useForm } from 'react-hook-form'
+import * as z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 import toast from 'react-hot-toast'
 
 import { Input } from 'components/ui/input'
@@ -11,8 +11,8 @@ import { Button, buttonVariants } from 'components/ui/button'
 import supabase from 'lib/supabase-client'
 import { useAuth } from 'lib/hooks'
 import { ShowError } from 'components/errors'
-import { LabelInputInfo } from 'components/LabelInputInfo'
 import { CardContent, CardHeader, CardTitle } from 'components/ui/card'
+import { Label } from 'components/ui/label'
 
 export const Route = createFileRoute('/_auth/login')({
 	validateSearch: (search: Record<string, unknown>): LoginSearchParams => {
@@ -28,11 +28,14 @@ interface LoginSearchParams {
 }
 
 const LoginSchema = z.object({
-	email: z.string().email(),
-	password: z
+	email: z
 		.string()
-		.min(8, { message: 'Password must be at least 8 characters' }),
+		.min(1, `Email is required`)
+		.email(`Email is required to be a real email`),
+	password: z.string().min(1, 'Password is required'),
 })
+
+type FormInputs = z.infer<typeof LoginSchema>
 
 export default function LoginForm() {
 	const { isAuth } = useAuth()
@@ -51,7 +54,7 @@ export default function LoginForm() {
 
 	const loginMutation = useMutation({
 		mutationKey: ['login'],
-		mutationFn: async (values: z.infer<typeof LoginSchema>) => {
+		mutationFn: async (values: FormInputs) => {
 			const { data, error } = await supabase.auth.signInWithPassword({
 				email: values.email,
 				password: values.password,
@@ -67,24 +70,17 @@ export default function LoginForm() {
 		},
 	})
 
-	const form = useForm<z.infer<typeof LoginSchema>>({
-		defaultValues: {
-			email: '',
-			password: '',
-		},
-		onSubmit: ({ value }) => loginMutation.mutate(value),
-		validatorAdapter: zodValidator(),
-		validators: {
-			onSubmit: LoginSchema,
-			// onChange: LoginSchema,
-		},
+	const {
+		register,
+		handleSubmit,
+		formState: { errors, isSubmitting },
+	} = useForm<FormInputs>({
+		resolver: zodResolver(LoginSchema),
 	})
 
 	if (isAuth)
 		return <p>You are logged in; please wait while we redirect you.</p>
-	console.log('form state', form.state, loginMutation)
-	const submitButtonShouldBeDisabled =
-		loginMutation.isPending || form.state.isSubmitting
+	// console.log('form state', form.state, loginMutation)
 
 	return (
 		<>
@@ -95,62 +91,44 @@ export default function LoginForm() {
 				<form
 					role="form"
 					className="space-y-4"
-					onSubmit={(event) => {
-						event.preventDefault()
-						event.stopPropagation()
-						form.handleSubmit()
-					}}
+					onSubmit={handleSubmit((values) => loginMutation.mutate(values))}
 					noValidate
 				>
-					<fieldset
-						className="flex flex-col gap-y-4"
-						disabled={loginMutation.isPending}
-					>
-						<form.Field
-							name="email"
-							children={(field) => {
-								const showAsError =
-									field.state.meta.errors.length > 0 && field.state.meta.isDirty
-								return (
-									<LabelInputInfo field={field} label="Email">
-										<Input
-											id={field.name}
-											name={field.name}
-											inputMode="email"
-											aria-invalid={showAsError}
-											className={showAsError ? 'bg-destructive/20' : ''}
-											tabIndex={1}
-											type="email"
-											onChange={(e) => field.handleChange(e.target.value)}
-											placeholder="email@domain"
-										/>
-									</LabelInputInfo>
-								)
-							}}
-						/>
-						<form.Field
-							name="password"
-							children={(field) => {
-								const showAsError =
-									field.state.meta.errors.length > 0 && field.state.meta.isDirty
-								return (
-									<LabelInputInfo field={field} label="Password">
-										<Input
-											id={field.name}
-											name={field.name}
-											inputMode="text"
-											required={true}
-											aria-invalid={field.state.meta.errors.length > 0}
-											className={showAsError ? 'bg-destructive/20' : ''}
-											tabIndex={2}
-											type="password"
-											onChange={(e) => field.handleChange(e.target.value)}
-											placeholder="* * * * * * * *"
-										/>
-									</LabelInputInfo>
-								)
-							}}
-						/>
+					<fieldset className="flex flex-col gap-y-4" disabled={isSubmitting}>
+						<div>
+							<Label htmlFor="email">Email</Label>
+							<Input
+								{...register('email')}
+								inputMode="email"
+								aria-invalid={!!errors.email}
+								tabIndex={1}
+								type="email"
+								className={errors.email ? 'bg-destructive/20' : ''}
+								placeholder="email@domain"
+							/>
+							{!errors.email ? null : (
+								<p className="text-sm text-destructive mt-2">
+									{errors.email.message}
+								</p>
+							)}
+						</div>
+						<div>
+							<Label htmlFor="password">Password</Label>
+							<Input
+								{...register('password')}
+								inputMode="text"
+								aria-invalid={!!errors.password}
+								className={errors.password ? 'bg-destructive/20' : ''}
+								tabIndex={2}
+								type="password"
+								placeholder="* * * * * * * *"
+							/>
+							{!errors.password ? null : (
+								<p className="text-sm text-destructive mt-2">
+									{errors.password.message}
+								</p>
+							)}
+						</div>
 					</fieldset>
 
 					<div className="flex flex-row justify-between">
@@ -158,8 +136,8 @@ export default function LoginForm() {
 							tabIndex={3}
 							variant="default"
 							type="submit"
-							disabled={submitButtonShouldBeDisabled}
-							aria-disabled={submitButtonShouldBeDisabled}
+							disabled={isSubmitting}
+							aria-disabled={isSubmitting}
 						>
 							Log in
 						</Button>

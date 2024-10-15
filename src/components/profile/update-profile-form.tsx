@@ -2,9 +2,9 @@ import type { uuid } from 'types/main'
 
 import { useMutation } from '@tanstack/react-query'
 import { useQueryClient } from '@tanstack/react-query'
-import { useForm } from '@tanstack/react-form'
-import { zodValidator } from '@tanstack/zod-form-adapter'
-import { z } from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
 
 import { toast } from 'react-hot-toast'
 import supabase from 'lib/supabase-client'
@@ -21,7 +21,7 @@ import SelectMultipleLanguagesInput from 'components/select-multiple-languages'
 import { SelectOneLanguage } from 'components/select-one-language'
 import { FieldInfo } from 'components/field-info'
 
-const profileEditFormSchema = z.object({
+const ProfileEditFormSchema = z.object({
 	username: z
 		.string()
 		.min(3, { message: 'Username must be 3 letters or more' }),
@@ -32,7 +32,7 @@ const profileEditFormSchema = z.object({
 	avatar_url: z.string().optional(),
 })
 
-type ProfileEditForm = z.infer<typeof profileEditFormSchema>
+type ProfileEditForm = z.infer<typeof ProfileEditFormSchema>
 
 export default function UpdateProfileForm() {
 	const { data, error } = useProfile()
