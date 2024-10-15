@@ -10,7 +10,7 @@ import { CardContent, CardHeader, CardTitle } from 'components/ui/card'
 
 import supabase from 'lib/supabase-client'
 import { ShowError } from 'components/errors'
-import { EmailField, PasswordField } from 'components/inputs'
+import { EmailField, PasswordField } from 'components/fields'
 
 export const Route = createLazyFileRoute('/_auth/signup')({
 	component: SignUp,

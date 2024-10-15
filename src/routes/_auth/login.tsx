@@ -11,7 +11,7 @@ import { CardContent, CardHeader, CardTitle } from 'components/ui/card'
 import supabase from 'lib/supabase-client'
 import { useAuth } from 'lib/hooks'
 import { ShowError } from 'components/errors'
-import { EmailField, PasswordField } from 'components/inputs'
+import { EmailField, PasswordField } from 'components/fields'
 
 interface LoginSearchParams {
 	redirectedFrom?: string
@@ -100,12 +100,7 @@ export default function LoginForm() {
 						<PasswordField register={register} error={errors.password} />
 					</fieldset>
 					<div className="flex flex-row justify-between">
-						<Button
-							tabIndex={3}
-							variant="default"
-							type="submit"
-							disabled={isSubmitting}
-						>
+						<Button type="submit" disabled={isSubmitting}>
 							Log in
 						</Button>
 

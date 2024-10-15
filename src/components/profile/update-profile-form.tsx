@@ -1,25 +1,23 @@
 import type { uuid } from 'types/main'
 
-import { useMutation } from '@tanstack/react-query'
-import { useQueryClient } from '@tanstack/react-query'
-import { useForm } from 'react-hook-form'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { FieldError, SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
-
 import { toast } from 'react-hot-toast'
+import { Button } from 'components/ui/button'
+
 import supabase from 'lib/supabase-client'
 import { ShowError } from 'components/errors'
 import Loading from 'components/loading'
 import { useProfile } from 'lib/use-profile'
 
-import { Input } from 'components/ui/input'
-import { Button } from 'components/ui/button'
-import { Label } from 'components/ui/label'
-
-import AvatarEditor from './avatar-editor'
-import SelectMultipleLanguagesInput from 'components/select-multiple-languages'
-import { SelectOneLanguage } from 'components/select-one-language'
-import { FieldInfo } from 'components/field-info'
+import {
+	AvatarEditorField,
+	LanguagePrimaryField,
+	LanguagesSpokenField,
+	UsernameField,
+} from 'components/fields'
 
 const ProfileEditFormSchema = z.object({
 	username: z
@@ -32,10 +30,11 @@ const ProfileEditFormSchema = z.object({
 	avatar_url: z.string().optional(),
 })
 
-type ProfileEditForm = z.infer<typeof ProfileEditFormSchema>
+type ProfileEditFormInputs = z.infer<typeof ProfileEditFormSchema>
 
 export default function UpdateProfileForm() {
 	const { data, error } = useProfile()
+	// (`Profile data`, data)
 	if (error) return <ShowError>{error.message}</ShowError>
 
 	// we use placeholders for the profile, so there's no isPending
@@ -53,7 +52,7 @@ export default function UpdateProfileForm() {
 }
 
 interface PrefilledFormProps {
-	initialData: ProfileEditForm
+	initialData: ProfileEditFormInputs
 	uid: uuid
 }
 
@@ -61,7 +60,7 @@ function PrefilledForm({ initialData, uid }: PrefilledFormProps) {
 	const queryClient = useQueryClient()
 
 	const updateProfile = useMutation({
-		mutationFn: async (value: ProfileEditForm) => {
+		mutationFn: async (value: ProfileEditFormInputs) => {
 			const { data } = await supabase
 				.from('user_profile')
 				.update(value)
@@ -76,103 +75,43 @@ function PrefilledForm({ initialData, uid }: PrefilledFormProps) {
 		},
 	})
 
-	const form = useForm<z.infer<typeof profileEditFormSchema>>({
+	const {
+		register,
+		control,
+		handleSubmit,
+		watch,
+		formState: { errors, isSubmitting },
+	} = useForm<ProfileEditFormInputs>({
 		defaultValues: initialData,
-		onSubmit: ({ value }) => {
-			// Do something with form data
-			console.log(`submitting`, value)
-			updateProfile.mutate(value)
-		},
-		// Add a validator to support Zod usage in Form and Field
-		validatorAdapter: zodValidator(),
-		validators: {
-			onSubmit: profileEditFormSchema,
-			onChange: profileEditFormSchema,
-		},
+		resolver: zodResolver(ProfileEditFormSchema),
 	})
+
+	const watchPrimary = watch('language_primary')
 
 	return (
 		<form
 			className="space-y-4"
-			onSubmit={(e) => {
-				e.preventDefault()
-				e.stopPropagation()
-				form.handleSubmit()
-			}}
+			onSubmit={handleSubmit(
+				updateProfile.mutate as SubmitHandler<ProfileEditFormInputs>
+			)}
+			noValidate
 		>
 			<fieldset
 				className="grid grid-cols-1 gap-4 sm:grid-cols-2"
-				disabled={updateProfile.isPending}
+				disabled={isSubmitting}
 			>
-				<form.Field
-					name="username"
-					children={(field) => (
-						<div className="flex flex-col">
-							<Label htmlFor={field.name}>Your nickname</Label>
-							<Input
-								type="text"
-								tabIndex={1}
-								className={
-									!!field.state.meta.errors.length &&
-									'border-destructive outline-destructive ring-destructive forcus:ring-destructive'
-								}
-								id={field.name}
-								name={field.name}
-								value={field.state.value}
-								onBlur={field.handleBlur}
-								onChange={(e) => field.handleChange(e.target.value)}
-							/>
-							<FieldInfo field={field} />
-						</div>
-					)}
+				<UsernameField error={errors.username} register={register} />
+				<LanguagePrimaryField
+					error={errors.language_primary}
+					control={control}
 				/>
-				<form.Field
-					name="language_primary"
-					children={(field) => (
-						<div className="flex flex-col">
-							<Label htmlFor={field.name} className="font-bold">
-								Primary language
-							</Label>
-							<SelectOneLanguage
-								tabIndex={2}
-								value={field.state.value}
-								setValue={field.handleChange}
-								hasError={!!field.state.meta.errors.length}
-							/>
-							<FieldInfo field={field} />
-						</div>
-					)}
+				<LanguagesSpokenField
+					// @TODO the need for [0] coercion means we're not handling the array value nicely
+					error={errors.languages_spoken?.[0] as FieldError}
+					control={control}
+					primary={watchPrimary}
 				/>
-				<form.Field
-					name="languages_spoken"
-					children={(field) => (
-						<div className="flex flex-col">
-							<Label htmlFor={field.name} className="font-bold">
-								Do you know other languages?
-							</Label>
-							<SelectMultipleLanguagesInput
-								selectedLanguages={field.state.value}
-								setSelectedLanguages={field.handleChange}
-								except={field.state.value}
-								hasError={!!field.state.meta.errors.length}
-							/>
-							<FieldInfo field={field} />
-						</div>
-					)}
-				/>
-				<form.Field
-					name="avatar_url"
-					children={(field) => (
-						<div className="flex flex-col">
-							<Label className="font-bold">Profile picture</Label>
-							<AvatarEditor
-								url={field.state.value}
-								onUpload={field.handleChange}
-							/>
-							<FieldInfo field={field} />
-						</div>
-					)}
-				/>
+				<AvatarEditorField error={errors.avatar_url} control={control} />
 				<div className="flex flex-col-reverse">
 					<Button disabled={updateProfile.isPending}>Save changes</Button>
 				</div>

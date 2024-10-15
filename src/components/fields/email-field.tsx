@@ -1,15 +1,10 @@
+import { type FieldProps, ErrorLabel } from '.'
 import { Input } from 'components/ui/input'
 import { Label } from 'components/ui/label'
-import { FieldError, UseFormRegister, FieldValues } from 'react-hook-form'
 
-type FieldSetProps = {
-	register: UseFormRegister<FieldValues>
-	error: FieldError
-}
-
-export default function EmailField({ register, error }: FieldSetProps) {
+export default function EmailField({ register, error }: FieldProps) {
 	return (
-		<div>
+		<div className="flex flex-col gap-1">
 			<Label htmlFor="email" className={error ? 'text-destructive' : ''}>
 				Email
 			</Label>
@@ -22,9 +17,7 @@ export default function EmailField({ register, error }: FieldSetProps) {
 				className={error ? 'bg-destructive/20' : ''}
 				placeholder="email@domain"
 			/>
-			{!error ? null : (
-				<p className="text-sm text-destructive mt-2">{error.message}</p>
-			)}
+			<ErrorLabel {...error} />
 		</div>
 	)
 }
