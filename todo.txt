@@ -4,6 +4,10 @@ ISSUES
 1. Signup workflow should not be a toast-redirect, it should be a success alert, saying go check
 	and verify your email; redirect should happen after this
 
+MOCKS
+1. The $lang/review workflow is a mock only; wire it up
+1. 
+
 COMPONENTS (ShadCN/Radix)
 1. ✅ Add a Components page to keep track of / showcase all components
 1. ✅ replace the DaisyUI expandos
@@ -18,9 +22,9 @@ COMPONENTS (ShadCN/Radix)
 1. Fix dark mode (possibly use blocking JS to apply the class, and then fix the colors). 
 		We currently have Tailwind using system mode and shadcn using classes 🙈
 1. use <ReloadIcon className="mr-2 h-4 w-4 animate-spin" /> for loading buttons
-1. Move the appropriate form inputs into their own special fancy components
-	1. replace FieldInfo
-1. Okay fine switch to react-hook-form bc it integrates nicely w ShadCN
+1. ✅ Move the appropriate form inputs into their own special fancy components
+	1. ✅ replace FieldInfo
+1. ✅ Okay fine switch to react-hook-form bc it integrates nicely w ShadCN
 
 PRIMARY CARD INTERACTIONS
 1. bring over the new structure for relations
@@ -42,7 +46,7 @@ NAVIGATION
 1. ✅ don't forget to add the Navbar
 1. ✅ add context menus (links) to all the pages and scaffold pages
 
-UX
+UI POLISH
 1. Add activity graph to deck summaries :)) https://app.radicle.xyz/nodes/seed.radicle.xyz/rad:z4V1sjrXqjvFdnCUbxPFqd5p4DtH5/tree/src/components/ActivityDiagram.svelte
 1. When a loader awaits, this is a time to show blank shell and transition in
 
