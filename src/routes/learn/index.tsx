@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card'
 
 import type { NavbarData } from 'types/main'
 import { profileQuery, useProfile } from 'lib/use-profile'
+import { ago } from 'lib/dayjs'
 import Loading from 'components/loading'
 
 export const Route = createFileRoute('/learn/')({
@@ -64,7 +65,10 @@ export default function Page() {
 										{deck.cards_active} active cards
 									</p>
 									<p className="text-sm text-base-content/70">
-										Last studied: {deck.most_recent_review_at || 'never'}
+										Last studied:{' '}
+										{deck.most_recent_review_at ?
+											ago(deck.most_recent_review_at)
+										:	'never'}
 									</p>
 								</div>
 								<div className="flex items-center justify-between">
