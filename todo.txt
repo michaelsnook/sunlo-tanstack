@@ -10,7 +10,7 @@ MOCKS
 		✅ we have an "empty" state and a "complete" state
 		we have the component taking the correct data for its loop
 		we have the component submitting mutations
-1. 
+1. The "Deck Home" screen or Welcome Screen
 
 COMPONENTS (ShadCN/Radix)
 1. ✅ Add a Components page to keep track of / showcase all components
@@ -25,7 +25,7 @@ COMPONENTS (ShadCN/Radix)
 	1. find-replace all these colors: text-base text-base-content etc
 1. ✅ Fix dark mode (possibly use blocking JS to apply the class, and then fix the colors). 
 		✅ Align Tailwind to shadcn class approach 🙈
-		now go back through and replace all the use of dark: with responsive classes
+		✅ now go back through and replace all the use of dark: with responsive classes
 1. use <ReloadIcon className="mr-2 h-4 w-4 animate-spin" /> for loading buttons
 1. ✅ Move the appropriate form inputs into their own special fancy components
 	1. ✅ replace FieldInfo
@@ -66,15 +66,19 @@ DATA LOADING
 1. ✅ replace useLang with router feature
 1. ✅ replace the old useProfile and ProfileFull
 1. ✅ refresh all the fetcher hooks w the select-paradigm code
+1. don't use `enabled` to waterfall useQueries on auth context
+		perhaps this will just be a code convention only render components after auth
+		perhaps there is a better way to use the params / data / keys
+
+ROUTER
+1. if the navbar is not present, use its parent, somehow. (unclear why this is not happening)
+1. if the validateSearch is not present, can we use its parent? or can we just get params from the parent component?
 1. research loaders, preloading, query client prefetching, etc. patterns so
 		we can get the most out of things. 
 		* access `auth` on first render inside the DaisyUI
 		* suspend until profile loads
 		* suspend /$lang routes until language & deck load
 		* when the router loader is suspending and then stops, transition in
-1. don't use `enabled` to waterfall useQueries on auth context
-		perhaps this will just be a code convention only render components after auth
-		perhaps there is a better way to use the params / data / keys
 
 CROSS-PLATFORM
 1. ✅ compile to android with tauri

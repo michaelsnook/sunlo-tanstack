@@ -1,54 +1,27 @@
-import type { FriendshipRow, NavbarData } from 'types/main'
 import { createFileRoute, Link } from '@tanstack/react-router'
+
+import { langInfoLoader } from 'lib/reuse-loaders'
+import type { FriendshipRow, PhraseSearchParams } from 'types/main'
+import { buttonVariants } from 'components/ui/button'
 import Loading from 'components/loading'
-import languages from 'lib/languages'
+
 import { useDeck, useDeckMeta } from 'lib/use-deck'
 import { useLanguage } from 'lib/use-language'
 import { useProfile } from 'lib/use-profile'
 import ModalWithOpener from 'components/modal-with-opener'
-import { buttonVariants } from 'components/ui/button'
 import { LanguagePhrasesAccordionComponent } from 'components/language-phrases-accordion'
 
-export const Route = createFileRoute('/learn/$lang/')({
-	component: Page,
-	loader: ({ params: { lang } }) => {
+export const Route = createFileRoute('/learn/$lang/_tabs/')({
+	validateSearch: (search: Record<string, unknown>): PhraseSearchParams => {
 		return {
-			navbar: {
-				title: `Learning ${languages[lang]}`,
-				icon: 'book-heart',
-				contextMenu: [
-					{
-						name: 'Start a review',
-						href: './review',
-						icon: 'rocket',
-					},
-					{
-						name: 'Add a phrase',
-						href: './add-phrase',
-						icon: 'square-plus',
-					},
-					{
-						name: `Search ${languages[lang]}`,
-						href: './search',
-						icon: 'search',
-					},
-					{
-						name: 'Your cards',
-						href: './browse',
-						icon: 'wallet-cards',
-					},
-					{
-						name: 'Deck settings',
-						href: './settings',
-						icon: 'settings',
-					},
-				],
-			} as NavbarData,
+			phrase: search.phrase as string | undefined,
 		}
 	},
+	component: WelcomePage,
+	loader: ({ params: { lang } }) => langInfoLoader(lang),
 })
 
-function Page() {
+function WelcomePage() {
 	const { lang } = Route.useParams()
 	return (
 		<main className="card-page my-4">
