@@ -9,7 +9,7 @@ import { useAuth, useSignOut } from 'lib/hooks'
 import { cn } from 'lib/utils'
 import Loading from 'components/loading'
 import { Button } from 'components/ui/button'
-import { LogOut } from 'lucide-react'
+import { ModeToggle } from './mode-toggle'
 
 const staticMenu: MenuType = {
 	name: 'Menu',
@@ -81,10 +81,16 @@ export default function Sidebar() {
 					'top-0 z-30 h-screen w-72 flex-col gap-4 overflow-y-auto overflow-x-hidden p-6 bg-muted dark:bg-foreground text-foreground dark:text-background'
 				)}
 			>
-				<Link to="/" className="h4 flex flex-row items-center">
-					<Garlic size={50} />
-					Sunlo
-				</Link>
+				<div className="flex flex-row justify-between items-center py-4">
+					<Link
+						to="/"
+						className="font-bold flex flex-row items-center nav-link"
+					>
+						<Garlic size={50} />
+						Sunlo
+					</Link>
+					<ModeToggle />
+				</div>
 				<DeckMenu />
 				<GenericMenu menu={staticMenu} />
 				<p className="mt-auto mb-[1.1rem] ml-auto">
