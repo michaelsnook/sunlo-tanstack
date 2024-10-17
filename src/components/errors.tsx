@@ -1,5 +1,6 @@
 import { CircleX } from 'lucide-react'
 import type { PropsWithChildren } from 'react'
+import Callout from './ui/callout'
 
 /*
   If the error message passed as `children` is nullable, we can simply use:
@@ -21,9 +22,9 @@ export function ShowError({
 	if (show === false) return null
 	if (show === null && !children) return null
 	return (
-		<div className="card bg-destructive/20 flex flex-row gap-4 items-center border-destructive/50">
+		<Callout variant="problem" alert>
 			<CircleX className="text-destructive/50" aria-hidden={true} />
 			<div>{children || `An unknown error has occurred (sorry)`}</div>
-		</div>
+		</Callout>
 	)
 }

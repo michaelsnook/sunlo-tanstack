@@ -7,11 +7,11 @@ import { Garlic } from 'components/garlic'
 import { useProfile } from 'lib/use-profile'
 import { useAuth, useSignOut } from 'lib/hooks'
 import { cn } from 'lib/utils'
-import Loading from 'components/loading'
 import { Button } from 'components/ui/button'
-import { LogOut, UserPen } from 'lucide-react'
+import { LogOut } from 'lucide-react'
 import { ModeToggle } from './mode-toggle'
 import Avatar from './avatar'
+import Callout from './ui/callout'
 
 const staticMenu: MenuType = {
 	name: 'Menu',
@@ -104,23 +104,20 @@ export default function Sidebar() {
 }
 
 function DeckMenu() {
-	const { data: profile, isLoading } = useProfile()
-	const menuData =
-		profile.deckLanguages.length === 0 ?
-			null
-		:	{
-				name: 'Learning decks',
-				href: '/learn',
-				links: profile?.deckLanguages?.map((lang) => {
-					return {
-						name: languages[lang],
-						href: `/learn/${lang}`,
-					}
-				}),
+	const {
+		data: { uid, deckLanguages },
+	} = useProfile()
+	const menuData = {
+		name: 'Learning decks',
+		href: '/learn',
+		links: deckLanguages?.map((lang) => {
+			return {
+				name: languages[lang],
+				href: `/learn/${lang}`,
 			}
-	return (
-		isLoading ? <Loading />
-		: menuData ?
+		}),
+	}
+	return uid ?
 			<>
 				<Link to="/profile" className="nav-link">
 					<p className="flex flex-row gap-2">
@@ -128,10 +125,21 @@ function DeckMenu() {
 						Your profile
 					</p>
 				</Link>
-				<GenericMenu menu={menuData} />
+				{deckLanguages.length === 0 ?
+					<Callout>
+						<div>
+							<p>
+								It seems like you're not learning any languages yet! Get
+								started.
+							</p>
+							<Button className="w-full mt-2" asChild>
+								<Link to="/learn/add-deck">Start Learning</Link>
+							</Button>
+						</div>
+					</Callout>
+				:	<GenericMenu menu={menuData} />}
 			</>
 		:	null
-	)
 }
 
 function SignOutButton({ shy = false }) {

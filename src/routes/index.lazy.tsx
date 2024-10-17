@@ -1,4 +1,5 @@
 import { createLazyFileRoute, Link } from '@tanstack/react-router'
+import Callout from 'components/ui/callout'
 import { GarlicBroccoli } from 'components/garlic'
 import { Button } from 'components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card'
@@ -7,7 +8,14 @@ import {
 	NavigationMenuItem,
 	NavigationMenuList,
 } from 'components/ui/navigation-menu'
-import { Car, Code, FileText, LogIn, UserPlus, UsersIcon } from 'lucide-react'
+import {
+	Code,
+	FileText,
+	LogIn,
+	UserPlus,
+	UsersIcon,
+	WandSparkles,
+} from 'lucide-react'
 
 export const Route = createLazyFileRoute('/')({
 	component: Index,
@@ -57,10 +65,13 @@ function Index() {
 				</div>
 			</main>
 
-			<div className="w-app card bg-black/30 text-center border-accent text-accent">
-				⚠️ Sunlo is under development; it is incomplete but most of what&apos;s
-				here should work, so if you do spot a problem, please let me know! ⚠️
-			</div>
+			<Callout variant="ghost" className="max-w-xl mx-auto">
+				<WandSparkles size={40} />
+				<p>
+					Sunlo is under development; it is incomplete and some of the screens
+					are just mockups.
+				</p>
+			</Callout>
 			<section className="my-16 px-1 pb-8 pt-4 @lg:px-4 @lg:pb-16 @lg:pt-10">
 				<h2 className="h2 px-4 text-center @lg:mb-6">
 					Our Approach to Language&nbsp;Learning
