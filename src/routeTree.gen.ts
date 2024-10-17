@@ -22,14 +22,15 @@ import { Route as LearnAddDeckImport } from './routes/learn/add-deck'
 import { Route as UserProfileImport } from './routes/_user/profile'
 import { Route as UserGettingStartedImport } from './routes/_user/getting-started'
 import { Route as AuthLoginImport } from './routes/_auth/login'
-import { Route as LearnLangIndexImport } from './routes/learn/$lang/index'
-import { Route as LearnLangSettingsImport } from './routes/learn/$lang/settings'
-import { Route as LearnLangSearchImport } from './routes/learn/$lang/search'
 import { Route as LearnLangReviewImport } from './routes/learn/$lang/review'
-import { Route as LearnLangBrowseImport } from './routes/learn/$lang/browse'
-import { Route as LearnLangAddPhraseImport } from './routes/learn/$lang/add-phrase'
+import { Route as LearnLangTabsImport } from './routes/learn/$lang/_tabs'
 import { Route as UserProfileChangePasswordImport } from './routes/_user/profile.change-password'
 import { Route as UserProfileChangeEmailImport } from './routes/_user/profile.change-email'
+import { Route as LearnLangTabsIndexImport } from './routes/learn/$lang/_tabs/index'
+import { Route as LearnLangTabsPublicLibraryImport } from './routes/learn/$lang/_tabs/public-library'
+import { Route as LearnLangTabsInviteFriendImport } from './routes/learn/$lang/_tabs/invite-friend'
+import { Route as LearnLangTabsDeckSettingsImport } from './routes/learn/$lang/_tabs/deck-settings'
+import { Route as LearnLangTabsAddPhraseImport } from './routes/learn/$lang/_tabs/add-phrase'
 
 // Create Virtual Routes
 
@@ -37,6 +38,7 @@ const PrivacyPolicyLazyImport = createFileRoute('/privacy-policy')()
 const ComponentsLazyImport = createFileRoute('/components')()
 const AboutLazyImport = createFileRoute('/about')()
 const IndexLazyImport = createFileRoute('/')()
+const LearnLangImport = createFileRoute('/learn/$lang')()
 const AuthSignupLazyImport = createFileRoute('/_auth/signup')()
 const AuthSetNewPasswordLazyImport = createFileRoute(
   '/_auth/set-new-password',
@@ -81,6 +83,11 @@ const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+
+const LearnLangRoute = LearnLangImport.update({
+  path: '/$lang',
+  getParentRoute: () => LearnRoute,
+} as any)
 
 const LearnIndexRoute = LearnIndexImport.update({
   path: '/',
@@ -131,34 +138,14 @@ const AuthLoginRoute = AuthLoginImport.update({
   getParentRoute: () => AuthRoute,
 } as any)
 
-const LearnLangIndexRoute = LearnLangIndexImport.update({
-  path: '/$lang/',
-  getParentRoute: () => LearnRoute,
-} as any)
-
-const LearnLangSettingsRoute = LearnLangSettingsImport.update({
-  path: '/$lang/settings',
-  getParentRoute: () => LearnRoute,
-} as any)
-
-const LearnLangSearchRoute = LearnLangSearchImport.update({
-  path: '/$lang/search',
-  getParentRoute: () => LearnRoute,
-} as any)
-
 const LearnLangReviewRoute = LearnLangReviewImport.update({
-  path: '/$lang/review',
-  getParentRoute: () => LearnRoute,
+  path: '/review',
+  getParentRoute: () => LearnLangRoute,
 } as any)
 
-const LearnLangBrowseRoute = LearnLangBrowseImport.update({
-  path: '/$lang/browse',
-  getParentRoute: () => LearnRoute,
-} as any)
-
-const LearnLangAddPhraseRoute = LearnLangAddPhraseImport.update({
-  path: '/$lang/add-phrase',
-  getParentRoute: () => LearnRoute,
+const LearnLangTabsRoute = LearnLangTabsImport.update({
+  id: '/_tabs',
+  getParentRoute: () => LearnLangRoute,
 } as any)
 
 const UserProfileChangePasswordRoute = UserProfileChangePasswordImport.update({
@@ -169,6 +156,33 @@ const UserProfileChangePasswordRoute = UserProfileChangePasswordImport.update({
 const UserProfileChangeEmailRoute = UserProfileChangeEmailImport.update({
   path: '/change-email',
   getParentRoute: () => UserProfileRoute,
+} as any)
+
+const LearnLangTabsIndexRoute = LearnLangTabsIndexImport.update({
+  path: '/',
+  getParentRoute: () => LearnLangTabsRoute,
+} as any)
+
+const LearnLangTabsPublicLibraryRoute = LearnLangTabsPublicLibraryImport.update(
+  {
+    path: '/public-library',
+    getParentRoute: () => LearnLangTabsRoute,
+  } as any,
+)
+
+const LearnLangTabsInviteFriendRoute = LearnLangTabsInviteFriendImport.update({
+  path: '/invite-friend',
+  getParentRoute: () => LearnLangTabsRoute,
+} as any)
+
+const LearnLangTabsDeckSettingsRoute = LearnLangTabsDeckSettingsImport.update({
+  path: '/deck-settings',
+  getParentRoute: () => LearnLangTabsRoute,
+} as any)
+
+const LearnLangTabsAddPhraseRoute = LearnLangTabsAddPhraseImport.update({
+  path: '/add-phrase',
+  getParentRoute: () => LearnLangTabsRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -301,47 +315,61 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserProfileChangePasswordImport
       parentRoute: typeof UserProfileImport
     }
-    '/learn/$lang/add-phrase': {
-      id: '/learn/$lang/add-phrase'
-      path: '/$lang/add-phrase'
-      fullPath: '/learn/$lang/add-phrase'
-      preLoaderRoute: typeof LearnLangAddPhraseImport
+    '/learn/$lang': {
+      id: '/learn/$lang'
+      path: '/$lang'
+      fullPath: '/learn/$lang'
+      preLoaderRoute: typeof LearnLangImport
       parentRoute: typeof LearnImport
     }
-    '/learn/$lang/browse': {
-      id: '/learn/$lang/browse'
-      path: '/$lang/browse'
-      fullPath: '/learn/$lang/browse'
-      preLoaderRoute: typeof LearnLangBrowseImport
-      parentRoute: typeof LearnImport
+    '/learn/$lang/_tabs': {
+      id: '/learn/$lang/_tabs'
+      path: '/$lang'
+      fullPath: '/learn/$lang'
+      preLoaderRoute: typeof LearnLangTabsImport
+      parentRoute: typeof LearnLangRoute
     }
     '/learn/$lang/review': {
       id: '/learn/$lang/review'
-      path: '/$lang/review'
+      path: '/review'
       fullPath: '/learn/$lang/review'
       preLoaderRoute: typeof LearnLangReviewImport
-      parentRoute: typeof LearnImport
+      parentRoute: typeof LearnLangImport
     }
-    '/learn/$lang/search': {
-      id: '/learn/$lang/search'
-      path: '/$lang/search'
-      fullPath: '/learn/$lang/search'
-      preLoaderRoute: typeof LearnLangSearchImport
-      parentRoute: typeof LearnImport
+    '/learn/$lang/_tabs/add-phrase': {
+      id: '/learn/$lang/_tabs/add-phrase'
+      path: '/add-phrase'
+      fullPath: '/learn/$lang/add-phrase'
+      preLoaderRoute: typeof LearnLangTabsAddPhraseImport
+      parentRoute: typeof LearnLangTabsImport
     }
-    '/learn/$lang/settings': {
-      id: '/learn/$lang/settings'
-      path: '/$lang/settings'
-      fullPath: '/learn/$lang/settings'
-      preLoaderRoute: typeof LearnLangSettingsImport
-      parentRoute: typeof LearnImport
+    '/learn/$lang/_tabs/deck-settings': {
+      id: '/learn/$lang/_tabs/deck-settings'
+      path: '/deck-settings'
+      fullPath: '/learn/$lang/deck-settings'
+      preLoaderRoute: typeof LearnLangTabsDeckSettingsImport
+      parentRoute: typeof LearnLangTabsImport
     }
-    '/learn/$lang/': {
-      id: '/learn/$lang/'
-      path: '/$lang'
-      fullPath: '/learn/$lang'
-      preLoaderRoute: typeof LearnLangIndexImport
-      parentRoute: typeof LearnImport
+    '/learn/$lang/_tabs/invite-friend': {
+      id: '/learn/$lang/_tabs/invite-friend'
+      path: '/invite-friend'
+      fullPath: '/learn/$lang/invite-friend'
+      preLoaderRoute: typeof LearnLangTabsInviteFriendImport
+      parentRoute: typeof LearnLangTabsImport
+    }
+    '/learn/$lang/_tabs/public-library': {
+      id: '/learn/$lang/_tabs/public-library'
+      path: '/public-library'
+      fullPath: '/learn/$lang/public-library'
+      preLoaderRoute: typeof LearnLangTabsPublicLibraryImport
+      parentRoute: typeof LearnLangTabsImport
+    }
+    '/learn/$lang/_tabs/': {
+      id: '/learn/$lang/_tabs/'
+      path: '/'
+      fullPath: '/learn/$lang/'
+      preLoaderRoute: typeof LearnLangTabsIndexImport
+      parentRoute: typeof LearnLangTabsImport
     }
   }
 }
@@ -367,12 +395,16 @@ export const routeTree = rootRoute.addChildren({
     LearnAddDeckRoute,
     LearnQuickSearchRoute,
     LearnIndexRoute,
-    LearnLangAddPhraseRoute,
-    LearnLangBrowseRoute,
-    LearnLangReviewRoute,
-    LearnLangSearchRoute,
-    LearnLangSettingsRoute,
-    LearnLangIndexRoute,
+    LearnLangRoute: LearnLangRoute.addChildren({
+      LearnLangTabsRoute: LearnLangTabsRoute.addChildren({
+        LearnLangTabsAddPhraseRoute,
+        LearnLangTabsDeckSettingsRoute,
+        LearnLangTabsInviteFriendRoute,
+        LearnLangTabsPublicLibraryRoute,
+        LearnLangTabsIndexRoute,
+      }),
+      LearnLangReviewRoute,
+    }),
   }),
   AboutLazyRoute,
   ComponentsLazyRoute,
@@ -421,12 +453,7 @@ export const routeTree = rootRoute.addChildren({
         "/learn/add-deck",
         "/learn/quick-search",
         "/learn/",
-        "/learn/$lang/add-phrase",
-        "/learn/$lang/browse",
-        "/learn/$lang/review",
-        "/learn/$lang/search",
-        "/learn/$lang/settings",
-        "/learn/$lang/"
+        "/learn/$lang"
       ]
     },
     "/about": {
@@ -486,29 +513,48 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_user/profile.change-password.tsx",
       "parent": "/_user/profile"
     },
-    "/learn/$lang/add-phrase": {
-      "filePath": "learn/$lang/add-phrase.tsx",
-      "parent": "/learn"
+    "/learn/$lang": {
+      "filePath": "learn/$lang",
+      "parent": "/learn",
+      "children": [
+        "/learn/$lang/_tabs",
+        "/learn/$lang/review"
+      ]
     },
-    "/learn/$lang/browse": {
-      "filePath": "learn/$lang/browse.tsx",
-      "parent": "/learn"
+    "/learn/$lang/_tabs": {
+      "filePath": "learn/$lang/_tabs.tsx",
+      "parent": "/learn/$lang",
+      "children": [
+        "/learn/$lang/_tabs/add-phrase",
+        "/learn/$lang/_tabs/deck-settings",
+        "/learn/$lang/_tabs/invite-friend",
+        "/learn/$lang/_tabs/public-library",
+        "/learn/$lang/_tabs/"
+      ]
     },
     "/learn/$lang/review": {
       "filePath": "learn/$lang/review.tsx",
-      "parent": "/learn"
+      "parent": "/learn/$lang"
     },
-    "/learn/$lang/search": {
-      "filePath": "learn/$lang/search.tsx",
-      "parent": "/learn"
+    "/learn/$lang/_tabs/add-phrase": {
+      "filePath": "learn/$lang/_tabs/add-phrase.tsx",
+      "parent": "/learn/$lang/_tabs"
     },
-    "/learn/$lang/settings": {
-      "filePath": "learn/$lang/settings.tsx",
-      "parent": "/learn"
+    "/learn/$lang/_tabs/deck-settings": {
+      "filePath": "learn/$lang/_tabs/deck-settings.tsx",
+      "parent": "/learn/$lang/_tabs"
     },
-    "/learn/$lang/": {
-      "filePath": "learn/$lang/index.tsx",
-      "parent": "/learn"
+    "/learn/$lang/_tabs/invite-friend": {
+      "filePath": "learn/$lang/_tabs/invite-friend.tsx",
+      "parent": "/learn/$lang/_tabs"
+    },
+    "/learn/$lang/_tabs/public-library": {
+      "filePath": "learn/$lang/_tabs/public-library.tsx",
+      "parent": "/learn/$lang/_tabs"
+    },
+    "/learn/$lang/_tabs/": {
+      "filePath": "learn/$lang/_tabs/index.tsx",
+      "parent": "/learn/$lang/_tabs"
     }
   }
 }

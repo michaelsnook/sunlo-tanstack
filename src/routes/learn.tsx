@@ -32,7 +32,7 @@ export const Route = createFileRoute('/learn')({
 
 function Layout() {
 	const matches = useMatches()
-	const lastMatch = matches[matches.length - 1]
+	const lastMatch = matches.at(-1)
 	const navbarData = lastMatch.loaderData?.['navbar'] ?? { title: '' } // as NavbarData | undefined
 
 	return (
