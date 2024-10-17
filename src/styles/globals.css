@@ -75,6 +75,9 @@
 	.s-link {
 		@apply cursor-pointer decoration-accent underline-offset-2 hover:underline-offset-1 underline hover:decoration-2 decoration-1 transition-all;
 	}
+	.s-input {
+		@apply outline outline-1 outline-primary border-primary;
+	}
 	.nav-link {
 		@apply transition-all;
 	}

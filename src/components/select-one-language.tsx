@@ -40,7 +40,7 @@ export function SelectOneLanguage({
 					role="combobox"
 					aria-expanded={open}
 					className={cn(
-						'justify-between text-base',
+						's-input justify-between',
 						hasError && 'border-destructive'
 					)}
 				>

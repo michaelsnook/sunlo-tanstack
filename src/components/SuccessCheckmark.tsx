@@ -3,7 +3,7 @@ import { ReactNode } from '@tanstack/react-router'
 const SuccessCheckmark = (): ReactNode => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
-		className="h-16 w-16 rounded-full bg-white text-accent"
+		className="h-16 w-16 rounded-full bg-background text-primary"
 		viewBox="0 0 20 20"
 		fill="currentColor"
 	>
