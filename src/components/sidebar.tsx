@@ -11,6 +11,7 @@ import Loading from 'components/loading'
 import { Button } from 'components/ui/button'
 import { LogOut, UserPen } from 'lucide-react'
 import { ModeToggle } from './mode-toggle'
+import Avatar from './avatar'
 
 const staticMenu: MenuType = {
 	name: 'Menu',
@@ -123,7 +124,7 @@ function DeckMenu() {
 			<>
 				<Link to="/profile" className="nav-link">
 					<p className="flex flex-row gap-2">
-						<UserPen />
+						<Avatar size={24} />
 						Your profile
 					</p>
 				</Link>

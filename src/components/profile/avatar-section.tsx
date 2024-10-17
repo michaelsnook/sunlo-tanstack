@@ -1,21 +1,18 @@
 import { useProfile } from 'lib/use-profile'
+import Avatar from 'components/avatar'
 
 export default function AvatarSection() {
 	const { data: profile } = useProfile()
+
 	return (
 		<header className="mx-auto my-4 max-w-sm text-center">
-			<div className="avatar relative">
+			<div className="relative">
 				{profile?.avatar_url && (
 					<label
-						className="mask mask-circle mb-2 h-36 w-36 bg-base-300 shadow-lg"
+						className="mb-2 h-36 w-36 bg-base-300 shadow-lg flex flex-row justify-center mx-auto rounded-full"
 						htmlFor="single"
 					>
-						<img
-							src={profile?.avatar_url}
-							width="144"
-							height="144"
-							alt={`${profile?.username}'s profile image`}
-						/>
+						<Avatar size={144} />
 					</label>
 				)}
 			</div>
