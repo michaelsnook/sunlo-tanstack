@@ -106,8 +106,9 @@ export default function Sidebar() {
 function DeckMenu() {
 	const { data: profile, isLoading } = useProfile()
 	const menuData =
-		!profile ? null : (
-			{
+		profile.deckLanguages.length === 0 ?
+			null
+		:	{
 				name: 'Learning decks',
 				href: '/learn',
 				links: profile?.deckLanguages?.map((lang) => {
@@ -117,7 +118,6 @@ function DeckMenu() {
 					}
 				}),
 			}
-		)
 	return (
 		isLoading ? <Loading />
 		: menuData ?
