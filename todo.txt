@@ -23,8 +23,9 @@ COMPONENTS (ShadCN/Radix)
 	1. 🪲 find-and-fix all these: .page-card .card-white .card .alert
 	1. fix color codes (text-base) in SelectOneLanguage
 	1. find-replace all these colors: text-base text-base-content etc
-1. Fix dark mode (possibly use blocking JS to apply the class, and then fix the colors). 
-		We currently have Tailwind using system mode and shadcn using classes 🙈
+1. ✅ Fix dark mode (possibly use blocking JS to apply the class, and then fix the colors). 
+		✅ Align Tailwind to shadcn class approach 🙈
+		now go back through and replace all the use of dark: with responsive classes
 1. use <ReloadIcon className="mr-2 h-4 w-4 animate-spin" /> for loading buttons
 1. ✅ Move the appropriate form inputs into their own special fancy components
 	1. ✅ replace FieldInfo

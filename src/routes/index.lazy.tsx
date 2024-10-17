@@ -225,24 +225,24 @@ function Index() {
 								helping people learn languages that are{' '}
 								<em>different in structure</em> from the ones they&apos;re
 								raised on. Learning{' '}
-								<span className="underline decoration-accent decoration-[3px] dark:decoration-warning">
+								<span className="underline decoration-accent decoration-[3px]">
 									Spanish
 								</span>{' '}
 								from{' '}
-								<span className="underline decoration-accent decoration-[3px] dark:decoration-warning">
+								<span className="underline decoration-accent decoration-[3px]">
 									English
 								</span>{' '}
 								may be straight-forward with lessons on vocabulary and grammar,
 								but the same approach might not work to learn{' '}
-								<span className="underline decoration-accent decoration-[3px] dark:decoration-warning">
+								<span className="underline decoration-accent decoration-[3px]">
 									Arabic
 								</span>
 								,{' '}
-								<span className="underline decoration-accent decoration-[3px] dark:decoration-warning">
+								<span className="underline decoration-accent decoration-[3px]">
 									Xhosa
 								</span>{' '}
 								or{' '}
-								<span className="underline decoration-accent decoration-[3px] dark:decoration-warning">
+								<span className="underline decoration-accent decoration-[3px]">
 									Mandarin
 								</span>
 								, whose grammars and patterns may be too unfamiliar for me to
