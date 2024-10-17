@@ -6,6 +6,7 @@ import { Button } from 'components/ui/button'
 import { Play, ChevronLeft, ChevronRight } from 'lucide-react'
 import SuccessCheckmark from './SuccessCheckmark'
 import toast from 'react-hot-toast'
+import { CardsMap, uuid } from 'types/main'
 
 interface FlashCard {
 	originalPhrase: string
@@ -24,7 +25,12 @@ const flashCards: FlashCard[] = [
 	},
 ]
 
-export function FlashCardReviewSession() {
+interface ComponentProps {
+	pids: Array<uuid>
+	cardsMap: CardsMap
+}
+
+export function FlashCardReviewSession({ pids, cardsMap }: ComponentProps) {
 	const [currentCardIndex, setCurrentCardIndex] = useState(0)
 	const [showTranslation, setShowTranslation] = useState(false)
 	const [isReviewComplete, setIsReviewComplete] = useState(false)

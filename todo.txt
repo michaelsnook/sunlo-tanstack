@@ -6,6 +6,10 @@ ISSUES
 
 MOCKS
 1. The $lang/review workflow is a mock only; wire it up
+		✅ we're collecting and passing in the data
+		✅ we have an "empty" state and a "complete" state
+		we have the component taking the correct data for its loop
+		we have the component submitting mutations
 1. 
 
 COMPONENTS (ShadCN/Radix)
