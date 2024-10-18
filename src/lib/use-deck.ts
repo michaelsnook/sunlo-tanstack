@@ -81,13 +81,13 @@ export const useDeckPids = (lang: string) =>
 		select: (data: DeckLoaded) => data.pids,
 	}) as UseQueryResult<pids>
 
-export const useDeckCards = (lang: string) =>
+export const useDeckCardsMap = (lang: string) =>
 	useDeckQuery({
 		lang,
 		select: (data: DeckLoaded) => data.cardsMap,
 	}) as UseQueryResult<CardsMap>
 
-export const useCard = (pid: uuid, lang: string) =>
+export const useDeckCard = (pid: uuid, lang: string) =>
 	useDeckQuery({
 		lang,
 		select: (data: DeckLoaded) => data.cardsMap[pid],

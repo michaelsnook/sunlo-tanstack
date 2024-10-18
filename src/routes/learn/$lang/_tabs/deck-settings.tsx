@@ -1,5 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createFileRoute } from '@tanstack/react-router'
+import { useMutation } from '@tanstack/react-query'
+import { Controller, useForm } from 'react-hook-form'
+import { z } from 'zod'
+import toast from 'react-hot-toast'
+
+import { PhraseSearchParams } from 'types/main'
+
 import { Button } from 'components/ui/button'
 import {
 	Card,
@@ -10,11 +17,6 @@ import {
 } from 'components/ui/card'
 import { Label } from 'components/ui/label'
 import { RadioGroup, RadioGroupItem } from 'components/ui/radio-group'
-import { Controller, useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
-import { useMutation } from 'react-query'
-import { PhraseSearchParams } from 'types/main'
-import { z } from 'zod'
 
 export const Route = createFileRoute('/learn/$lang/_tabs/deck-settings')({
 	validateSearch: (search: Record<string, unknown>): PhraseSearchParams => {
