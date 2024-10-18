@@ -18,7 +18,6 @@ export const Route = createFileRoute('/learn/$lang/_tabs/')({
 		}
 	},
 	component: WelcomePage,
-	loader: ({ params: { lang } }) => langInfoLoader(lang),
 })
 
 function WelcomePage() {

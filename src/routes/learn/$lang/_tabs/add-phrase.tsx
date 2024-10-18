@@ -17,7 +17,6 @@ import { Input } from 'components/ui/input'
 import { Button } from 'components/ui/button'
 import { Tabs, TabsList, TabsTrigger } from 'components/ui/tabs'
 import { PhraseSearchParams } from 'types/main'
-import { langInfoLoader } from 'lib/reuse-loaders'
 
 export const Route = createFileRoute('/learn/$lang/_tabs/add-phrase')({
 	validateSearch: (search: Record<string, unknown>): PhraseSearchParams => {
@@ -26,7 +25,6 @@ export const Route = createFileRoute('/learn/$lang/_tabs/add-phrase')({
 		}
 	},
 	component: AddPhraseTab,
-	loader: ({ params: { lang } }) => langInfoLoader(lang),
 })
 
 const searchPhraseSchema = z.object({

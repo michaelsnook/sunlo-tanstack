@@ -20,8 +20,8 @@ COMPONENTS (ShadCN/Radix)
 1. ✅ Remove daisyUI
 	1. replace dark:decoration-accent/warning
 	1. disable active link (removed class `disabled`)
-	1. 🪲 find-and-fix all these: .page-card .card-white .card .alert
-	1. fix color codes (text-base) in SelectOneLanguage
+	1. ✅ 🪲 find-and-fix all these: .page-card .card-white .card .alert
+	1. ✅ fix color codes (text-base) in SelectOneLanguage
 	1. find-replace all these colors: text-base text-base-content etc
 1. ✅ Fix dark mode (possibly use blocking JS to apply the class, and then fix the colors). 
 		✅ Align Tailwind to shadcn class approach 🙈
@@ -69,13 +69,14 @@ DATA LOADING
 1. don't use `enabled` to waterfall useQueries on auth context
 		perhaps this will just be a code convention only render components after auth
 		perhaps there is a better way to use the params / data / keys
+1. Cache structure: we need to be able to retrieve objects by their UUID alone... phrases in particular.
 
 ROUTER
-1. if the navbar is not present, use its parent, somehow. (unclear why this is not happening)
+1. ✅ if the navbar is not present, use its parent, somehow. (unclear why this is not happening)
 1. if the validateSearch is not present, can we use its parent? or can we just get params from the parent component?
 1. research loaders, preloading, query client prefetching, etc. patterns so
 		we can get the most out of things. 
-		* access `auth` on first render inside the DaisyUI
+		* access `auth` on first render
 		* suspend until profile loads
 		* suspend /$lang routes until language & deck load
 		* when the router loader is suspending and then stops, transition in

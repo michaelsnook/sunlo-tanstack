@@ -1,4 +1,3 @@
-import type { NavbarData } from 'types/main'
 import { useCallback, useState } from 'react'
 import {
 	type LucideProps,
@@ -20,20 +19,24 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from 'components/ui/dropdown-menu'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { Link, useMatches, useNavigate } from '@tanstack/react-router'
 
-interface NavbarProps {
-	data?: NavbarData
-}
-
-export default function Navbar({ data }: NavbarProps) {
+export default function Navbar() {
+	const [isOpen, setIsOpen] = useState(false)
+	const matches = useMatches()
 	const navigate = useNavigate()
 	const goBack = useCallback(() => {
 		void navigate({ to: '..' })
 	}, [navigate])
+
+	const matchesArray = matches.filter((m) => m?.loaderData !== undefined)
+	console.log(`matches`, matchesArray, matches)
+	const lastMatch = matchesArray.at(-1)
+	const data = lastMatch?.loaderData?.['navbar']
 	const onBackClick = data?.onBackClick ?? goBack
 
-	const [isOpen, setIsOpen] = useState(false)
+	if (!data) return null
+
 	return (
 		<nav className="flex items-center justify-between py-3 px-[1cqw] shadow-xl mb-4 bg-white/10">
 			<div className="flex items-center gap-[1cqw]">

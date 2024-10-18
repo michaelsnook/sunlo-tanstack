@@ -31,13 +31,9 @@ export const Route = createFileRoute('/learn')({
 })
 
 function Layout() {
-	const matches = useMatches()
-	const lastMatch = matches.at(-1)
-	const navbarData = lastMatch.loaderData?.['navbar'] ?? { title: '' } // as NavbarData | undefined
-
 	return (
 		<div className="w-app @container">
-			<Navbar data={navbarData} />
+			<Navbar />
 			<Outlet />
 		</div>
 	)
