@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { FlashCardReviewSession } from 'components/flash-card-review-session'
-import Loading from 'components/loading'
 import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card'
+
+import { NavbarData } from 'types/main'
+import Loading from 'components/loading'
+import { FlashCardReviewSession } from 'components/flash-card-review-session'
 import languages from 'lib/languages'
 import { useDeck } from 'lib/use-deck'
-import { NavbarData } from 'types/main'
 
 export const Route = createFileRoute('/learn/$lang/review')({
 	component: ReviewPage,

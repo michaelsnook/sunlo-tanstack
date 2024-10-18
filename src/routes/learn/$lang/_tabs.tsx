@@ -1,7 +1,7 @@
 import { createFileRoute, Link, Outlet } from '@tanstack/react-router'
 import { Tabs, TabsList, TabsTrigger } from 'components/ui/tabs'
-import languages from 'lib/languages'
 import { PhraseSearchParams } from 'types/main'
+import languages from 'lib/languages'
 
 export const Route = createFileRoute('/learn/$lang/_tabs')({
 	validateSearch: (search: Record<string, unknown>): PhraseSearchParams => {

@@ -1,5 +1,12 @@
+import { useEffect, useState } from 'react'
 import { createFileRoute, useRouter } from '@tanstack/react-router'
+import { useMutation } from '@tanstack/react-query'
+import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import toast from 'react-hot-toast'
+
+import { Plus, Search } from 'lucide-react'
 import {
 	Card,
 	CardContent,
@@ -7,15 +14,11 @@ import {
 	CardHeader,
 	CardTitle,
 } from 'components/ui/card'
-import { useEffect, useState } from 'react'
-import { useMutation } from 'react-query'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Controller, useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
 import { Label } from 'components/ui/label'
 import { Input } from 'components/ui/input'
 import { Button } from 'components/ui/button'
-import { Tabs, TabsList, TabsTrigger } from 'components/ui/tabs'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from 'components/ui/tabs'
+import { Textarea } from 'components/ui/textarea'
 import { PhraseSearchParams } from 'types/main'
 
 export const Route = createFileRoute('/learn/$lang/_tabs/add-phrase')({
@@ -74,8 +77,8 @@ function AddPhraseTab() {
 		}
 	}, [searchPhrase])
 
-	const searchPhraseMutation = useMutation(
-		(phrase: string) => {
+	const searchPhraseMutation = useMutation({
+		mutationFn: (phrase: string) => {
 			return new Promise<typeof samplePhrases>((resolve) =>
 				setTimeout(
 					() =>

@@ -1,5 +1,10 @@
-import { zodResolver } from '@hookform/resolvers/zod'
 import { createFileRoute } from '@tanstack/react-router'
+import { useMutation } from '@tanstack/react-query'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Controller, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
+
 import { Button } from 'components/ui/button'
 import {
 	Card,
@@ -10,11 +15,8 @@ import {
 } from 'components/ui/card'
 import { Input } from 'components/ui/input'
 import { Label } from 'components/ui/label'
-import { Controller, useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
-import { useMutation } from 'react-query'
+
 import { PhraseSearchParams } from 'types/main'
-import { z } from 'zod'
 
 export const Route = createFileRoute('/learn/$lang/_tabs/invite-friend')({
 	validateSearch: (search: Record<string, unknown>): PhraseSearchParams => {
@@ -36,16 +38,14 @@ function InviteFriendTab() {
 		}
 	)
 
-	const inviteFriendMutation = useMutation(
-		(data: z.infer<typeof inviteFriendSchema>) => {
+	const inviteFriendMutation = useMutation({
+		mutationFn: async (data: z.infer<typeof inviteFriendSchema>) => {
 			return new Promise((resolve) => setTimeout(() => resolve(data), 1000))
 		},
-		{
-			onSuccess: () => {
-				toast.success('Your friend has been invited to help you learn.')
-			},
-		}
-	)
+		onSuccess: () => {
+			toast.success('Your friend has been invited to help you learn.')
+		},
+	})
 
 	const onSubmit = handleSubmit((data) => {
 		inviteFriendMutation.mutate(data)

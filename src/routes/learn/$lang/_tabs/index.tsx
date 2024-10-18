@@ -1,10 +1,8 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 
-import { langInfoLoader } from 'lib/reuse-loaders'
-import type { FriendshipRow, PhraseSearchParams } from 'types/main'
 import { buttonVariants } from 'components/ui/button'
+import type { FriendshipRow, PhraseSearchParams } from 'types/main'
 import Loading from 'components/loading'
-
 import { useDeck, useDeckMeta } from 'lib/use-deck'
 import { useLanguage } from 'lib/use-language'
 import { useProfile } from 'lib/use-profile'
