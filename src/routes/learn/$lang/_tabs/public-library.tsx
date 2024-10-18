@@ -6,7 +6,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from 'components/ui/card'
-import { langInfoLoader } from 'lib/reuse-loaders'
 import { PhraseSearchParams } from 'types/main'
 
 export const Route = createFileRoute('/learn/$lang/_tabs/public-library')({
@@ -16,7 +15,6 @@ export const Route = createFileRoute('/learn/$lang/_tabs/public-library')({
 		}
 	},
 	component: PublicLibraryTab,
-	loader: ({ params: { lang } }) => langInfoLoader(lang),
 })
 
 function PublicLibraryTab() {

@@ -84,7 +84,7 @@ export function LanguagePhrasesAccordionComponent({
 				const phrase: PhraseFull = phrasesMap[pid]
 				// if there's no deck, leave it undefined so the button doesn't even show
 				const status = cardsMap[pid].status || (deckId ? null : undefined)
-				console.log(`map inner`, pid, phrase, status, deckId)
+				// console.log(`map inner`, pid, phrase, status, deckId)
 				return (
 					<AccordionItem key={pid} value={pid}>
 						<AccordionTrigger className="flex items-center">

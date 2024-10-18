@@ -10,7 +10,6 @@ import {
 } from 'components/ui/card'
 import { Label } from 'components/ui/label'
 import { RadioGroup, RadioGroupItem } from 'components/ui/radio-group'
-import { langInfoLoader } from 'lib/reuse-loaders'
 import { Controller, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useMutation } from 'react-query'
@@ -24,7 +23,6 @@ export const Route = createFileRoute('/learn/$lang/_tabs/deck-settings')({
 		}
 	},
 	component: DeckSettingsTab,
-	loader: ({ params: { lang } }) => langInfoLoader(lang),
 })
 
 const deckSettingsSchema = z.object({
