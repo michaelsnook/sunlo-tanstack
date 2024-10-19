@@ -17,12 +17,12 @@ import { Input } from 'components/ui/input'
 import { Button } from 'components/ui/button'
 import { Textarea } from 'components/ui/textarea'
 
-interface AddPhraseParams {
+interface SearchParams {
 	phrase: string
 }
 
-export const Route = createFileRoute('/learn/$lang/_tabs/add-phrase')({
-	validateSearch: (search: Record<string, unknown>): AddPhraseParams => {
+export const Route = createFileRoute('/learn/$lang/add-phrase')({
+	validateSearch: (search: Record<string, unknown>): SearchParams => {
 		return {
 			phrase: search.phrase as string | undefined,
 		}
@@ -36,9 +36,10 @@ const addPhraseSchema = z.object({
 })
 
 function AddPhraseTab() {
-	const { navigate } = useRouter()
+	const navigate = Route.useNavigate()
 	const { lang } = Route.useParams()
-	const { phrase } = Route.useSearch()
+	const search = Route.useSearch()
+	const { phrase } = search
 
 	const searchPhrase = phrase || ''
 	const { control: addPhraseControl, handleSubmit: handleAddPhraseSubmit } =
@@ -80,7 +81,21 @@ function AddPhraseTab() {
 						<Controller
 							name="phrase"
 							control={addPhraseControl}
-							render={({ field }) => <Input {...field} />}
+							render={({ field }) => (
+								<Input
+									onChange={(e) => {
+										field.onChange(e)
+										navigate({
+											to: '.',
+											search: (search: SearchParams) => ({
+												...search,
+												phrase: e.target.value,
+											}),
+										})
+									}}
+									{...field}
+								/>
+							)}
 						/>
 					</div>
 					<div>

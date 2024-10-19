@@ -20,12 +20,12 @@ export const Route = createFileRoute('/learn/')({
 				contextMenu: [
 					{
 						name: 'New Deck',
-						href: '/learn/add-deck',
+						to: '/learn/add-deck',
 						icon: 'folder-plus',
 					},
 					{
 						name: 'Quick search',
-						href: '/learn/quick-search',
+						to: '/learn/quick-search',
 						icon: 'search',
 					},
 				],

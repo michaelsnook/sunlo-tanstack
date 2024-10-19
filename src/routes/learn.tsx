@@ -1,9 +1,4 @@
-import {
-	createFileRoute,
-	redirect,
-	Outlet,
-	useMatches,
-} from '@tanstack/react-router'
+import { createFileRoute, redirect, Outlet } from '@tanstack/react-router'
 import Navbar from 'components/navbar'
 
 export const Route = createFileRoute('/learn')({

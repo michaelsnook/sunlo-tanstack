@@ -5,8 +5,6 @@ import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import toast from 'react-hot-toast'
 
-import { PhraseSearchParams } from 'types/main'
-
 import { Button } from 'components/ui/button'
 import {
 	Card,
@@ -18,13 +16,9 @@ import {
 import { Label } from 'components/ui/label'
 import { RadioGroup, RadioGroupItem } from 'components/ui/radio-group'
 import { useDeckMeta } from 'lib/use-deck'
+import { PostgrestError } from '@supabase/supabase-js'
 
-export const Route = createFileRoute('/learn/$lang/_tabs/deck-settings')({
-	validateSearch: (search: Record<string, unknown>): PhraseSearchParams => {
-		return {
-			phrase: search.phrase as string | undefined,
-		}
-	},
+export const Route = createFileRoute('/learn/$lang/deck-settings')({
 	component: DeckSettingsTab,
 })
 
@@ -43,18 +37,23 @@ function DeckSettingsTab() {
 		defaultValues: { intent: 'friends' },
 	})
 
-	const updateDeckSettingsMutation = useMutation({
-		mutationFn: (data: DeckSettingsFormInputs) => {
+	const updateDeckSettingsMutation = useMutation<
+		DeckSettingsFormInputs,
+		PostgrestError
+	>({
+		mutationKey: ['user', lang, 'deck-settings'],
+		mutationFn: async (data: DeckSettingsFormInputs) => {
 			return new Promise((resolve) => setTimeout(() => resolve(data), 1000))
 		},
 		onSuccess: () => {
 			toast.success('Your deck settings have been updated.')
-			queryClient.invalidateQueries({ queryKey: ['user', lang] })
+			void queryClient.invalidateQueries({ queryKey: ['user', lang] })
 		},
-	})
-
-	const onSubmit = handleSubmit((data) => {
-		updateDeckSettingsMutation.mutate(data)
+		onError: () => {
+			toast.error(
+				'There was some issue and your deck settings were not updated.'
+			)
+		},
 	})
 
 	return (
@@ -66,7 +65,10 @@ function DeckSettingsTab() {
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<form onSubmit={onSubmit} className="space-y-4">
+				<form
+					onSubmit={handleSubmit(updateDeckSettingsMutation.mutate)}
+					className="space-y-4"
+				>
 					<Controller
 						name="intent"
 						control={control}

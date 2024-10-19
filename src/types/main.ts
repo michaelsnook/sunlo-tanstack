@@ -13,7 +13,8 @@ export type SelectOption = { value: string; label: string }
 // Don't keep using these. use the framework's types for links and routes
 export type LinkType = {
 	name: string
-	href: string | null
+	to: string | null
+	params: any
 	// TODO enum these for the caller
 	icon?: string
 }
