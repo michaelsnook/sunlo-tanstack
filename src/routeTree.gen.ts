@@ -27,6 +27,7 @@ import { Route as LearnLangTabsImport } from './routes/learn/$lang/_tabs'
 import { Route as UserProfileChangePasswordImport } from './routes/_user/profile.change-password'
 import { Route as UserProfileChangeEmailImport } from './routes/_user/profile.change-email'
 import { Route as LearnLangTabsIndexImport } from './routes/learn/$lang/_tabs/index'
+import { Route as LearnLangTabsSearchImport } from './routes/learn/$lang/_tabs/search'
 import { Route as LearnLangTabsPublicLibraryImport } from './routes/learn/$lang/_tabs/public-library'
 import { Route as LearnLangTabsInviteFriendImport } from './routes/learn/$lang/_tabs/invite-friend'
 import { Route as LearnLangTabsDeckSettingsImport } from './routes/learn/$lang/_tabs/deck-settings'
@@ -160,6 +161,11 @@ const UserProfileChangeEmailRoute = UserProfileChangeEmailImport.update({
 
 const LearnLangTabsIndexRoute = LearnLangTabsIndexImport.update({
   path: '/',
+  getParentRoute: () => LearnLangTabsRoute,
+} as any)
+
+const LearnLangTabsSearchRoute = LearnLangTabsSearchImport.update({
+  path: '/search',
   getParentRoute: () => LearnLangTabsRoute,
 } as any)
 
@@ -364,6 +370,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LearnLangTabsPublicLibraryImport
       parentRoute: typeof LearnLangTabsImport
     }
+    '/learn/$lang/_tabs/search': {
+      id: '/learn/$lang/_tabs/search'
+      path: '/search'
+      fullPath: '/learn/$lang/search'
+      preLoaderRoute: typeof LearnLangTabsSearchImport
+      parentRoute: typeof LearnLangTabsImport
+    }
     '/learn/$lang/_tabs/': {
       id: '/learn/$lang/_tabs/'
       path: '/'
@@ -401,6 +414,7 @@ export const routeTree = rootRoute.addChildren({
         LearnLangTabsDeckSettingsRoute,
         LearnLangTabsInviteFriendRoute,
         LearnLangTabsPublicLibraryRoute,
+        LearnLangTabsSearchRoute,
         LearnLangTabsIndexRoute,
       }),
       LearnLangReviewRoute,
@@ -529,6 +543,7 @@ export const routeTree = rootRoute.addChildren({
         "/learn/$lang/_tabs/deck-settings",
         "/learn/$lang/_tabs/invite-friend",
         "/learn/$lang/_tabs/public-library",
+        "/learn/$lang/_tabs/search",
         "/learn/$lang/_tabs/"
       ]
     },
@@ -550,6 +565,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/learn/$lang/_tabs/public-library": {
       "filePath": "learn/$lang/_tabs/public-library.tsx",
+      "parent": "/learn/$lang/_tabs"
+    },
+    "/learn/$lang/_tabs/search": {
+      "filePath": "learn/$lang/_tabs/search.tsx",
       "parent": "/learn/$lang/_tabs"
     },
     "/learn/$lang/_tabs/": {
