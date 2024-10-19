@@ -20,6 +20,7 @@ import {
 	DropdownMenuTrigger,
 } from 'components/ui/dropdown-menu'
 import { Link, useMatches, useNavigate } from '@tanstack/react-router'
+import { NavbarData } from 'types/main'
 
 export default function Navbar() {
 	const [isOpen, setIsOpen] = useState(false)
@@ -32,7 +33,7 @@ export default function Navbar() {
 	const matchesArray = matches.filter((m) => m?.loaderData !== undefined)
 	console.log(`matches`, matchesArray, matches)
 	const lastMatch = matchesArray.at(-1)
-	const data = lastMatch?.loaderData?.['navbar']
+	const data = lastMatch?.loaderData?.['navbar'] as NavbarData
 	const onBackClick = data?.onBackClick ?? goBack
 
 	if (!data) return null
@@ -66,10 +67,11 @@ export default function Navbar() {
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end" className="w-56">
-						{data?.contextMenu.map(({ href, name, icon }, index) => (
+						{data?.contextMenu.map(({ to, params, name, icon }, index) => (
 							<DropdownMenuItem key={index}>
 								<Link
-									to={href}
+									to={to}
+									params={params}
 									className="w-full flex flex-row gap-2 justify-content-center"
 								>
 									{renderIcon(icon)}

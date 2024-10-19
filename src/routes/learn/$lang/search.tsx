@@ -20,20 +20,20 @@ import { Button } from 'components/ui/button'
 import languages from 'lib/languages'
 
 interface SearchParams {
-	q: string
+	q?: string
 }
 
-export const Route = createFileRoute('/learn/$lang/_tabs/search')({
+export const Route = createFileRoute('/learn/$lang/search')({
 	validateSearch: (search: Record<string, unknown>): SearchParams => {
 		return {
-			q: search.q as string | undefined,
+			q: search.q || '',
 		}
 	},
 	component: SearchTab,
 })
 
 const SearchPhraseSchema = z.object({
-	phrase: z.string().min(1, 'Please enter a phrase to search or add'),
+	text: z.string().min(1, 'Please enter a phrase to search or add'),
 })
 
 type SearchFormInputs = z.infer<typeof SearchPhraseSchema>
@@ -45,31 +45,18 @@ const AddCardSchema = z.object({
 
 type AddCardSubmission = z.infer<typeof AddCardSchema>
 
-const samplePhrases = [
-	{ phrase: 'Hola', translation: 'Hello' },
-	{ phrase: 'Gracias', translation: 'Thank you' },
-	{ phrase: 'Por favor', translation: 'Please' },
-	{ phrase: '¿Cómo estás?', translation: 'How are you?' },
-	{ phrase: 'Adiós', translation: 'Goodbye' },
-	{ phrase: 'Buenos días', translation: 'Good morning' },
-	{ phrase: 'Buenas noches', translation: 'Good night' },
-	{ phrase: 'Mucho gusto', translation: 'Nice to meet you' },
-]
-
 function SearchTab() {
 	const { navigate } = useRouter()
 	const { lang } = Route.useParams()
 	const { q } = Route.useSearch()
 
-	const searchQuery = q || ''
-
 	const { control, handleSubmit } = useForm<SearchFormInputs>({
 		resolver: zodResolver(SearchPhraseSchema),
-		defaultValues: { phrase: searchQuery },
+		defaultValues: { text: q },
 	})
 
 	const searchResults = useQuery({
-		queryKey: ['user', lang, 'search', searchQuery],
+		queryKey: ['user', lang, 'search', q],
 		queryFn: async () => null,
 		gcTime: 120_000,
 		refetchOnWindowFocus: false,
@@ -96,7 +83,7 @@ function SearchTab() {
 					<div>
 						<Label htmlFor="phrase">Phrase</Label>
 						<Controller
-							name="phrase"
+							name="text"
 							control={control}
 							render={({ field }) => (
 								<Input
@@ -143,7 +130,7 @@ function SearchTab() {
 								<Button
 									size="sm"
 									variant="ghost"
-									onClick={() => addPhraseMutation.mutate(result)}
+									onClick={() => addCardMutation.mutate(result)}
 								>
 									<Plus className="h-4 w-4" />
 									<span className="sr-only">Add to deck</span>

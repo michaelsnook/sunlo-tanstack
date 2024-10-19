@@ -16,14 +16,7 @@ import {
 import { Input } from 'components/ui/input'
 import { Label } from 'components/ui/label'
 
-import { PhraseSearchParams } from 'types/main'
-
-export const Route = createFileRoute('/learn/$lang/_tabs/invite-friend')({
-	validateSearch: (search: Record<string, unknown>): PhraseSearchParams => {
-		return {
-			phrase: search.phrase as string | undefined,
-		}
-	},
+export const Route = createFileRoute('/learn/$lang/invite-friend')({
 	component: InviteFriendTab,
 })
 

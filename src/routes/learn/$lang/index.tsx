@@ -1,56 +1,91 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 
 import { buttonVariants } from 'components/ui/button'
-import type { FriendshipRow, PhraseSearchParams } from 'types/main'
+import type { FriendshipRow } from 'types/main'
 import Loading from 'components/loading'
 import { useDeck, useDeckMeta } from 'lib/use-deck'
 import { useLanguage } from 'lib/use-language'
 import { useProfile } from 'lib/use-profile'
 import ModalWithOpener from 'components/modal-with-opener'
 import { LanguagePhrasesAccordionComponent } from 'components/language-phrases-accordion'
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from 'components/ui/card'
 
-export const Route = createFileRoute('/learn/$lang/_tabs/')({
-	validateSearch: (search: Record<string, unknown>): PhraseSearchParams => {
-		return {
-			phrase: search.phrase as string | undefined,
-		}
-	},
+export const Route = createFileRoute('/learn/$lang/')({
 	component: WelcomePage,
 })
 
 function WelcomePage() {
 	const { lang } = Route.useParams()
-	return (
-		<main className="card-page my-4">
-			<p className="italic opacity-80">
-				This is meant as a place to just get the user going. They need to feel
-				comfortable and be reminded of the resources they have to lean on and
-				their motivations, but time on task is one of the most important
-				factors, so we are really just trying to push them toward starting a
-				"review" session.
-			</p>
+	const deckIsNew = false
+	return deckIsNew ?
+			<Card className="py-10">
+				<CardHeader>
+					<CardTitle>
+						<h1 className="text-3xl font-bold mb-6">
+							Welcome to Your New Language Journey!
+						</h1>
+					</CardTitle>
+					<CardContent>
+						<p className="text-lg mb-8">
+							Let's get started by setting up your learning experience. Do you
+							want to start by browsing the public deck of flash cards, or
+							invite a friend to help you out?
+						</p>
+						<div className="flex flex-col gap-2 @lg:flex-row">
+							<Link
+								to="/learn/$lang/search"
+								params={{ lang }}
+								className={buttonVariants({ variant: 'secondary' })}
+							>
+								Search Cards
+							</Link>
 
-			<Link
-				to="/learn/$lang/review"
-				params={{ lang }}
-				from={Route.fullPath}
-				className={buttonVariants({ variant: 'default' })}
-			>
-				Time To Start Today&apos;s Deck
-			</Link>
+							<Link
+								to="/learn/$lang/invite-friend"
+								params={{ lang }}
+								className={buttonVariants({ variant: 'secondary' })}
+							>
+								Invite a friend
+							</Link>
+						</div>
+					</CardContent>
+				</CardHeader>
+			</Card>
+		:	<main className="card-page my-4">
+				<p className="italic opacity-80">
+					This is meant as a place to just get the user going. They need to feel
+					comfortable and be reminded of the resources they have to lean on and
+					their motivations, but time on task is one of the most important
+					factors, so we are really just trying to push them toward starting a
+					"review" session.
+				</p>
 
-			<div className="space-y-4">
-				{!lang ?
-					<Loading />
-				:	<>
-						<FriendsSection />
-						<DeckSettings />
-						<DeckFullContents />
-					</>
-				}
-			</div>
-		</main>
-	)
+				<Link
+					to="/learn/$lang/review"
+					params={{ lang }}
+					from={Route.fullPath}
+					className={buttonVariants({ variant: 'default' })}
+				>
+					Time To Start Today&apos;s Deck
+				</Link>
+
+				<div className="space-y-4">
+					{!lang ?
+						<Loading />
+					:	<>
+							<FriendsSection />
+							<DeckSettings />
+							<DeckFullContents />
+						</>
+					}
+				</div>
+			</main>
 }
 
 // TODO: these inputs don't do anything.
@@ -158,18 +193,23 @@ function FriendsSection() {
 		) || []
 
 	return (
-		<div className="border-dashed border rounded my-4">
-			<div className="mb-4">
-				<h2 className="h3">Your Friends</h2>
-				<p className="opacity-60 -mt-2 text-sm">
+		<Card>
+			<CardHeader>
+				<CardTitle>Your Friends</CardTitle>
+				<CardDescription>
 					(ppl helping the user learn this language)
-				</p>
-			</div>
-			<ul className="list-disc ml-4">
-				<li>mahesh (see recent activity or whatever)</li>
-				<li>a-money (you have a new phrase from them)</li>
-				<li>j-bhai (nothing special actually)</li>
-			</ul>
-		</div>
+				</CardDescription>
+			</CardHeader>
+			<CardContent>
+				<ul className="list-disc ml-4">
+					<li>mahesh (see recent activity or whatever)</li>
+					<li>a-money (you have a new phrase from them)</li>
+					<li>j-bhai (nothing special actually)</li>
+				</ul>
+				<Link className={buttonVariants({ variant: 'secondary' })}>
+					See full friend activity
+				</Link>
+			</CardContent>
+		</Card>
 	)
 }

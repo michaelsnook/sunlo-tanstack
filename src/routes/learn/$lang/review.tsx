@@ -17,17 +17,20 @@ export const Route = createFileRoute('/learn/$lang/review')({
 				contextMenu: [
 					{
 						name: `Search ${languages[lang]}`,
-						href: '../search',
+						to: '/learn/$lang/search',
+						params: { lang },
 						icon: 'search',
 					},
 					{
 						name: 'Add a phrase',
-						href: './add-phrase',
+						to: '/learn/$lang/add-phrase',
+						params: { lang },
 						icon: 'square-plus',
 					},
 					{
 						name: 'Deck settings',
-						href: './settings',
+						to: '/learn/$lang/settings',
+						params: { lang },
 						icon: 'settings',
 					},
 				],
@@ -46,7 +49,7 @@ function ReviewPage() {
 		:	<FlashCardReviewSession pids={pidsForReview} cardsMap={data.cardsMap} />
 }
 
-function shuffle(array: Array<any> | null | undefined): Array<any> {
+function shuffle<T>(array: Array<T> | null | undefined): Array<T> {
 	if (!(array?.length > 0)) return []
 	for (let currentIndex = array.length - 1; currentIndex > 0; currentIndex--) {
 		const randomIndex = Math.floor(Math.random() * (currentIndex + 1))

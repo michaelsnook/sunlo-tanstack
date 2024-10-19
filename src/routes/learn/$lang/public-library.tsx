@@ -6,14 +6,8 @@ import {
 	CardHeader,
 	CardTitle,
 } from 'components/ui/card'
-import { PhraseSearchParams } from 'types/main'
 
-export const Route = createFileRoute('/learn/$lang/_tabs/public-library')({
-	validateSearch: (search: Record<string, unknown>): PhraseSearchParams => {
-		return {
-			phrase: search.phrase as string | undefined,
-		}
-	},
+export const Route = createFileRoute('/learn/$lang/public-library')({
 	component: PublicLibraryTab,
 })
 
