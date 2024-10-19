@@ -71,7 +71,7 @@ function PrefilledForm({ initialData, uid }: PrefilledFormProps) {
 		},
 		onSuccess: () => {
 			toast.success(`Successfully updated your profile`)
-			queryClient.invalidateQueries({ queryKey: ['user'] })
+			void queryClient.invalidateQueries({ queryKey: ['user'] })
 		},
 	})
 

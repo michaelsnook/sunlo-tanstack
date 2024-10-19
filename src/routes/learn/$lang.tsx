@@ -10,12 +10,6 @@ export const Route = createFileRoute('/learn/$lang')({
 			icon: 'book-heart',
 			contextMenu: [
 				{
-					name: `${languages[lang]} home`,
-					to: '/learn/$lang',
-					params: { lang },
-					icon: 'rocket',
-				},
-				{
 					name: 'Start a review',
 					to: '/learn/$lang/review',
 					params: { lang },
