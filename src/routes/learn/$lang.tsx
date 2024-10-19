@@ -25,13 +25,19 @@ export const Route = createFileRoute('/learn/$lang')({
 					name: 'Add a phrase',
 					to: '/learn/$lang/add-phrase',
 					params: { lang },
-					icon: 'square-plus',
+					icon: 'notebook-pen',
 				},
 				{
 					name: 'Browse your cards',
 					to: '/learn/$lang/browse',
 					params: { lang },
 					icon: 'wallet-cards',
+				},
+				{
+					name: 'Friends and contacts',
+					to: '/learn/$lang/invite-friend',
+					params: { lang },
+					icon: 'contact',
 				},
 				{
 					name: 'Deck settings',
