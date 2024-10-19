@@ -1,6 +1,6 @@
 import { createFileRoute, Link, Outlet } from '@tanstack/react-router'
 import { Tabs, TabsList, TabsTrigger } from 'components/ui/tabs'
-import { PhraseSearchParams } from 'types/main'
+import { NavbarData, PhraseSearchParams } from 'types/main'
 import languages from 'lib/languages'
 
 export const Route = createFileRoute('/learn/$lang/_tabs')({
@@ -21,14 +21,14 @@ export const Route = createFileRoute('/learn/$lang/_tabs')({
 					icon: 'rocket',
 				},
 				{
-					name: 'Add a phrase',
-					href: './add-phrase',
-					icon: 'square-plus',
-				},
-				{
 					name: `Search ${languages[lang]}`,
 					href: './search',
 					icon: 'search',
+				},
+				{
+					name: 'Add a phrase',
+					href: './add-phrase',
+					icon: 'square-plus',
 				},
 				{
 					name: 'Your cards',
@@ -87,6 +87,7 @@ function LanguageTabs() {
 			>
 				<TabsList>
 					<LinkedTab to="/learn/$lang" label="Welcome" />
+					<LinkedTab to="/learn/$lang/search" label="Search" />
 					<LinkedTab to="/learn/$lang/add-phrase" label="Add a Phrase" />
 					<LinkedTab to="/learn/$lang/public-library" label="Public Library" />
 					<LinkedTab to="/learn/$lang/invite-friend" label="Invite a Friend" />

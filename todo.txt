@@ -68,7 +68,9 @@ DATA LOADING
 
 ROUTER
 1. ✅ if the navbar is not present, use its parent, somehow. (unclear why this is not happening)
-1. What is the best way to get the $lang? is it `const { lang } = Route.useParams()` ? can we not get it in page props?
+1. What is the best way to get the $lang? is it `const { lang } = Route.useParams()` ? can we not get it in page props, or context?
+		- yes to context: `const data = Route.useRouteContext()` does return the queryClient and the auth object (mixed together actually)
+			- further can we access context from props?
 1. Standardize how we handle: `const { navigate } = useRouter()` -- can we use some props or the `Route.` methods?
 1. can we access the queryClient directly from context without the hook?
 1. if the validateSearch is not present, can we use its parent? or can we just get params from the parent component?
