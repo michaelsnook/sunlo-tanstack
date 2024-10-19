@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createFileRoute } from '@tanstack/react-router'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import toast from 'react-hot-toast'
@@ -17,6 +17,7 @@ import {
 } from 'components/ui/card'
 import { Label } from 'components/ui/label'
 import { RadioGroup, RadioGroupItem } from 'components/ui/radio-group'
+import { useDeckMeta } from 'lib/use-deck'
 
 export const Route = createFileRoute('/learn/$lang/_tabs/deck-settings')({
 	validateSearch: (search: Record<string, unknown>): PhraseSearchParams => {
@@ -27,27 +28,30 @@ export const Route = createFileRoute('/learn/$lang/_tabs/deck-settings')({
 	component: DeckSettingsTab,
 })
 
-const deckSettingsSchema = z.object({
+const DeckSettingsSchema = z.object({
 	intent: z.enum(['visiting', 'family', 'friends']),
 })
 
-function DeckSettingsTab() {
-	const { control, handleSubmit } = useForm<z.infer<typeof deckSettingsSchema>>(
-		{
-			resolver: zodResolver(deckSettingsSchema),
-		}
-	)
+type DeckSettingsFormInputs = z.infer<typeof DeckSettingsSchema>
 
-	const updateDeckSettingsMutation = useMutation(
-		(data: z.infer<typeof deckSettingsSchema>) => {
+function DeckSettingsTab() {
+	const { lang } = Route.useParams()
+	const { data: meta } = useDeckMeta(lang)
+	const queryClient = useQueryClient()
+	const { control, handleSubmit } = useForm<DeckSettingsFormInputs>({
+		resolver: zodResolver(DeckSettingsSchema),
+		defaultValues: { intent: 'friends' },
+	})
+
+	const updateDeckSettingsMutation = useMutation({
+		mutationFn: (data: DeckSettingsFormInputs) => {
 			return new Promise((resolve) => setTimeout(() => resolve(data), 1000))
 		},
-		{
-			onSuccess: () => {
-				toast.success('Your deck settings have been updated.')
-			},
-		}
-	)
+		onSuccess: () => {
+			toast.success('Your deck settings have been updated.')
+			queryClient.invalidateQueries({ queryKey: ['user', lang] })
+		},
+	})
 
 	const onSubmit = handleSubmit((data) => {
 		updateDeckSettingsMutation.mutate(data)

@@ -52,6 +52,7 @@ const samplePhrases = [
 
 function AddPhraseTab() {
 	const { navigate } = useRouter()
+	const { lang } = Route.useParams()
 	const { phrase } = Route.useSearch()
 	const [searchResults, setSearchResults] = useState<typeof samplePhrases>([])
 	const [phraseMode, setPhraseMode] = useState<'search' | 'new'>('search')
@@ -93,25 +94,26 @@ function AddPhraseTab() {
 				)
 			)
 		},
-		{
-			onSuccess: (data) => {
-				setSearchResults(data)
-			},
-		}
-	)
 
-	const addPhraseMutation = useMutation(
-		(data: z.infer<typeof addPhraseSchema>) => {
+		onSuccess: (data) => {
+			setSearchResults(data)
+		},
+	})
+
+	const addPhraseMutation = useMutation({
+		mutationFn: (data: z.infer<typeof addPhraseSchema>) => {
 			return new Promise((resolve) => setTimeout(() => resolve(data), 1000))
 		},
-		{
-			onSuccess: () => {
-				toast.success('Your phrase has been added to your deck.')
-				navigate({ to: './add-phrase/', search: { phrase: '' } })
-				setPhraseMode('search')
-			},
-		}
-	)
+		onSuccess: () => {
+			toast.success('Your phrase has been added to your deck.')
+			navigate({
+				to: '/learn/$lang/add-phrase/',
+				params: { lang },
+				search: { phrase: '' },
+			})
+			setPhraseMode('search')
+		},
+	})
 
 	const onSearchSubmit = handleSubmit((data) => {
 		// navigate({ to: '/add-phrase', search: { phrase: data.phrase } })
@@ -144,7 +146,7 @@ function AddPhraseTab() {
 									onChange={(e) => {
 										field.onChange(e)
 										navigate({
-											to: '/add-phrase',
+											to: '../add-phrase',
 											from: Route.fullPath,
 											search: { phrase: e.target.value },
 										})
@@ -162,8 +164,12 @@ function AddPhraseTab() {
 					className="mt-6"
 				>
 					<TabsList className="grid w-full grid-cols-2">
-						<TabsTrigger value="search">🔍️ Search for Phrase</TabsTrigger>
-						<TabsTrigger value="new">➕ New Phrase</TabsTrigger>
+						<TabsTrigger value="search">
+							<Search size={16} className="mx-2" /> Search for Phrase
+						</TabsTrigger>
+						<TabsTrigger value="new">
+							<Plus size={16} className="mx-2" /> New Phrase
+						</TabsTrigger>
 					</TabsList>
 					<TabsContent value="search">
 						{searchResults.length > 0 ?
