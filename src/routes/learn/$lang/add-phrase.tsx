@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { useMutation } from '@tanstack/react-query'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -16,15 +16,16 @@ import { Label } from 'components/ui/label'
 import { Input } from 'components/ui/input'
 import { Button } from 'components/ui/button'
 import { Textarea } from 'components/ui/textarea'
+import { NotebookPen, Search } from 'lucide-react'
 
 interface SearchParams {
-	phrase: string
+	phrase?: string
 }
 
 export const Route = createFileRoute('/learn/$lang/add-phrase')({
 	validateSearch: (search: Record<string, unknown>): SearchParams => {
 		return {
-			phrase: search.phrase as string | undefined,
+			phrase: (search?.phrase as string) ?? '',
 		}
 	},
 	component: AddPhraseTab,
@@ -38,8 +39,7 @@ const addPhraseSchema = z.object({
 function AddPhraseTab() {
 	const navigate = Route.useNavigate()
 	const { lang } = Route.useParams()
-	const search = Route.useSearch()
-	const { phrase } = search
+	const { phrase } = Route.useSearch()
 
 	const searchPhrase = phrase || ''
 	const { control: addPhraseControl, handleSubmit: handleAddPhraseSubmit } =
@@ -112,13 +112,17 @@ function AddPhraseTab() {
 						/>
 					</div>
 					<div className="flex flex-row gap-2">
-						<Button type="submit">Add New Phrase</Button>
+						<Button type="submit">
+							<NotebookPen />
+							Add New Phrase
+						</Button>
 						<Button variant="link" asChild>
 							<Link
 								to="/learn/$lang/search"
 								from={Route.fullPath}
-								search={{ q: phrase }}
+								search={(search: SearchParams) => ({ ...search, q: phrase })}
 							>
+								<Search />
 								Search for sumilar phrases
 							</Link>
 						</Button>

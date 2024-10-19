@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Controller, useForm } from 'react-hook-form'
@@ -6,7 +5,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import toast from 'react-hot-toast'
 
-import { Plus, Search } from 'lucide-react'
+import { NotebookPen, Plus, Search } from 'lucide-react'
 import {
 	Card,
 	CardContent,
@@ -26,7 +25,7 @@ interface SearchParams {
 export const Route = createFileRoute('/learn/$lang/search')({
 	validateSearch: (search: Record<string, unknown>): SearchParams => {
 		return {
-			q: search.q || '',
+			q: (search.q as string) || '',
 		}
 	},
 	component: SearchTab,
@@ -104,13 +103,16 @@ function SearchTab() {
 						/>
 					</div>
 					<div className="flex flex-row gap-2">
-						<Button type="submit">Search Phrase</Button>
+						<Button type="submit">
+							<Search /> Search Phrase
+						</Button>
 						<Button variant="link" asChild>
 							<Link
 								to="/learn/$lang/add-phrase"
 								from={Route.fullPath}
-								search={{ phrase: q }}
+								search={(search: SearchParams) => ({ ...search, phrase: q })}
 							>
+								<NotebookPen />
 								Add New Phrase
 							</Link>
 						</Button>

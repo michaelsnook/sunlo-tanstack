@@ -31,7 +31,7 @@ export default function Navbar() {
 	}, [navigate])
 
 	const matchesArray = matches.filter((m) => m?.loaderData !== undefined)
-	console.log(`matches`, matchesArray, matches)
+	// console.log(`matches`, matchesArray, matches)
 	const lastMatch = matchesArray.at(-1)
 	const data = lastMatch?.loaderData?.['navbar'] as NavbarData
 	const onBackClick = data?.onBackClick ?? goBack
