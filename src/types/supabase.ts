@@ -348,18 +348,21 @@ export type Database = {
           created_at: string
           id: string
           lang: string
+          learning_goal: Database["public"]["Enums"]["learning_goal"]
           uid: string
         }
         Insert: {
           created_at?: string
           id?: string
           lang: string
+          learning_goal?: Database["public"]["Enums"]["learning_goal"]
           uid?: string
         }
         Update: {
           created_at?: string
           id?: string
           lang?: string
+          learning_goal?: Database["public"]["Enums"]["learning_goal"]
           uid?: string
         }
         Relationships: [
@@ -632,6 +635,7 @@ export type Database = {
           lang: string | null
           lang_total_phrases: number | null
           language: string | null
+          learning_goal: Database["public"]["Enums"]["learning_goal"] | null
           most_recent_review_at: string | null
           uid: string | null
         }
@@ -672,6 +676,7 @@ export type Database = {
     }
     Enums: {
       card_status: "active" | "learned" | "skipped"
+      learning_goal: "moving" | "family" | "visiting"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -759,4 +764,19 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof PublicSchema["CompositeTypes"]
+    | { schema: keyof Database },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
+    ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never

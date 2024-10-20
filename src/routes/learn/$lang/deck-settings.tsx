@@ -13,36 +13,58 @@ import {
 	CardHeader,
 	CardTitle,
 } from 'components/ui/card'
-import { Label } from 'components/ui/label'
-import { RadioGroup, RadioGroupItem } from 'components/ui/radio-group'
+
 import { useDeckMeta } from 'lib/use-deck'
 import { PostgrestError } from '@supabase/supabase-js'
+import Loading from 'components/loading'
+import { DeckMeta, uuid } from 'types/main'
+import { LearningGoalField } from 'components/fields/learning-goal-field'
 
 export const Route = createFileRoute('/learn/$lang/deck-settings')({
-	component: DeckSettingsTab,
+	component: DeckSettingsPage,
 })
+
+function DeckSettingsPage() {
+	const { lang } = Route.useParams()
+	const { data: meta, isPending } = useDeckMeta(lang)
+	return isPending ?
+			<Loading />
+		:	<Card>
+				<CardHeader>
+					<CardTitle>Deck Settings</CardTitle>
+				</CardHeader>
+				<CardContent className="space-y-6">
+					<GoalForm meta={meta} />
+					<ArchiveForm meta={meta} />
+				</CardContent>
+			</Card>
+}
 
 const DeckSettingsSchema = z.object({
-	intent: z.enum(['visiting', 'family', 'friends']),
+	learning_goal: z.enum(['visiting', 'family', 'moving']),
+	id: z.string().uuid(),
 })
 
-type DeckSettingsFormInputs = z.infer<typeof DeckSettingsSchema>
+type DeckGoalFormInputs = z.infer<typeof DeckSettingsSchema>
 
-function DeckSettingsTab() {
-	const { lang } = Route.useParams()
-	const { data: meta } = useDeckMeta(lang)
+function GoalForm({ meta: { learning_goal, id, lang } }: { meta: DeckMeta }) {
 	const queryClient = useQueryClient()
-	const { control, handleSubmit } = useForm<DeckSettingsFormInputs>({
+	const {
+		control,
+		handleSubmit,
+		reset,
+		formState: { errors, isDirty },
+	} = useForm<DeckGoalFormInputs>({
 		resolver: zodResolver(DeckSettingsSchema),
-		defaultValues: { intent: 'friends' },
+		defaultValues: { learning_goal, id },
 	})
 
-	const updateDeckSettingsMutation = useMutation<
-		DeckSettingsFormInputs,
+	const updateDeckGoalMutation = useMutation<
+		DeckGoalFormInputs,
 		PostgrestError
 	>({
 		mutationKey: ['user', lang, 'deck-settings'],
-		mutationFn: async (data: DeckSettingsFormInputs) => {
+		mutationFn: async (data: DeckGoalFormInputs) => {
 			return new Promise((resolve) => setTimeout(() => resolve(data), 1000))
 		},
 		onSuccess: () => {
@@ -58,43 +80,52 @@ function DeckSettingsTab() {
 
 	return (
 		<Card>
-			<CardHeader>
-				<CardTitle>Deck Settings</CardTitle>
-				<CardDescription>
-					Set your learning intent for this language.
-				</CardDescription>
+			<CardHeader className="pb-0">
+				<CardTitle className="h4" asChild>
+					<h4>Your learning goals</h4>
+				</CardTitle>
 			</CardHeader>
 			<CardContent>
 				<form
-					onSubmit={handleSubmit(updateDeckSettingsMutation.mutate)}
+					onSubmit={handleSubmit(updateDeckGoalMutation.mutate)}
 					className="space-y-4"
 				>
 					<Controller
-						name="intent"
+						name="learning_goal"
 						control={control}
-						render={({ field }) => (
-							<RadioGroup
-								onValueChange={field.onChange}
-								defaultValue={field.value}
-							>
-								<div className="flex items-center space-x-2">
-									<RadioGroupItem value="visiting" id="visiting" />
-									<Label htmlFor="visiting">Visiting</Label>
-								</div>
-								<div className="flex items-center space-x-2">
-									<RadioGroupItem value="family" id="family" />
-									<Label htmlFor="family">Family</Label>
-								</div>
-								<div className="flex items-center space-x-2">
-									<RadioGroupItem value="friends" id="friends" />
-									<Label htmlFor="friends">Friends</Label>
-								</div>
-							</RadioGroup>
+						render={() => (
+							<LearningGoalField
+								control={control}
+								error={errors.learning_goal}
+							/>
 						)}
 					/>
-					<Button type="submit">Save Settings</Button>
+					<div className="space-x-2">
+						<Button type="submit" disabled={!isDirty}>
+							Update your goal
+						</Button>
+						<Button
+							variant="secondary"
+							type="button"
+							onClick={() => reset()}
+							disabled={!isDirty}
+						>
+							Reset
+						</Button>
+					</div>
 				</form>
 			</CardContent>
+		</Card>
+	)
+}
+
+function ArchiveForm({ meta }: { meta: DeckMeta }) {
+	return (
+		<Card>
+			<CardHeader>
+				<CardTitle>Archive</CardTitle>
+			</CardHeader>
+			<CardContent></CardContent>
 		</Card>
 	)
 }

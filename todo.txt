@@ -12,11 +12,14 @@ MOCKS
 		we have the component taking the correct data for its loop
 		we have the component submitting mutations
 1. The "Deck Home" screen or Welcome Screen
-	1. 🪲 Tabs have a number of problems; the active tab doesn't update & we should probably rewrite
-		LinkTabs to use radix tabs directly instead of the shadcn tabs
+	1. ✅ 🪲 Tabs have a number of problems; the active tab doesn't update & we should probably rewrite
 	1. Invite-A-Friend is a whole feature-set that needs to be built!
 	1. Public Library is a special browsing experience that needs to be built!
-	1. Deck Settings: replace with the nicer radio: https://v0.dev/chat/PNg3tT-DSoC, and wire up the mutation, and add the field on user_deck
+	1. ✅ Deck Settings: replace with the nicer radio: https://v0.dev/chat/PNg3tT-DSoC, 
+			and wire up the mutation
+			✅ add the `learning_goal` field on user_deck
+			add the "archive" form, and field on user_deck
+			wire up the mutation
 	1. Add-a-card needs form wiring
 
 COMPONENTS (ShadCN/Radix)
@@ -68,6 +71,8 @@ DATA LOADING
 
 ROUTER
 1. ✅ if the navbar is not present, use its parent, somehow. (unclear why this is not happening)
+1. can we aggregate all the context menu items and display them in groups. 
+		(this collation should mean we can set a single page's title without affecting the menus) 
 1. What is the best way to get the $lang? is it `const { lang } = Route.useParams()` ? can we not get it in page props, or context?
 		- yes to context: `const data = Route.useRouteContext()` does return the queryClient and the auth object (mixed together actually)
 			- further can we access context from props?
