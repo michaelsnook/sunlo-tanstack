@@ -16,10 +16,10 @@ MOCKS
 	1. Invite-A-Friend is a whole feature-set that needs to be built!
 	1. Public Library is a special browsing experience that needs to be built!
 	1. ✅ Deck Settings: replace with the nicer radio: https://v0.dev/chat/PNg3tT-DSoC, 
-			and wire up the mutation
+			✅ and wire up the mutation
 			✅ add the `learning_goal` field on user_deck
-			add the "archive" form, and field on user_deck
-			wire up the mutation
+			✅ add the "archive" form, and field on user_deck
+			✅ wire up the mutation
 	1. Add-a-card needs form wiring
 
 COMPONENTS (ShadCN/Radix)

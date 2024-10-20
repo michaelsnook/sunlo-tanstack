@@ -345,6 +345,7 @@ export type Database = {
       }
       user_deck: {
         Row: {
+          archived: boolean
           created_at: string
           id: string
           lang: string
@@ -352,6 +353,7 @@ export type Database = {
           uid: string
         }
         Insert: {
+          archived?: boolean
           created_at?: string
           id?: string
           lang: string
@@ -359,6 +361,7 @@ export type Database = {
           uid?: string
         }
         Update: {
+          archived?: boolean
           created_at?: string
           id?: string
           lang?: string
@@ -625,6 +628,7 @@ export type Database = {
       }
       user_deck_plus: {
         Row: {
+          archived: boolean | null
           cards_active: number | null
           cards_learned: number | null
           cards_skipped: number | null

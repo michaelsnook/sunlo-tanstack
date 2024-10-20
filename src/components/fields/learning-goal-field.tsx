@@ -4,6 +4,7 @@ import { Users, GraduationCap, Briefcase } from 'lucide-react'
 import { ControlledFieldProps } from '.'
 import { useController } from 'react-hook-form'
 import { ShowError } from 'components/errors'
+import { cn } from 'lib/utils'
 
 export function LearningGoalField({ control, error }: ControlledFieldProps) {
 	const {
@@ -11,63 +12,70 @@ export function LearningGoalField({ control, error }: ControlledFieldProps) {
 	} = useController({ name: 'learning_goal', control })
 	return (
 		<div>
-			<RadioGroup
-				defaultValue="family"
-				onValueChange={onChange}
-				className="gap-0"
-			>
-				<div>
-					<RadioGroupItem value="moving" id="moving" className="hidden" />
-					<Label
-						htmlFor="moving"
-						className={`flex items-center cursor-pointer w-full p-4 transition-colors ${value === 'moving' ? 'bg-primary/20' : 'hover:bg-primary/10'} rounded border-input`}
-					>
-						<GraduationCap
-							className={`h-5 w-5 mr-3 transition-color ${value === 'moving' ? 'text-primary' : ''}`}
-						/>
-						<div className="space-y-1">
-							<div className="">Moving or learning for friends</div>
-							<div className="font-medium text-sm opacity-60">
-								I'll be getting help from friends or colleagues
-							</div>
+			<RadioGroup onValueChange={onChange} className="gap-0">
+				<RadioGroupItem value="moving" id="moving" className="hidden" />
+				<Label
+					htmlFor="moving"
+					className={cn(
+						`flex items-center cursor-pointer w-full p-4 transition-colors rounded border border-transparent`,
+						value === 'moving' ? 'bg-primary/20' : (
+							'hover:bg-primary/10 hover:border-input'
+						)
+					)}
+				>
+					<GraduationCap
+						className={`h-5 w-5 mr-3 transition-color ${value === 'moving' ? 'text-primary' : ''}`}
+					/>
+					<div className="space-y-1">
+						<div>Moving or learning for friends</div>
+						<div className="font-medium text-sm opacity-60">
+							I'll be getting help from friends or colleagues
 						</div>
-					</Label>
-				</div>
-				<div>
-					<RadioGroupItem value="family" id="family" className="hidden" />
-					<Label
-						htmlFor="family"
-						className={`flex items-center cursor-pointer w-full p-4 transition-colors ${value === 'family' ? 'bg-primary/20' : 'hover:bg-primary/10'} rounded border-input`}
-					>
-						<Users
-							className={`h-5 w-5 mr-3 transition-color ${value === 'family' ? 'text-primary' : ''}`}
-						/>
-						<div>
-							<div className="">Family connection</div>
-							<div className="font-medium text-sm opacity-60">
-								I want to connect with relatives by learning a family or
-								ancestral language
-							</div>
+					</div>
+				</Label>
+
+				<RadioGroupItem value="family" id="family" className="hidden" />
+				<Label
+					htmlFor="family"
+					className={cn(
+						`flex items-center cursor-pointer w-full p-4 transition-colors rounded border border-transparent`,
+						value === 'family' ? 'bg-primary/20' : (
+							'hover:bg-primary/10 hover:border-input'
+						)
+					)}
+				>
+					<Users
+						className={`h-5 w-5 mr-3 transition-color ${value === 'family' ? 'text-primary' : ''}`}
+					/>
+					<div className="space-y-1">
+						<div>Family connection</div>
+						<div className="font-medium text-sm opacity-60">
+							I want to connect with relatives by learning a family or ancestral
+							language
 						</div>
-					</Label>
-				</div>
-				<div>
-					<RadioGroupItem value="visiting" id="visiting" className="hidden" />
-					<Label
-						htmlFor="visiting"
-						className={`flex items-center cursor-pointer w-full p-4 transition-colors ${value === 'visiting' ? 'bg-primary/20' : 'hover:bg-primary/10'} rounded border-input`}
-					>
-						<Briefcase
-							className={`h-5 w-5 mr-3 transition-color ${value === 'visiting' ? 'text-primary' : ''}`}
-						/>
-						<div>
-							<div className="">Just visiting</div>
-							<div className="font-medium text-sm opacity-60">
-								I'm learning the basics for an upcoming trip
-							</div>
+					</div>
+				</Label>
+
+				<RadioGroupItem value="visiting" id="visiting" className="hidden" />
+				<Label
+					htmlFor="visiting"
+					className={cn(
+						`flex items-center cursor-pointer w-full p-4 transition-colors rounded border border-transparent`,
+						value === 'visiting' ? 'bg-primary/20' : (
+							'hover:bg-primary/10 hover:border-input'
+						)
+					)}
+				>
+					<Briefcase
+						className={`h-5 w-5 mr-3 transition-color ${value === 'visiting' ? 'text-primary' : ''}`}
+					/>
+					<div className="space-y-1">
+						<div>Just visiting</div>
+						<div className="font-medium text-sm opacity-60">
+							I'm learning the basics for an upcoming trip
 						</div>
-					</Label>
-				</div>
+					</div>
+				</Label>
 			</RadioGroup>
 			<ShowError>{error?.message}</ShowError>
 		</div>
