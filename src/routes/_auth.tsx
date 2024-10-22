@@ -5,8 +5,10 @@ import { Card } from 'components/ui/card'
 // they do not require the user to be logged in
 export const Route = createFileRoute('/_auth')({
 	component: () => (
-		<Card className="mx-auto mt-[10cqh] w-full max-w-md [padding:clamp(0.5rem,2cqw,2rem)]">
-			<Outlet />
-		</Card>
+		<div className="px-4">
+			<Card className="mx-auto mt-[10cqh] w-full max-w-md [padding:clamp(0.5rem,2cqw,2rem)]">
+				<Outlet />
+			</Card>
+		</div>
 	),
 })

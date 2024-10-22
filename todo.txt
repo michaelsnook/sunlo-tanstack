@@ -5,11 +5,13 @@ ISSUES
 	and verify your email; redirect should happen after this
 
 JOURNEYS TO MOCK
-1. Invite a friend
+1. Invite a friend (for a learner to invite someone by email)
 		* invite email for the friend
 		* accept invitation page, account signup form
 		* landing page for the friend when they sign up... (what can they see?)
-1. Find a friend / friend request form / friend request sent / pending requests
+1. ✅ Find a friend screen (for an anon visitor to find a learner)
+		* friend request dialog w signup
+		* friend request sent / pending requests
 		* Friend request receive, friend request approve, friend request reject
 
 

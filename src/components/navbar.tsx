@@ -22,7 +22,7 @@ import {
 	DropdownMenuTrigger,
 } from 'components/ui/dropdown-menu'
 import { Link, useMatches, useNavigate } from '@tanstack/react-router'
-import { NavbarData } from 'types/main'
+import type { NavbarData } from 'types/main'
 
 export default function Navbar() {
 	const [isOpen, setIsOpen] = useState(false)

@@ -23,6 +23,7 @@ import { Route as LearnLangImport } from './routes/learn/$lang'
 import { Route as UserProfileImport } from './routes/_user/profile'
 import { Route as UserGettingStartedImport } from './routes/_user/getting-started'
 import { Route as AuthLoginImport } from './routes/_auth/login'
+import { Route as AuthFindAFriendImport } from './routes/_auth/find-a-friend'
 import { Route as LearnLangIndexImport } from './routes/learn/$lang/index'
 import { Route as LearnLangSearchImport } from './routes/learn/$lang/search'
 import { Route as LearnLangReviewImport } from './routes/learn/$lang/review'
@@ -138,6 +139,11 @@ const AuthLoginRoute = AuthLoginImport.update({
   getParentRoute: () => AuthRoute,
 } as any)
 
+const AuthFindAFriendRoute = AuthFindAFriendImport.update({
+  path: '/find-a-friend',
+  getParentRoute: () => AuthRoute,
+} as any)
+
 const LearnLangIndexRoute = LearnLangIndexImport.update({
   path: '/',
   getParentRoute: () => LearnLangRoute,
@@ -235,6 +241,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/privacy-policy'
       preLoaderRoute: typeof PrivacyPolicyLazyImport
       parentRoute: typeof rootRoute
+    }
+    '/_auth/find-a-friend': {
+      id: '/_auth/find-a-friend'
+      path: '/find-a-friend'
+      fullPath: '/find-a-friend'
+      preLoaderRoute: typeof AuthFindAFriendImport
+      parentRoute: typeof AuthImport
     }
     '/_auth/login': {
       id: '/_auth/login'
@@ -377,6 +390,7 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
   AuthRoute: AuthRoute.addChildren({
+    AuthFindAFriendRoute,
     AuthLoginRoute,
     AuthForgotPasswordLazyRoute,
     AuthSetNewPasswordLazyRoute,
@@ -431,6 +445,7 @@ export const routeTree = rootRoute.addChildren({
     "/_auth": {
       "filePath": "_auth.tsx",
       "children": [
+        "/_auth/find-a-friend",
         "/_auth/login",
         "/_auth/forgot-password",
         "/_auth/set-new-password",
@@ -461,6 +476,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/privacy-policy": {
       "filePath": "privacy-policy.lazy.tsx"
+    },
+    "/_auth/find-a-friend": {
+      "filePath": "_auth/find-a-friend.tsx",
+      "parent": "/_auth"
     },
     "/_auth/login": {
       "filePath": "_auth/login.tsx",
