@@ -2,7 +2,6 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 
 import { buttonVariants } from 'components/ui/button'
 import type { FriendshipRow } from 'types/main'
-import Loading from 'components/loading'
 import { useDeck, useDeckMeta } from 'lib/use-deck'
 import { useLanguage } from 'lib/use-language'
 import { useProfile } from 'lib/use-profile'
@@ -15,8 +14,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from 'components/ui/card'
-import { Book, Notebook, NotebookPen, Plus, Search } from 'lucide-react'
-import languages from 'lib/languages'
+import { Book, NotebookPen, Plus, Search } from 'lucide-react'
 import { cn } from 'lib/utils'
 
 export const Route = createFileRoute('/learn/$lang/')({
@@ -27,47 +25,45 @@ function WelcomePage() {
 	const { lang } = Route.useParams()
 	const deckIsNew = false
 	return deckIsNew ?
-			<Empty />
-		:	<Card>
-				<CardHeader>
-					<CardTitle>Learn! {languages[lang]}!</CardTitle>
-				</CardHeader>
-				<CardContent className="space-y-4">
-					<div className="flex gap-2 flex-row flex-wrap">
-						<Link
-							to="/learn/$lang/review"
-							params={{ lang }}
-							from={Route.fullPath}
-							className={buttonVariants({ variant: 'default' })}
-						>
-							<Book /> Today&apos;s Deck Review
-						</Link>
-						<Link
-							to="/learn/$lang/search"
-							params={{ lang }}
-							from={Route.fullPath}
-							className={buttonVariants({ variant: 'secondary' })}
-						>
-							<Search /> Quick search
-						</Link>
-						<Link
-							to="/learn/$lang/add-phrase"
-							params={{ lang }}
-							from={Route.fullPath}
-							className={buttonVariants({ variant: 'secondary' })}
-						>
-							<NotebookPen /> Add a phrase
-						</Link>
-					</div>
-					<FriendsSection />
-					<DeckSettings />
-					<DeckFullContents />
-				</CardContent>
-			</Card>
+			<Empty lang={lang} />
+		:	<div className="space-y-4 px-2">
+				<div className="flex gap-2 flex-row flex-wrap dark">
+					<Link
+						to="/learn/$lang/review"
+						params={{ lang }}
+						from={Route.fullPath}
+						className={buttonVariants({ variant: 'default' })}
+					>
+						<Book /> Today&apos;s Deck Review
+					</Link>
+					<Link
+						to="/learn/$lang/search"
+						params={{ lang }}
+						from={Route.fullPath}
+						className={buttonVariants({ variant: 'secondary' })}
+					>
+						<Search /> Quick search
+					</Link>
+					<Link
+						to="/learn/$lang/add-phrase"
+						params={{ lang }}
+						from={Route.fullPath}
+						className={buttonVariants({ variant: 'secondary' })}
+					>
+						<NotebookPen /> Add a phrase
+					</Link>
+				</div>
+				<FriendsSection lang={lang} />
+				<DeckSettings lang={lang} />
+				<DeckFullContents lang={lang} />
+			</div>
 }
 
-function DeckSettings() {
-	const { lang } = Route.useParams()
+interface LangOnlyComponentProps {
+	lang: string
+}
+
+function DeckSettings({ lang }: LangOnlyComponentProps) {
 	const { data } = useDeckMeta(lang)
 
 	return (
@@ -111,8 +107,7 @@ function DeckSettings() {
 	)
 }
 
-function DeckFullContents() {
-	const { lang } = Route.useParams()
+function DeckFullContents({ lang }: LangOnlyComponentProps) {
 	const deck = useDeck(lang)
 	const language = useLanguage(lang)
 	return (
@@ -160,8 +155,7 @@ function DeckFullContents() {
 
 // TODO the database doesn't have friendships yet so this is all mockup-y
 // and the type is also mocked
-function FriendsSection() {
-	const { lang } = Route.useParams()
+function FriendsSection({ lang }: LangOnlyComponentProps) {
 	const profileQuery = useProfile()
 	if (profileQuery.data === null) return null
 
@@ -218,7 +212,7 @@ function FriendsSection() {
 	)
 }
 
-function Empty() {
+function Empty({ lang }: LangOnlyComponentProps) {
 	return (
 		<Card className="py-10">
 			<CardHeader>
