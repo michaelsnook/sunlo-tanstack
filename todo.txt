@@ -4,8 +4,16 @@ ISSUES
 1. Signup workflow should not be a toast-redirect, it should be a success alert, saying go check
 	and verify your email; redirect should happen after this
 
+JOURNEYS TO MOCK
+1. Invite a friend
+		* invite email for the friend
+		* accept invitation page, account signup form
+		* landing page for the friend when they sign up... (what can they see?)
+1. Find a friend / friend request form / friend request sent / pending requests
+		* Friend request receive, friend request approve, friend request reject
 
-MOCKS
+
+MOCKS / Incompletes
 1. The $lang/review workflow is a mock only; wire it up
 		✅ we're collecting and passing in the data
 		✅ we have an "empty" state and a "complete" state

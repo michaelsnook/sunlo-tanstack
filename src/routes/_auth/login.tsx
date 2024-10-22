@@ -1,5 +1,4 @@
-import { useLayoutEffect } from 'react'
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, Navigate } from '@tanstack/react-router'
 import { useMutation } from '@tanstack/react-query'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import * as z from 'zod'
@@ -38,18 +37,7 @@ type FormInputs = z.infer<typeof FormSchema>
 
 export default function LoginForm() {
 	const { isAuth } = useAuth()
-	const navigate = Route.useNavigate()
 	const { redirectedFrom } = Route.useSearch()
-	const fromPath = Route.fullPath
-
-	useLayoutEffect(() => {
-		if (isAuth && navigate) {
-			void navigate({
-				to: redirectedFrom || '/learn',
-				from: fromPath,
-			})
-		}
-	}, [isAuth, navigate, redirectedFrom, fromPath])
 
 	const loginMutation = useMutation({
 		mutationKey: ['login'],
@@ -77,9 +65,10 @@ export default function LoginForm() {
 		resolver: zodResolver(FormSchema),
 	})
 
-	if (isAuth)
-		return <p>You are logged in; please wait while we redirect you.</p>
 	// console.log('form state', form.state, loginMutation)
+
+	if (isAuth)
+		return <Navigate to={redirectedFrom || '/learn'} from={Route.fullPath} />
 
 	return (
 		<>
