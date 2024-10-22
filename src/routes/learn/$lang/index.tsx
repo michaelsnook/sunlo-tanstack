@@ -66,26 +66,37 @@ function WelcomePage() {
 			</Card>
 }
 
-// TODO: these inputs don't do anything.
-// use https://v0.dev/chat/PNg3tT-DSoC for deck mode
 function DeckSettings() {
 	const { lang } = Route.useParams()
-	const deck = useDeckMeta(lang)
+	const { data } = useDeckMeta(lang)
 
 	return (
 		<Card>
 			<CardHeader>
 				<CardTitle>Deck Settings</CardTitle>
 				<CardDescription>
-					Delete your deck? Pause it? Change modes? Set goals? Travel dates
-					coming up?
+					Set your deck preferences and learning mode, activate or de-activate.
 				</CardDescription>
 			</CardHeader>
 			<CardContent className="space-y-4">
 				<ul className="list-disc ms-4">
-					<li>Your deck is currently: Active</li>
-					<li>Your learning mode is: Family</li>
-					<li>Your learning goals are: lorem upside downum</li>
+					<li>
+						Your deck is currently:{' '}
+						<strong>{data?.archived ? 'Inactive' : 'Active'}</strong>
+					</li>
+					<li>
+						Your learning motivation is:{' '}
+						<strong>
+							{data?.learning_goal === 'family' ?
+								'To connect with family'
+							: data?.learning_goal === 'visiting' ?
+								'Preparing to visit'
+							:	'Living in a new place'}
+						</strong>
+					</li>
+					<li>
+						Your learning goals are: <strong>lorem upside downum</strong>
+					</li>
 				</ul>
 				<Link
 					to="/learn/$lang/deck-settings"
