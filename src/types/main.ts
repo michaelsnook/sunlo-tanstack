@@ -22,6 +22,7 @@ export type LinkType = {
 export type MenuType = LinkType & {
 	links: Array<LinkType>
 }
+
 export type NavbarData = {
 	title: string
 	subtitle?: string

@@ -17,6 +17,7 @@ import { Label } from 'components/ui/label'
 import { Input } from 'components/ui/input'
 import { Button } from 'components/ui/button'
 import languages from 'lib/languages'
+import { PhraseFull } from 'types/main'
 
 interface SearchParams {
 	q?: string
@@ -56,7 +57,9 @@ function SearchTab() {
 
 	const searchResults = useQuery({
 		queryKey: ['user', lang, 'search', q],
-		queryFn: async () => null,
+		queryFn: (): PhraseFull[] => {
+			return []
+		},
 		gcTime: 120_000,
 		refetchOnWindowFocus: false,
 	})
@@ -78,7 +81,10 @@ function SearchTab() {
 				<CardDescription>Search for a phrases to learn</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<form onSubmit={handleSubmit(onSearchSubmit)} className="space-y-4">
+				<form
+					onSubmit={handleSubmit((values) => onSearchSubmit(values))}
+					className="space-y-4"
+				>
 					<div>
 						<Label htmlFor="phrase">Phrase</Label>
 						<Controller
@@ -88,15 +94,15 @@ function SearchTab() {
 								<Input
 									{...field}
 									placeholder="Enter a phrase to search or add"
-									onChange={(e) => {
+									onChange={async (e) => {
 										field.onChange(e)
-										navigate({
+										void (await navigate({
 											to: '.',
 											search: (search: SearchParams) => ({
 												...search,
 												q: e.target.value,
 											}),
-										})
+										}))
 									}}
 								/>
 							)}
@@ -127,12 +133,14 @@ function SearchTab() {
 								className="flex justify-between items-center bg-secondary p-2 rounded"
 							>
 								<span>
-									<strong>{result.phrase}</strong> - {result.translation}
+									<strong>{result.text}</strong> - {result.translations[0].text}
 								</span>
 								<Button
 									size="sm"
 									variant="ghost"
-									onClick={() => addCardMutation.mutate(result)}
+									onClick={() =>
+										addCardMutation.mutate({ phrase_id: result.id })
+									}
 								>
 									<Plus className="h-4 w-4" />
 									<span className="sr-only">Add to deck</span>
