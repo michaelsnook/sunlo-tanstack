@@ -5,6 +5,7 @@ import {
 	PostgrestMaybeSingleResponse,
 	PostgrestResponse,
 } from '@supabase/supabase-js'
+import { AnyRouteMatch } from '@tanstack/react-router'
 
 export type uuid = string
 export type pids = Array<uuid>
@@ -14,7 +15,7 @@ export type SelectOption = { value: string; label: string }
 export type LinkType = {
 	name: string
 	to: string | null
-	params: any
+	params: AnyRouteMatch['params']
 	// TODO enum these for the caller
 	icon?: string
 }
