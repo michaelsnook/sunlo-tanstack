@@ -9,6 +9,59 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      friend_request_action: {
+        Row: {
+          action_type: Database["public"]["Enums"]["friend_request_action_type"]
+          created_at: string
+          id: string
+          uid_from: string
+          uid_to: string
+        }
+        Insert: {
+          action_type?: Database["public"]["Enums"]["friend_request_action_type"]
+          created_at?: string
+          id?: string
+          uid_from: string
+          uid_to: string
+        }
+        Update: {
+          action_type?: Database["public"]["Enums"]["friend_request_action_type"]
+          created_at?: string
+          id?: string
+          uid_from?: string
+          uid_to?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "friend_request_action_uid_from_fkey"
+            columns: ["uid_from"]
+            isOneToOne: false
+            referencedRelation: "public_profile"
+            referencedColumns: ["uid"]
+          },
+          {
+            foreignKeyName: "friend_request_action_uid_from_fkey"
+            columns: ["uid_from"]
+            isOneToOne: false
+            referencedRelation: "user_profile"
+            referencedColumns: ["uid"]
+          },
+          {
+            foreignKeyName: "friend_request_action_uid_to_fkey"
+            columns: ["uid_to"]
+            isOneToOne: false
+            referencedRelation: "public_profile"
+            referencedColumns: ["uid"]
+          },
+          {
+            foreignKeyName: "friend_request_action_uid_to_fkey"
+            columns: ["uid_to"]
+            isOneToOne: false
+            referencedRelation: "user_profile"
+            referencedColumns: ["uid"]
+          },
+        ]
+      }
       language: {
         Row: {
           alias_of: string | null
@@ -473,14 +526,14 @@ export type Database = {
             foreignKeyName: "phrase_added_by_fkey"
             columns: ["added_by"]
             isOneToOne: false
-            referencedRelation: "user_profile"
+            referencedRelation: "public_profile"
             referencedColumns: ["uid"]
           },
           {
             foreignKeyName: "phrase_added_by_fkey"
             columns: ["added_by"]
             isOneToOne: false
-            referencedRelation: "public_profile"
+            referencedRelation: "user_profile"
             referencedColumns: ["uid"]
           },
           {
@@ -547,14 +600,14 @@ export type Database = {
             foreignKeyName: "user_card_uid_fkey"
             columns: ["uid"]
             isOneToOne: false
-            referencedRelation: "user_profile"
+            referencedRelation: "public_profile"
             referencedColumns: ["uid"]
           },
           {
             foreignKeyName: "user_card_uid_fkey"
             columns: ["uid"]
             isOneToOne: false
-            referencedRelation: "public_profile"
+            referencedRelation: "user_profile"
             referencedColumns: ["uid"]
           },
           {
@@ -662,14 +715,14 @@ export type Database = {
             foreignKeyName: "user_deck_uid_fkey"
             columns: ["uid"]
             isOneToOne: false
-            referencedRelation: "user_profile"
+            referencedRelation: "public_profile"
             referencedColumns: ["uid"]
           },
           {
             foreignKeyName: "user_deck_uid_fkey"
             columns: ["uid"]
             isOneToOne: false
-            referencedRelation: "public_profile"
+            referencedRelation: "user_profile"
             referencedColumns: ["uid"]
           },
         ]
@@ -680,6 +733,12 @@ export type Database = {
     }
     Enums: {
       card_status: "active" | "learned" | "skipped"
+      friend_request_action_type:
+        | "requested"
+        | "cancelled"
+        | "rejected"
+        | "accepted"
+        | "ended"
       learning_goal: "moving" | "family" | "visiting"
     }
     CompositeTypes: {
