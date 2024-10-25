@@ -34,8 +34,6 @@ function RootComponent() {
 			<div className="mx-auto w-full max-w-[1100px] @container">
 				<Outlet />
 			</div>
-			<ReactQueryDevtools buttonPosition="top-right" />
-			<TanStackRouterDevtools position="bottom-right" />
 			<Toaster position="bottom-center" />
 		</>
 	)
