@@ -24,6 +24,7 @@ MOCKS / Incompletes
 1. The "Deck Home" screen or Welcome Screen
 	1. ✅ 🪲 Tabs have a number of problems; the active tab doesn't update & we should probably rewrite
 	1. Invite-A-Friend is a whole feature-set that needs to be built!
+		1. Accept invite from your friend page is built; needs to be made real
 	1. Public Library is a special browsing experience that needs to be built!
 	1. ✅ Deck Settings: replace with the nicer radio: https://v0.dev/chat/PNg3tT-DSoC, 
 			✅ and wire up the mutation

@@ -22,6 +22,7 @@ import { Route as LearnAddDeckImport } from './routes/learn/add-deck'
 import { Route as LearnLangImport } from './routes/learn/$lang'
 import { Route as UserProfileImport } from './routes/_user/profile'
 import { Route as UserGettingStartedImport } from './routes/_user/getting-started'
+import { Route as UserAcceptInviteImport } from './routes/_user/accept-invite'
 import { Route as AuthLoginImport } from './routes/_auth/login'
 import { Route as AuthFindAFriendImport } from './routes/_auth/find-a-friend'
 import { Route as LearnLangIndexImport } from './routes/learn/$lang/index'
@@ -131,6 +132,11 @@ const UserProfileRoute = UserProfileImport.update({
 
 const UserGettingStartedRoute = UserGettingStartedImport.update({
   path: '/getting-started',
+  getParentRoute: () => UserRoute,
+} as any)
+
+const UserAcceptInviteRoute = UserAcceptInviteImport.update({
+  path: '/accept-invite',
   getParentRoute: () => UserRoute,
 } as any)
 
@@ -255,6 +261,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/login'
       preLoaderRoute: typeof AuthLoginImport
       parentRoute: typeof AuthImport
+    }
+    '/_user/accept-invite': {
+      id: '/_user/accept-invite'
+      path: '/accept-invite'
+      fullPath: '/accept-invite'
+      preLoaderRoute: typeof UserAcceptInviteImport
+      parentRoute: typeof UserImport
     }
     '/_user/getting-started': {
       id: '/_user/getting-started'
@@ -397,6 +410,7 @@ export const routeTree = rootRoute.addChildren({
     AuthSignupLazyRoute,
   }),
   UserRoute: UserRoute.addChildren({
+    UserAcceptInviteRoute,
     UserGettingStartedRoute,
     UserProfileRoute: UserProfileRoute.addChildren({
       UserProfileChangeEmailRoute,
@@ -455,6 +469,7 @@ export const routeTree = rootRoute.addChildren({
     "/_user": {
       "filePath": "_user.tsx",
       "children": [
+        "/_user/accept-invite",
         "/_user/getting-started",
         "/_user/profile"
       ]
@@ -484,6 +499,10 @@ export const routeTree = rootRoute.addChildren({
     "/_auth/login": {
       "filePath": "_auth/login.tsx",
       "parent": "/_auth"
+    },
+    "/_user/accept-invite": {
+      "filePath": "_user/accept-invite.tsx",
+      "parent": "/_user"
     },
     "/_user/getting-started": {
       "filePath": "_user/getting-started.tsx",
