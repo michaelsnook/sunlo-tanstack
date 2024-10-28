@@ -1,6 +1,6 @@
 import { PostgrestError } from '@supabase/supabase-js'
 import { queryOptions, useQuery } from '@tanstack/react-query'
-import type { DeckMeta, DecksMap, ProfileFull } from 'types/main'
+import type { DeckMeta, DecksMap, ProfileFull, uuid } from 'types/main'
 import supabase from 'lib/supabase-client'
 import { mapArray } from 'lib/utils'
 import { useAuth } from 'lib/hooks'
@@ -42,4 +42,19 @@ export const profileQuery = (userId?: string) =>
 export const useProfile = () => {
 	const { userId } = useAuth()
 	return useQuery({ ...profileQuery(userId), initialData: emptyProfile })
+}
+
+export const usePublicProfile = (uid: uuid) => {
+	return useQuery({
+		queryKey: ['public', 'profile', uid],
+		queryFn: async () => {
+			const res = await supabase
+				.from('public_profile')
+				.select()
+				.eq('uid', uid)
+				.maybeSingle()
+				.throwOnError()
+			return res.data
+		},
+	})
 }
