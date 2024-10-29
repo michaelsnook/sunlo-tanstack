@@ -12,7 +12,7 @@ export function AvatarIconRow({
 	children,
 }: AvatarIconRowProps) {
 	return (
-		<div className="flex flex-row justify-between items-center gap-4">
+		<div className="flex flex-row justify-between items-center gap-4 w-full">
 			{avatar_url ?
 				<img
 					src={avatar_url}

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { z } from 'zod'
@@ -15,20 +16,20 @@ import {
 } from 'components/ui/card'
 import { Input } from 'components/ui/input'
 import { Label } from 'components/ui/label'
+import Callout from '@/components/ui/callout'
+import { AvatarIconRow } from '@/components/ui/avatar-icon'
 import { useFriendsInvited } from 'lib/friends'
 import Loading from 'components/loading'
-import { Loader2, Search, User, X } from 'lucide-react'
-import supabase from 'lib/supabase-client'
+import { Loader2, PlusIcon, Search, X } from 'lucide-react'
 import {
 	FriendRequestAction,
 	FriendRequestActionInsert,
 	PublicProfile,
 	uuid,
 } from 'types/main'
-import { useCallback, useState } from 'react'
-import { useDebounce } from '@/lib/use-debounce'
-import { AvatarIconRow } from '@/components/ui/avatar-icon'
+import supabase from 'lib/supabase-client'
 import { useAuth } from '@/lib/hooks'
+import { useDebounce } from '@/lib/use-debounce'
 
 export const Route = createFileRoute('/_user/profile/invite-friend')({
 	component: InviteFriendPage,
@@ -127,13 +128,28 @@ export default function SearchProfiles() {
 								<span className="hidden @md:block">Search</span>
 							</Button>
 						</form>
-						{searchResults.map((profile) => (
-							<AvatarIconRow {...profile}>
-								<Button onClick={() => requestFriend(profile.uid)}>
-									Add as Friend
-								</Button>
-							</AvatarIconRow>
-						))}
+						<div className="mt-4 space-y-2">
+							{searchResults.length === 0 ?
+								<p>
+									No users match that search. (You can invite them using the
+									form below.)
+								</p>
+							:	searchResults.map((profile) => (
+									<Callout>
+										<AvatarIconRow key={profile.uid} {...profile}>
+											<Button
+												onClick={() => requestFriend(profile.uid)}
+												size="icon"
+												className="p-1 h-8 w-8"
+												variant="secondary"
+											>
+												<PlusIcon />
+											</Button>
+										</AvatarIconRow>
+									</Callout>
+								))
+							}
+						</div>
 					</div>
 				}
 			</CardContent>
