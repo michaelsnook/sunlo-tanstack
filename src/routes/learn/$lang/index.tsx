@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 
 import { buttonVariants } from 'components/ui/button'
-import type { FriendshipRow } from 'types/main'
+import type { FriendshipRow, LangOnlyComponentProps } from 'types/main'
 import { useDeck, useDeckMeta } from 'lib/use-deck'
 import { useLanguage } from 'lib/use-language'
 import { useProfile } from 'lib/use-profile'
@@ -58,8 +58,40 @@ function WelcomePage() {
 			</div>
 }
 
-interface LangOnlyComponentProps {
-	lang: string
+// TODO the database doesn't have friendships yet so this is all mockup-y
+// and the type is also mocked
+function FriendsSection({ lang }: LangOnlyComponentProps) {
+	const profileQuery = useProfile()
+	if (profileQuery.data === null) return null
+
+	const friendsThisLanguage =
+		profileQuery.data?.friendships?.filter(
+			(f: FriendshipRow) => f.helping_with.indexOf(lang) !== -1
+		) || []
+
+	return (
+		<Card>
+			<CardHeader>
+				<CardTitle>Your Friends</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<p>Recent activity in this deck</p>
+				<ul className="list-disc ml-4 mb-4">
+					<li>mahesh (see recent activity or whatever)</li>
+					<li>a-money (you have a new phrase from them)</li>
+					<li>j-bhai (nothing special actually)</li>
+				</ul>
+				<Link
+					to="/profile/invite-friend"
+					search={{ lang }}
+					from={Route.fullPath}
+					className={buttonVariants({ variant: 'secondary' })}
+				>
+					Invite friends
+				</Link>
+			</CardContent>
+		</Card>
+	)
 }
 
 function DeckSettings({ lang }: LangOnlyComponentProps) {
@@ -147,56 +179,6 @@ function DeckFullContents({ lang }: LangOnlyComponentProps) {
 						/>
 					</div>
 				:	null}
-			</CardContent>
-		</Card>
-	)
-}
-
-// TODO the database doesn't have friendships yet so this is all mockup-y
-// and the type is also mocked
-function FriendsSection({ lang }: LangOnlyComponentProps) {
-	const profileQuery = useProfile()
-	if (profileQuery.data === null) return null
-
-	const friendsThisLanguage =
-		profileQuery.data?.friendships?.filter(
-			(f: FriendshipRow) => f.helping_with.indexOf(lang) !== -1
-		) || []
-
-	return (
-		<Card>
-			<CardHeader>
-				<CardTitle>
-					Your Friends{' '}
-					<span className="text-xs text-white/50">
-						<Link
-							to="/learn/$lang/invite-friend"
-							params={{ lang }}
-							from={Route.fullPath}
-							className={buttonVariants({ variant: 'ghost' })}
-						>
-							<Plus /> Add friends
-						</Link>
-					</span>
-				</CardTitle>
-				<CardDescription>
-					(ppl helping the user learn this language)
-				</CardDescription>
-			</CardHeader>
-			<CardContent className="space-y-4">
-				<ul className="list-disc ml-4">
-					<li>mahesh (see recent activity or whatever)</li>
-					<li>a-money (you have a new phrase from them)</li>
-					<li>j-bhai (nothing special actually)</li>
-				</ul>
-				<Link
-					to="/learn/$lang/invite-friend"
-					params={{ lang }}
-					from={Route.fullPath}
-					className={buttonVariants({ variant: 'secondary' })}
-				>
-					Invite friends
-				</Link>
 			</CardContent>
 		</Card>
 	)

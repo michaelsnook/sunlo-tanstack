@@ -6,6 +6,8 @@ import {
 	Contact,
 	FolderPlus,
 	Home,
+	Lock,
+	Mail,
 	MoreVertical,
 	NotebookPen,
 	Rocket,
@@ -99,12 +101,16 @@ function renderIcon(icon: string, props: LucideProps = { size: 20 }) {
 			return <BookHeart {...props} />
 		case 'contact': // for adding friends
 			return <Contact {...props} />
+		case 'email': // for change-email page
+			return <Mail {...props} />
 		case 'folder-plus': // for a new deck
 			return <FolderPlus {...props} />
 		case 'home': // for your /learn page
 			return <Home {...props} />
 		case 'notebook-pen':
 			return <NotebookPen {...props} />
+		case 'password':
+			return <Lock {...props} />
 		case 'search':
 			return <Search {...props} />
 		case 'settings':
