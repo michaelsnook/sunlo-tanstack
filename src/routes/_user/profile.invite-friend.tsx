@@ -28,13 +28,27 @@ import { useState } from 'react'
 
 export const Route = createFileRoute('/_user/profile/invite-friend')({
 	component: InviteFriendPage,
+	validateSearch: (search: Record<string, unknown>) => {
+		return {
+			query: search.query ? String(search.query) : '',
+			lang: search.lang ? String(search.lang) : '',
+		}
+	},
 })
+
+function InviteFriendPage() {
+	return (
+		<main className="flex flex-col gap-6">
+			<InviteFriendForm />
+			<PendingRequestsSection />
+		</main>
+	)
+}
 
 const inviteFriendSchema = z.object({
 	email: z.string().email('Please enter a valid email'),
 })
-
-function InviteFriendPage() {
+function InviteFriendForm() {
 	const { control, handleSubmit } = useForm<z.infer<typeof inviteFriendSchema>>(
 		{
 			resolver: zodResolver(inviteFriendSchema),
@@ -60,36 +74,33 @@ function InviteFriendPage() {
 	})
 
 	return (
-		<main className="flex flex-col gap-6">
-			<Card>
-				<CardHeader>
-					<CardTitle>Invite a Friend</CardTitle>
-					<CardDescription>
-						Learn together with a friend who can help you practice.
-					</CardDescription>
-				</CardHeader>
-				<CardContent>
-					<form onSubmit={onSubmit} className="space-y-4">
-						<div>
-							<Label htmlFor="email">Friend's Email</Label>
-							<Controller
-								name="email"
-								control={control}
-								render={({ field }) => (
-									<Input
-										{...field}
-										type="email"
-										placeholder="Enter your friend's email"
-									/>
-								)}
-							/>
-						</div>
-						<Button type="submit">Send Invitation</Button>
-					</form>
-				</CardContent>
-			</Card>
-			<PendingRequestsSection />
-		</main>
+		<Card>
+			<CardHeader>
+				<CardTitle>Invite a Friend</CardTitle>
+				<CardDescription>
+					Learn together with a friend who can help you practice.
+				</CardDescription>
+			</CardHeader>
+			<CardContent>
+				<form onSubmit={onSubmit} className="space-y-4">
+					<div>
+						<Label htmlFor="email">Friend's Email</Label>
+						<Controller
+							name="email"
+							control={control}
+							render={({ field }) => (
+								<Input
+									{...field}
+									type="email"
+									placeholder="Enter your friend's email"
+								/>
+							)}
+						/>
+					</div>
+					<Button type="submit">Send Invitation</Button>
+				</form>
+			</CardContent>
+		</Card>
 	)
 }
 
@@ -98,7 +109,6 @@ function PendingRequestsSection() {
 	const [hiddenRequests, setHiddenRequests] = useState<Array<uuid>>([])
 	const addOneHiddenRequest = (uid_to: uuid) =>
 		setHiddenRequests((start) => [...start, uid_to])
-	const queryClient = useQueryClient()
 	const inviteCancelMutation = useMutation({
 		mutationKey: ['user', 'cancel_invite_request'],
 		mutationFn: async (values: FriendRequestActionInsert) => {
