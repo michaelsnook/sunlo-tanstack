@@ -15,7 +15,6 @@ import {
 	CardTitle,
 } from 'components/ui/card'
 import { Book, NotebookPen, Plus, Search } from 'lucide-react'
-import { cn } from 'lib/utils'
 
 export const Route = createFileRoute('/learn/$lang/')({
 	component: WelcomePage,
@@ -190,22 +189,13 @@ function FriendsSection({ lang }: LangOnlyComponentProps) {
 					<li>a-money (you have a new phrase from them)</li>
 					<li>j-bhai (nothing special actually)</li>
 				</ul>
-
 				<Link
 					to="/learn/$lang/invite-friend"
 					params={{ lang }}
 					from={Route.fullPath}
 					className={buttonVariants({ variant: 'secondary' })}
 				>
-					See All Friends Activity
-				</Link>
-				<Link
-					to="/learn/$lang/invite-friend"
-					params={{ lang }}
-					from={Route.fullPath}
-					className={cn(buttonVariants({ variant: 'secondary' }), 'ms-2')}
-				>
-					Invite / Manage Friends
+					Invite friends
 				</Link>
 			</CardContent>
 		</Card>
