@@ -1,7 +1,6 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import supabase from './supabase-client'
-import { PublicProfile, uuid } from '@/types/main'
-import { TablesInsert } from '@/types/supabase'
+import { PublicProfile } from '@/types/main'
 import { useAuth } from './hooks'
 import { z } from 'zod'
 
@@ -20,23 +19,31 @@ export const usePublicProfileSearch = useMutation({
 const actionsFrom = z.enum(['requested', 'cancelled', 'ended'])
 const actionsTo = z.enum(['rejected', 'accepted', 'ended'])
 
-const FriendRequestActionGeneric = z.object({
+const GenericActionSchema = z.object({
 	uid_from: z.string().uuid(),
 	uid_to: z.string().uuid(),
+	// lang: z.string().length(3).optional(),
+	user_deck_id: z.string().uuid(),
+	action_type: z.string(),
 })
 
-type FriendRequestActionGenericFormInputs = z.infer<
-	typeof FriendRequestActionGeneric
->
+const FriendRequestActionSchema = GenericActionSchema.extend({
+	action_type: z.literal('requested'),
+})
+
+type FriendRequestSubmission = z.infer<typeof FriendRequestActionSchema>
 
 export const useFriendRequestSend = () => {
 	const { userId: uid_from } = useAuth()
 	return useMutation({
 		mutationKey: ['user', 'friends', 'request_action'],
-		mutationFn: async (values: FriendRequestFormFrom) => {
+		mutationFn: async (values: FriendRequestSubmission) => {
 			const { data } = await supabase
-				.from('friend_request_action')
-				.insert(values)
+				.from('friend_request_action') // this instead needs to be some RPC function
+				.insert({ ...values, uid_from })
+				.select()
+				.throwOnError()
+			return data[0]
 		},
 	})
 }
