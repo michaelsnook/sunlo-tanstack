@@ -26,7 +26,7 @@ import {
 } from 'types/main'
 import { useState } from 'react'
 
-export const Route = createFileRoute('/learn/$lang/invite-friend')({
+export const Route = createFileRoute('/_user/profile/invite-friend')({
 	component: InviteFriendPage,
 })
 

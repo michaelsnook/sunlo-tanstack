@@ -26,12 +26,13 @@ import { Route as UserAcceptInviteImport } from './routes/_user/accept-invite'
 import { Route as AuthLoginImport } from './routes/_auth/login'
 import { Route as AuthFindAFriendImport } from './routes/_auth/find-a-friend'
 import { Route as LearnLangIndexImport } from './routes/learn/$lang/index'
+import { Route as UserProfileIndexImport } from './routes/_user/profile.index'
 import { Route as LearnLangSearchImport } from './routes/learn/$lang/search'
 import { Route as LearnLangReviewImport } from './routes/learn/$lang/review'
 import { Route as LearnLangPublicLibraryImport } from './routes/learn/$lang/public-library'
-import { Route as LearnLangInviteFriendImport } from './routes/learn/$lang/invite-friend'
 import { Route as LearnLangDeckSettingsImport } from './routes/learn/$lang/deck-settings'
 import { Route as LearnLangAddPhraseImport } from './routes/learn/$lang/add-phrase'
+import { Route as UserProfileInviteFriendImport } from './routes/_user/profile.invite-friend'
 import { Route as UserProfileChangePasswordImport } from './routes/_user/profile.change-password'
 import { Route as UserProfileChangeEmailImport } from './routes/_user/profile.change-email'
 
@@ -155,6 +156,11 @@ const LearnLangIndexRoute = LearnLangIndexImport.update({
   getParentRoute: () => LearnLangRoute,
 } as any)
 
+const UserProfileIndexRoute = UserProfileIndexImport.update({
+  path: '/',
+  getParentRoute: () => UserProfileRoute,
+} as any)
+
 const LearnLangSearchRoute = LearnLangSearchImport.update({
   path: '/search',
   getParentRoute: () => LearnLangRoute,
@@ -170,11 +176,6 @@ const LearnLangPublicLibraryRoute = LearnLangPublicLibraryImport.update({
   getParentRoute: () => LearnLangRoute,
 } as any)
 
-const LearnLangInviteFriendRoute = LearnLangInviteFriendImport.update({
-  path: '/invite-friend',
-  getParentRoute: () => LearnLangRoute,
-} as any)
-
 const LearnLangDeckSettingsRoute = LearnLangDeckSettingsImport.update({
   path: '/deck-settings',
   getParentRoute: () => LearnLangRoute,
@@ -183,6 +184,11 @@ const LearnLangDeckSettingsRoute = LearnLangDeckSettingsImport.update({
 const LearnLangAddPhraseRoute = LearnLangAddPhraseImport.update({
   path: '/add-phrase',
   getParentRoute: () => LearnLangRoute,
+} as any)
+
+const UserProfileInviteFriendRoute = UserProfileInviteFriendImport.update({
+  path: '/invite-friend',
+  getParentRoute: () => UserProfileRoute,
 } as any)
 
 const UserProfileChangePasswordRoute = UserProfileChangePasswordImport.update({
@@ -346,6 +352,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserProfileChangePasswordImport
       parentRoute: typeof UserProfileImport
     }
+    '/_user/profile/invite-friend': {
+      id: '/_user/profile/invite-friend'
+      path: '/invite-friend'
+      fullPath: '/profile/invite-friend'
+      preLoaderRoute: typeof UserProfileInviteFriendImport
+      parentRoute: typeof UserProfileImport
+    }
     '/learn/$lang/add-phrase': {
       id: '/learn/$lang/add-phrase'
       path: '/add-phrase'
@@ -358,13 +371,6 @@ declare module '@tanstack/react-router' {
       path: '/deck-settings'
       fullPath: '/learn/$lang/deck-settings'
       preLoaderRoute: typeof LearnLangDeckSettingsImport
-      parentRoute: typeof LearnLangImport
-    }
-    '/learn/$lang/invite-friend': {
-      id: '/learn/$lang/invite-friend'
-      path: '/invite-friend'
-      fullPath: '/learn/$lang/invite-friend'
-      preLoaderRoute: typeof LearnLangInviteFriendImport
       parentRoute: typeof LearnLangImport
     }
     '/learn/$lang/public-library': {
@@ -387,6 +393,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/learn/$lang/search'
       preLoaderRoute: typeof LearnLangSearchImport
       parentRoute: typeof LearnLangImport
+    }
+    '/_user/profile/': {
+      id: '/_user/profile/'
+      path: '/'
+      fullPath: '/profile/'
+      preLoaderRoute: typeof UserProfileIndexImport
+      parentRoute: typeof UserProfileImport
     }
     '/learn/$lang/': {
       id: '/learn/$lang/'
@@ -415,13 +428,14 @@ export const routeTree = rootRoute.addChildren({
     UserProfileRoute: UserProfileRoute.addChildren({
       UserProfileChangeEmailRoute,
       UserProfileChangePasswordRoute,
+      UserProfileInviteFriendRoute,
+      UserProfileIndexRoute,
     }),
   }),
   LearnRoute: LearnRoute.addChildren({
     LearnLangRoute: LearnLangRoute.addChildren({
       LearnLangAddPhraseRoute,
       LearnLangDeckSettingsRoute,
-      LearnLangInviteFriendRoute,
       LearnLangPublicLibraryRoute,
       LearnLangReviewRoute,
       LearnLangSearchRoute,
@@ -513,7 +527,9 @@ export const routeTree = rootRoute.addChildren({
       "parent": "/_user",
       "children": [
         "/_user/profile/change-email",
-        "/_user/profile/change-password"
+        "/_user/profile/change-password",
+        "/_user/profile/invite-friend",
+        "/_user/profile/"
       ]
     },
     "/learn/$lang": {
@@ -522,7 +538,6 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/learn/$lang/add-phrase",
         "/learn/$lang/deck-settings",
-        "/learn/$lang/invite-friend",
         "/learn/$lang/public-library",
         "/learn/$lang/review",
         "/learn/$lang/search",
@@ -561,16 +576,16 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_user/profile.change-password.tsx",
       "parent": "/_user/profile"
     },
+    "/_user/profile/invite-friend": {
+      "filePath": "_user/profile.invite-friend.tsx",
+      "parent": "/_user/profile"
+    },
     "/learn/$lang/add-phrase": {
       "filePath": "learn/$lang/add-phrase.tsx",
       "parent": "/learn/$lang"
     },
     "/learn/$lang/deck-settings": {
       "filePath": "learn/$lang/deck-settings.tsx",
-      "parent": "/learn/$lang"
-    },
-    "/learn/$lang/invite-friend": {
-      "filePath": "learn/$lang/invite-friend.tsx",
       "parent": "/learn/$lang"
     },
     "/learn/$lang/public-library": {
@@ -584,6 +599,10 @@ export const routeTree = rootRoute.addChildren({
     "/learn/$lang/search": {
       "filePath": "learn/$lang/search.tsx",
       "parent": "/learn/$lang"
+    },
+    "/_user/profile/": {
+      "filePath": "_user/profile.index.tsx",
+      "parent": "/_user/profile"
     },
     "/learn/$lang/": {
       "filePath": "learn/$lang/index.tsx",
