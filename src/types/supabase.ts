@@ -484,6 +484,47 @@ export type Database = {
       }
     }
     Views: {
+      friend_request_action_recent: {
+        Row: {
+          action_type:
+            | Database["public"]["Enums"]["friend_request_action_type"]
+            | null
+          created_at: string | null
+          id: string | null
+          uid_from: string | null
+          uid_to: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "friend_request_action_uid_from_fkey"
+            columns: ["uid_from"]
+            isOneToOne: false
+            referencedRelation: "public_profile"
+            referencedColumns: ["uid"]
+          },
+          {
+            foreignKeyName: "friend_request_action_uid_from_fkey"
+            columns: ["uid_from"]
+            isOneToOne: false
+            referencedRelation: "user_profile"
+            referencedColumns: ["uid"]
+          },
+          {
+            foreignKeyName: "friend_request_action_uid_to_fkey"
+            columns: ["uid_to"]
+            isOneToOne: false
+            referencedRelation: "public_profile"
+            referencedColumns: ["uid"]
+          },
+          {
+            foreignKeyName: "friend_request_action_uid_to_fkey"
+            columns: ["uid_to"]
+            isOneToOne: false
+            referencedRelation: "user_profile"
+            referencedColumns: ["uid"]
+          },
+        ]
+      }
       language_plus: {
         Row: {
           alias_of: string | null
