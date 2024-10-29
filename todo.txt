@@ -11,8 +11,8 @@ JOURNEYS TO MOCK
 		* landing page for the friend when they sign up... (what can they see?)
 1. ✅ Find a friend screen (for an anon visitor to find a learner)
 		* friend request dialog w signup
-		* friend request sent / pending requests
-		* Friend request receive, friend request approve, friend request reject
+		* ✅ Friend request sent / pending requests
+		* ✅ Friend request receive, friend request approve, friend request reject
 
 
 MOCKS / Incompletes
@@ -21,11 +21,15 @@ MOCKS / Incompletes
 		✅ we have an "empty" state and a "complete" state
 		we have the component taking the correct data for its loop
 		we have the component submitting mutations
-1. The "Deck Home" screen or Welcome Screen
-	1. ✅ 🪲 Tabs have a number of problems; the active tab doesn't update & we should probably rewrite
-	1. Invite-A-Friend is a whole feature-set that needs to be built!
-		1. Accept invite from your friend page is built; the mutation is kind of real and there are success/error states build, 
+1. Invite-A-Friend is a whole feature-set that needs to be built!
+	1. Accept invite from your friend page is built; the mutation is kind of real and there are success/error states build, 
 		1. We can't really test it yet, till we have actual invites
+	1. Search profiles (to invite a friend)
+		1. Write a mutation to send the friend request
+		1. ISBAT see in the search results if I've already requested this person, or if we're already friends, and show that in the UI
+1. The "Deck Home" screen or Welcome Screen
+
+	1. ✅ 🪲 Tabs have a number of problems; the active tab doesn't update & we should probably rewrite
 	1. Public Library is a special browsing experience that needs to be built!
 	1. ✅ Deck Settings: replace with the nicer radio: https://v0.dev/chat/PNg3tT-DSoC, 
 			✅ and wire up the mutation
