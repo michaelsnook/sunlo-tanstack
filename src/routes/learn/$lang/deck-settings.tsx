@@ -23,7 +23,7 @@ import {
 
 import { useDeckMeta } from 'lib/use-deck'
 import Loading from 'components/loading'
-import { DeckMeta } from 'types/main'
+import { DeckMeta, DeckRow } from 'types/main'
 import { LearningGoalField } from 'components/fields/learning-goal-field'
 import supabase from 'lib/supabase-client'
 
@@ -67,8 +67,9 @@ function GoalForm({ meta: { learning_goal, id, lang } }: { meta: DeckMeta }) {
 	})
 
 	const updateDeckGoalMutation = useMutation<
-		DeckGoalFormInputs,
-		PostgrestError
+		DeckRow,
+		PostgrestError,
+		DeckGoalFormInputs
 	>({
 		mutationKey: ['user', lang, 'deck-settings'],
 		mutationFn: async (values: DeckGoalFormInputs) => {
@@ -102,7 +103,7 @@ function GoalForm({ meta: { learning_goal, id, lang } }: { meta: DeckMeta }) {
 			</CardHeader>
 			<CardContent>
 				<form
-					onSubmit={handleSubmit(updateDeckGoalMutation.mutate)}
+					onSubmit={handleSubmit((v) => updateDeckGoalMutation.mutate(v))}
 					className="space-y-4"
 				>
 					<Controller
@@ -172,16 +173,14 @@ function ArchiveForm({ meta: { id, archived, lang } }: { meta: DeckMeta }) {
 			<CardContent>
 				<AlertDialog open={open} onOpenChange={setOpen}>
 					<AlertDialogTrigger asChild>
-						<div className="space-x-4">
-							{archived ?
-								<Button variant="default" disabled={!archived}>
-									Restore deck
-								</Button>
-							:	<Button variant="destructive-outline" disabled={archived}>
-									Archive deck
-								</Button>
-							}
-						</div>
+						{archived ?
+							<Button variant="default" disabled={!archived}>
+								Restore deck
+							</Button>
+						:	<Button variant="destructive-outline" disabled={archived}>
+								Archive deck
+							</Button>
+						}
 					</AlertDialogTrigger>
 					<AlertDialogContent>
 						<AlertDialogHeader>
