@@ -43,7 +43,7 @@ function ProfilePage() {
 	return (
 		<div className="w-app @container">
 			<Navbar />
-			<div className="px-1 space-y-6">
+			<div className="px-1 space-y-6 pb-10">
 				<Outlet />
 			</div>
 		</div>
