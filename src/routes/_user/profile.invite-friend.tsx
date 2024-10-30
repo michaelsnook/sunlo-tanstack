@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
+import { useDebounce, usePrevious } from '@uidotdev/usehooks'
 
 import { Button } from 'components/ui/button'
 import {
@@ -29,7 +30,6 @@ import {
 } from 'types/main'
 import supabase from 'lib/supabase-client'
 import { useAuth } from '@/lib/hooks'
-import { useDebouncedCallback } from '@/lib/use-debounce'
 
 const SearchSchema = z.object({
 	query: z.string().optional(),
@@ -52,46 +52,40 @@ function InviteFriendPage() {
 }
 
 export default function SearchProfiles() {
-	const navigate = useNavigate({ from: Route.fullPath })
 	const { query } = Route.useSearch()
+	const debouncedQuery = useDebounce(query, 500)
+	const navigate = useNavigate({ from: Route.fullPath })
 	const { userId } = useAuth()
-	const [queryInputValue, setQueryInputValue] = useState(query ?? '')
-	const [searchValue, setSearchValue] = useState(query ?? '')
-	const debouncedSetSearchValue = useDebouncedCallback(setSearchValue, 500)
-	useEffect(() => {
+	const setQueryInputValue = (val: string) =>
 		navigate({
 			search: (old) => ({
 				...old,
-				query: queryInputValue ? queryInputValue : undefined,
+				query: val ? val : undefined,
 			}),
 			replace: true,
 			params: true,
 		})
-	}, [queryInputValue])
 
-	const {
-		data: searchResults,
-		isFetching,
-		error,
-	} = useQuery({
-		queryKey: ['public_profile', 'search'],
-		queryFn: async (): Promise<PublicProfile[]> => {
-			if (!query) return []
-			const { data, error } = await supabase
-				.from('public_profile')
-				.select('uid, username, avatar_url')
-				.ilike('username', `%${searchValue}%`)
-				.limit(10)
+	const searchAsync = useCallback(async (): Promise<PublicProfile[]> => {
+		if (!query) return null
+		const { data } = await supabase
+			.from('public_profile')
+			.select('uid, username, avatar_url')
+			.ilike('username', `%${debouncedQuery}%`)
+			.limit(10)
+			.throwOnError()
+		return data || []
+	}, [debouncedQuery])
+	console.log(`debouncedQuery`, debouncedQuery)
 
-			if (error) throw error
-			return data || []
-		},
-		enabled: searchValue?.length > 0,
+	const { data: searchResults, error } = useQuery({
+		queryKey: ['public_profile', 'search', debouncedQuery],
+		queryFn: searchAsync,
+		enabled: debouncedQuery?.length > 0,
 	})
 
-	//const handleInputChange = (value: string) => {
-
-	//}
+	const prevResults = usePrevious(searchResults)
+	const resultsToShow = searchResults ?? prevResults ?? []
 
 	const requestFriend = async (friendId: string) => {
 		const {
@@ -110,7 +104,6 @@ export default function SearchProfiles() {
 	if (error) {
 		toast.error('Failed to search profiles')
 	}
-	const showLoader: boolean = isFetching
 
 	return (
 		<Card className="min-h-64">
@@ -128,7 +121,6 @@ export default function SearchProfiles() {
 							value={query || ''}
 							onChange={(event) => {
 								setQueryInputValue(event.target.value)
-								debouncedSetSearchValue(event.target.value)
 							}}
 							autoFocus
 						/>
@@ -137,19 +129,15 @@ export default function SearchProfiles() {
 							<span className="hidden @md:block">Search</span>
 						</Button>
 					</form>
-					{searchValue === '' ?
-						<p className="italic opacity-80">Search results will appear here</p>
-					: showLoader ?
-						<div className="flex justify-center mt-10">
-							<Loader2 className="h-6 w-6 animate-spin" />
-						</div>
-					:	<div>
-							{!(searchResults?.length > 0) ?
+					{debouncedQuery === undefined ?
+						<p className="italic opacity-60">Enter search terms above</p>
+					:	<div className="space-y-2">
+							{!(resultsToShow?.length > 0) ?
 								<Callout variant="ghost">
 									No users match that search. Use the form below to invite them
 									to Sunlo.
 								</Callout>
-							:	searchResults.map((profile) => (
+							:	resultsToShow.map((profile) => (
 									<Callout key={profile.uid}>
 										<AvatarIconRow {...profile}>
 											<Button
