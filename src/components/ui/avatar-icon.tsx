@@ -18,6 +18,7 @@ export function AvatarIconRow({
 					src={avatar_url}
 					aria-disabled="true"
 					alt={`${username}'s avatar`}
+					className="w-8 h-8 rounded-full"
 				/>
 			:	<User className="bg-foreground/20 rounded-full w-8 h-8 p-1" />}
 			<p className="me-auto">{username}</p>
