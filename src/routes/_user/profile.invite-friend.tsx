@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -31,14 +31,14 @@ import supabase from 'lib/supabase-client'
 import { useAuth } from '@/lib/hooks'
 import { useDebounce } from '@/lib/use-debounce'
 
+const SearchSchema = z.object({
+	query: z.string().optional(),
+	lang: z.string().optional(),
+})
+
 export const Route = createFileRoute('/_user/profile/invite-friend')({
 	component: InviteFriendPage,
-	validateSearch: (search: Record<string, unknown>) => {
-		return {
-			query: search.query ? String(search.query) : '',
-			lang: search.lang ? String(search.lang) : '',
-		}
-	},
+	validateSearch: SearchSchema.parse,
 })
 
 function InviteFriendPage() {
@@ -52,15 +52,14 @@ function InviteFriendPage() {
 }
 
 export default function SearchProfiles() {
-	const navigate = Route.useNavigate()
+	const navigate = useNavigate({ from: Route.fullPath })
 	const { query } = Route.useSearch()
-	const [inputValue, setInputValue] = useState(query)
 	const { userId } = useAuth()
-	const debouncedSearchTerm = useDebounce(inputValue, 300)
+	const debouncedSearchTerm = useDebounce(query, 300)
 
 	const {
 		data: searchResults,
-		isPending,
+		isFetching,
 		error,
 	} = useQuery({
 		queryKey: ['searchProfiles', debouncedSearchTerm],
@@ -75,11 +74,10 @@ export default function SearchProfiles() {
 			if (error) throw error
 			return data || []
 		},
-		enabled: debouncedSearchTerm.length > 0,
+		enabled: debouncedSearchTerm?.length > 0,
 	})
 
 	const handleInputChange = (value: string) => {
-		setInputValue(value)
 		navigate({
 			to: '.',
 			search: (prev) => ({ ...prev, query: value }),
@@ -104,14 +102,16 @@ export default function SearchProfiles() {
 	if (error) {
 		toast.error('Failed to search profiles')
 	}
+	const showLoader: boolean =
+		isFetching && (!searchResults || !searchResults.length)
 
 	return (
-		<Card>
+		<Card className="min-h-64">
 			<CardHeader>
 				<CardTitle>Search Profiles</CardTitle>
 			</CardHeader>
 			<CardContent>
-				{isPending ?
+				{showLoader ?
 					<div className="flex justify-center mt-4">
 						<Loader2 className="h-6 w-6 animate-spin" />
 					</div>
@@ -119,9 +119,11 @@ export default function SearchProfiles() {
 						<form className="flex flex-row gap-2">
 							<Input
 								placeholder="Search by username"
+								value={query}
 								onChange={(event) => {
 									handleInputChange(event.target.value)
 								}}
+								autoFocus
 							/>
 							<Button>
 								<Search />
@@ -129,7 +131,7 @@ export default function SearchProfiles() {
 							</Button>
 						</form>
 						<div className="mt-4 space-y-2">
-							{searchResults.length === 0 ?
+							{!(searchResults?.length > 0) ?
 								<p>
 									No users match that search. (You can invite them using the
 									form below.)
