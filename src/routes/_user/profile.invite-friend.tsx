@@ -86,7 +86,8 @@ export default function SearchProfiles() {
 	})
 
 	const prevResults = usePrevious(searchResults)
-	const resultsToShow = searchResults ?? prevResults ?? []
+	const resultsToShow =
+		!debouncedQuery ? [] : (searchResults ?? prevResults ?? [])
 
 	const requestFriend = async (friendId: string) => {
 		const {
