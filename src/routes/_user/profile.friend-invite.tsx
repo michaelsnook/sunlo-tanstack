@@ -66,19 +66,18 @@ function InviteFriendForm() {
 						<Link
 							to="/profile/friend-request"
 							aria-disabled="true"
-							className={buttonVariants({ size: 'sm', variant: 'outline' })}
+							className={buttonVariants({ size: 'badge', variant: 'outline' })}
 						>
-							<Search /> Search friends
+							<Search className="h-3 w-3" />
+							<span className="me-1">Search </span>
 						</Link>
 					</div>
 				</CardTitle>
-				<CardDescription>
-					Learn together with a friend who can help you practice.
-				</CardDescription>
+				<CardDescription>Send an invitation by email.</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<form onSubmit={onSubmit} className="flex flex-row space-x-2 items-end">
-					<div>
+				<form onSubmit={onSubmit} className="flex flex-row gap-2 items-end">
+					<div className="w-full">
 						<Label htmlFor="email">Friend's Email</Label>
 						<Controller
 							name="email"
@@ -92,7 +91,10 @@ function InviteFriendForm() {
 							)}
 						/>
 					</div>
-					<Button type="submit"><Send /> Send</Button>
+					<Button>
+						<Send />
+						<span className="hidden @md:block">Send</span>
+					</Button>
 				</form>
 			</CardContent>
 		</Card>
