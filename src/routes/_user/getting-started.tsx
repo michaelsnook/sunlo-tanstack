@@ -319,7 +319,7 @@ function CreateFirstDeckStep({ value, setValue }: SetValueStepProps) {
 						<select
 							value={value || ''}
 							name="language_primary"
-							onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+							onChange={(e) => {
 								setValue(e.target.value)
 								setClosed(true)
 							}}

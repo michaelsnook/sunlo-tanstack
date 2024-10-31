@@ -14,7 +14,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from 'components/ui/card'
-import { Book, NotebookPen, Plus, Search } from 'lucide-react'
+import { Book, NotebookPen, Search } from 'lucide-react'
 
 export const Route = createFileRoute('/learn/$lang/')({
 	component: WelcomePage,

@@ -107,7 +107,7 @@ function PrefilledForm({ initialData, uid }: PrefilledFormProps) {
 				/>
 				<LanguagesSpokenField
 					// @TODO the need for [0] coercion means we're not handling the array value nicely
-					error={errors.languages_spoken?.[0] as FieldError}
+					error={errors.languages_spoken?.[0]}
 					control={control}
 					primary={watchPrimary}
 				/>
