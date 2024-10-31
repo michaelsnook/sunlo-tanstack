@@ -154,7 +154,7 @@ export default function SearchProfiles() {
 								autoFocus
 							/>
 						</div>
-						<Button>
+						<Button disabled={isFetching}>
 							<Search />
 							<span className="hidden @md:block">Search</span>
 						</Button>

@@ -16,6 +16,7 @@ import {
 import { Input } from 'components/ui/input'
 import { Label } from 'components/ui/label'
 import { Search, Send } from 'lucide-react'
+import { ShowError } from '@/components/errors'
 
 export const Route = createFileRoute('/_user/profile/friend-invite')({
 	component: InviteFriendPage,
@@ -40,7 +41,7 @@ function InviteFriendForm() {
 	)
 	const queryClient = useQueryClient()
 
-	const inviteRequestMutation = useMutation({
+	const invite = useMutation({
 		mutationKey: ['user', 'invite_friend'],
 		mutationFn: async (data: z.infer<typeof inviteFriendSchema>) => {
 			return new Promise((resolve) => setTimeout(() => resolve(data), 1000))
@@ -54,7 +55,7 @@ function InviteFriendForm() {
 	})
 
 	const onSubmit = handleSubmit((data) => {
-		inviteRequestMutation.mutate(data)
+		invite.mutate(data)
 	})
 
 	return (
@@ -76,26 +77,32 @@ function InviteFriendForm() {
 				<CardDescription>Send an invitation by email.</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<form onSubmit={onSubmit} className="flex flex-row gap-2 items-end">
-					<div className="w-full">
-						<Label htmlFor="email">Friend's Email</Label>
-						<Controller
-							name="email"
-							control={control}
-							render={({ field }) => (
-								<Input
-									{...field}
-									type="email"
-									placeholder="Enter your friend's email"
-								/>
-							)}
-						/>
-					</div>
-					<Button>
-						<Send />
-						<span className="hidden @md:block">Send</span>
-					</Button>
+				<form onSubmit={onSubmit}>
+					<fieldset
+						className="flex flex-row gap-2 items-end"
+						disabled={invite.isPending}
+					>
+						<div className="w-full">
+							<Label htmlFor="email">Friend's Email</Label>
+							<Controller
+								name="email"
+								control={control}
+								render={({ field }) => (
+									<Input
+										{...field}
+										type="email"
+										placeholder="Enter your friend's email"
+									/>
+								)}
+							/>
+						</div>
+						<Button disabled={invite.isPending}>
+							<Send />
+							<span className="hidden @md:block">Send</span>
+						</Button>
+					</fieldset>
 				</form>
+				<ShowError className="mt-4">{invite.error?.message}</ShowError>
 			</CardContent>
 		</Card>
 	)
