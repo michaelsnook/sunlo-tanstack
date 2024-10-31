@@ -15,14 +15,15 @@ import Callout from './ui/callout'
 
 export function ShowError({
 	show = null,
+	className = '',
 	children = null,
-}: PropsWithChildren<{ show?: boolean | null }>) {
+}: PropsWithChildren<{ show?: boolean | null; className?: string }>) {
 	// if show is "false", don't show. if show is true, show it.
 	// if show us not set, then show if there's content to show.
 	if (show === false) return null
 	if (show === null && !children) return null
 	return (
-		<Callout variant="problem" alert>
+		<Callout className={className} variant="problem" alert>
 			<CircleX className="text-destructive/50" aria-hidden={true} />
 			<div>{children || `An unknown error has occurred (sorry)`}</div>
 		</Callout>
