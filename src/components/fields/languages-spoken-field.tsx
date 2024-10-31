@@ -1,7 +1,7 @@
-import { Label } from 'components/ui/label'
+import { Label } from '@/components/ui/label'
 import { useController } from 'react-hook-form'
 import { ErrorLabel, ControlledFieldProps } from '.'
-import SelectMultipleLanguagesInput from 'components/select-multiple-languages'
+import SelectMultipleLanguagesInput from '@/components/select-multiple-languages'
 
 export default function LanguagesSpokenField({
 	control,

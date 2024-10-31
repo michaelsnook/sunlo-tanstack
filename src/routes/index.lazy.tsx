@@ -1,13 +1,13 @@
 import { createLazyFileRoute, Link } from '@tanstack/react-router'
-import Callout from 'components/ui/callout'
-import { GarlicBroccoli } from 'components/garlic'
-import { Button } from 'components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card'
+import Callout from '@/components/ui/callout'
+import { GarlicBroccoli } from '@/components/garlic'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
 	NavigationMenu,
 	NavigationMenuItem,
 	NavigationMenuList,
-} from 'components/ui/navigation-menu'
+} from '@/components/ui/navigation-menu'
 import {
 	Code,
 	FileText,

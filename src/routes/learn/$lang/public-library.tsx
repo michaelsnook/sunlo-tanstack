@@ -5,7 +5,7 @@ import {
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from 'components/ui/card'
+} from '@/components/ui/card'
 
 export const Route = createFileRoute('/learn/$lang/public-library')({
 	component: PublicLibraryTab,

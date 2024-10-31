@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { NavbarData } from 'types/main'
+import { NavbarData } from '@/types/main'
 
 export const Route = createFileRoute('/learn/quick-search')({
 	loader: () => ({

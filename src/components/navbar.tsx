@@ -17,15 +17,15 @@ import {
 	SquarePlus,
 	WalletCards,
 } from 'lucide-react'
-import { Button } from 'components/ui/button'
+import { Button } from '@/components/ui/button'
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from 'components/ui/dropdown-menu'
+} from '@/components/ui/dropdown-menu'
 import { Link, useMatches, useNavigate } from '@tanstack/react-router'
-import type { NavbarData } from 'types/main'
+import type { NavbarData } from '@/types/main'
 
 export default function Navbar() {
 	const [isOpen, setIsOpen] = useState(false)

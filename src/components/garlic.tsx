@@ -1,5 +1,5 @@
 // import Image from 'next/image'
-import { cn } from 'lib/utils'
+import { cn } from '@/lib/utils'
 
 export const Garlic = ({ size = 50, className = '' }) => (
 	<img

@@ -7,8 +7,8 @@ import type { QueryClient } from '@tanstack/react-query'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Toaster } from 'react-hot-toast'
-import { AuthState } from 'components/auth-context'
-import Sidebar from 'components/sidebar'
+import { AuthState } from '@/components/auth-context'
+import Sidebar from '@/components/sidebar'
 
 interface MyRouterContext {
 	auth: AuthState

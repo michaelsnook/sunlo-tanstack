@@ -1,12 +1,12 @@
 import React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
-import { ShowError } from 'components/errors'
-import { SelectOneLanguage } from 'components/select-one-language'
-import { Button } from 'components/ui/button'
-import { useNewDeckMutation } from 'lib/mutate-deck'
-import { useProfile } from 'lib/use-profile'
+import { ShowError } from '@/components/errors'
+import { SelectOneLanguage } from '@/components/select-one-language'
+import { Button } from '@/components/ui/button'
+import { useNewDeckMutation } from '@/lib/mutate-deck'
+import { useProfile } from '@/lib/use-profile'
 import { useState } from 'react'
-import { NavbarData } from 'types/main'
+import { NavbarData } from '@/types/main'
 
 export const Route = createFileRoute('/learn/add-deck')({
 	loader: () => ({

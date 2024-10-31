@@ -1,4 +1,4 @@
-import { useProfile } from 'lib/use-profile'
+import { useProfile } from '@/lib/use-profile'
 import { User } from 'lucide-react'
 
 export default function Avatar({ size = 144 }) {

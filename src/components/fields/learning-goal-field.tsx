@@ -1,10 +1,10 @@
-import { RadioGroup, RadioGroupItem } from 'components/ui/radio-group'
-import { Label } from 'components/ui/label'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Label } from '@/components/ui/label'
 import { Users, GraduationCap, Briefcase } from 'lucide-react'
 import { ControlledFieldProps } from '.'
 import { useController } from 'react-hook-form'
-import { ShowError } from 'components/errors'
-import { cn } from 'lib/utils'
+import { ShowError } from '@/components/errors'
+import { cn } from '@/lib/utils'
 
 export function LearningGoalField({ control, error }: ControlledFieldProps) {
 	const {

@@ -1,19 +1,19 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 
-import { buttonVariants } from 'components/ui/button'
-import type { FriendshipRow, LangOnlyComponentProps } from 'types/main'
-import { useDeck, useDeckMeta } from 'lib/use-deck'
-import { useLanguage } from 'lib/use-language'
-import { useProfile } from 'lib/use-profile'
-import ModalWithOpener from 'components/modal-with-opener'
-import { LanguagePhrasesAccordionComponent } from 'components/language-phrases-accordion'
+import { buttonVariants } from '@/components/ui/button'
+import type { FriendshipRow, LangOnlyComponentProps } from '@/types/main'
+import { useDeck, useDeckMeta } from '@/lib/use-deck'
+import { useLanguage } from '@/lib/use-language'
+import { useProfile } from '@/lib/use-profile'
+import ModalWithOpener from '@/components/modal-with-opener'
+import { LanguagePhrasesAccordionComponent } from '@/components/language-phrases-accordion'
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from 'components/ui/card'
+} from '@/components/ui/card'
 import { Book, NotebookPen, Search } from 'lucide-react'
 
 export const Route = createFileRoute('/learn/$lang/')({

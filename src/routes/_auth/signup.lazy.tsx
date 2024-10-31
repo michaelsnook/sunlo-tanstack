@@ -5,12 +5,12 @@ import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import toast from 'react-hot-toast'
 
-import { Button, buttonVariants } from 'components/ui/button'
-import { CardContent, CardHeader, CardTitle } from 'components/ui/card'
+import { Button, buttonVariants } from '@/components/ui/button'
+import { CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
-import supabase from 'lib/supabase-client'
-import { ShowError } from 'components/errors'
-import { EmailField, PasswordField } from 'components/fields'
+import supabase from '@/lib/supabase-client'
+import { ShowError } from '@/components/errors'
+import { EmailField, PasswordField } from '@/components/fields'
 
 export const Route = createLazyFileRoute('/_auth/signup')({
 	component: SignUp,

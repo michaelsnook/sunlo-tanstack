@@ -1,5 +1,5 @@
 import { createFileRoute, redirect, Outlet } from '@tanstack/react-router'
-import Navbar from 'components/navbar'
+import Navbar from '@/components/navbar'
 
 export const Route = createFileRoute('/learn')({
 	// Before loading, authenticate the user via our auth context

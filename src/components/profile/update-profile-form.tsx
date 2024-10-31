@@ -1,23 +1,23 @@
-import type { uuid } from 'types/main'
+import type { uuid } from '@/types/main'
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { toast } from 'react-hot-toast'
-import { Button } from 'components/ui/button'
+import { Button } from '@/components/ui/button'
 
-import supabase from 'lib/supabase-client'
-import { ShowError } from 'components/errors'
-import Loading from 'components/loading'
-import { useProfile } from 'lib/use-profile'
+import supabase from '@/lib/supabase-client'
+import { ShowError } from '@/components/errors'
+import Loading from '@/components/loading'
+import { useProfile } from '@/lib/use-profile'
 
 import {
 	AvatarEditorField,
 	LanguagePrimaryField,
 	LanguagesSpokenField,
 	UsernameField,
-} from 'components/fields'
+} from '@/components/fields'
 
 const ProfileEditFormSchema = z.object({
 	username: z

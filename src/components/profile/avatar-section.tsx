@@ -1,5 +1,5 @@
-import { useProfile } from 'lib/use-profile'
-import Avatar from 'components/avatar'
+import { useProfile } from '@/lib/use-profile'
+import Avatar from '@/components/avatar'
 
 export default function AvatarSection() {
 	const { data: profile } = useProfile()

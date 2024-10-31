@@ -11,11 +11,11 @@ import {
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from 'components/ui/card'
-import { Label } from 'components/ui/label'
-import { Input } from 'components/ui/input'
-import { Button } from 'components/ui/button'
-import { Textarea } from 'components/ui/textarea'
+} from '@/components/ui/card'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Textarea } from '@/components/ui/textarea'
 import { NotebookPen, Search } from 'lucide-react'
 
 interface SearchParams {

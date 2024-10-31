@@ -1,9 +1,9 @@
 import { queryOptions, useQuery } from '@tanstack/react-query'
 import { createLazyFileRoute } from '@tanstack/react-router'
-import supabase from 'lib/supabase-client'
-import Loading from 'components/loading'
+import supabase from '@/lib/supabase-client'
+import Loading from '@/components/loading'
 import { PostgrestError } from '@supabase/supabase-js'
-import { PublicProfile } from 'types/main'
+import { PublicProfile } from '@/types/main'
 
 const publicProfilesQuery = queryOptions<Array<PublicProfile>, PostgrestError>({
 	queryKey: ['profiles'],
