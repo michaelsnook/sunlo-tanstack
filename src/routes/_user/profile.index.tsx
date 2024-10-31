@@ -6,7 +6,7 @@ import {
 	AvatarSection,
 	UpdateProfileForm,
 	UserAuthCard,
-} from 'components/profile'
+} from '@/components/profile'
 import { ArrowRight } from 'lucide-react'
 
 export const Route = createFileRoute('/_user/profile/')({

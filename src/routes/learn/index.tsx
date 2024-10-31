@@ -1,11 +1,11 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { Star, Users } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
-import type { NavbarData } from 'types/main'
-import { profileQuery, useProfile } from 'lib/use-profile'
-import { ago } from 'lib/dayjs'
-import Loading from 'components/loading'
+import type { NavbarData } from '@/types/main'
+import { profileQuery, useProfile } from '@/lib/use-profile'
+import { ago } from '@/lib/dayjs'
+import Loading from '@/components/loading'
 
 export const Route = createFileRoute('/learn/')({
 	loader: async ({ context: { queryClient, auth } }) => {

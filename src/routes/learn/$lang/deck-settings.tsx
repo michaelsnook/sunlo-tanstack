@@ -7,8 +7,8 @@ import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import toast from 'react-hot-toast'
 
-import { Button, buttonVariants } from 'components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card'
+import { Button, buttonVariants } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -19,13 +19,13 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 	AlertDialogTrigger,
-} from 'components/ui/alert-dialog'
+} from '@/components/ui/alert-dialog'
 
-import { useDeckMeta } from 'lib/use-deck'
-import Loading from 'components/loading'
-import { DeckMeta, DeckRow } from 'types/main'
-import { LearningGoalField } from 'components/fields/learning-goal-field'
-import supabase from 'lib/supabase-client'
+import { useDeckMeta } from '@/lib/use-deck'
+import Loading from '@/components/loading'
+import { DeckMeta, DeckRow } from '@/types/main'
+import { LearningGoalField } from '@/components/fields/learning-goal-field'
+import supabase from '@/lib/supabase-client'
 
 export const Route = createFileRoute('/learn/$lang/deck-settings')({
 	component: DeckSettingsPage,

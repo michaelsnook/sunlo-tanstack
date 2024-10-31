@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router'
-import { Card } from 'components/ui/card'
+import { Card } from '@/components/ui/card'
 
 // these pages relate to the auth flow, such as sign in, sign up, etc
 // they do not require the user to be logged in

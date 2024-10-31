@@ -1,5 +1,5 @@
 import type { ChangeEvent } from 'react'
-import languages from 'lib/languages'
+import languages from '@/lib/languages'
 
 interface SelectMultipleLanguagesInputProps {
 	selectedLanguages: string[]

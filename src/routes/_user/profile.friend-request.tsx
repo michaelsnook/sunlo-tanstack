@@ -6,26 +6,26 @@ import toast from 'react-hot-toast'
 import { useDebounce, usePrevious } from '@uidotdev/usehooks'
 import { Loader2, PlusIcon, Search, Send, X } from 'lucide-react'
 
-import { Button, buttonVariants } from 'components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from 'components/ui/card'
-import { Input } from 'components/ui/input'
+} from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
 import Callout from '@/components/ui/callout'
 import { AvatarIconRow } from '@/components/ui/avatar-icon'
-import { useFriendsInvited } from 'lib/friends'
-import Loading from 'components/loading'
+import { useFriendsInvited } from '@/lib/friends'
+import Loading from '@/components/loading'
 import {
 	FriendRequestAction,
 	FriendRequestActionInsert,
 	PublicProfile,
 	uuid,
-} from 'types/main'
-import supabase from 'lib/supabase-client'
+} from '@/types/main'
+import supabase from '@/lib/supabase-client'
 import { useAuth } from '@/lib/hooks'
 import { ShowError } from '@/components/errors'
 import { Garlic } from '@/components/garlic'

@@ -1,8 +1,12 @@
-import { useProfile } from 'lib/use-profile'
+import { useProfile } from '@/lib/use-profile'
 import Loading from './loading'
-import { opts } from 'lib/languages'
-import { SelectOption } from 'types/main'
-import { Popover, PopoverContent, PopoverTrigger } from 'components/ui/popover'
+import { opts } from '@/lib/languages'
+import { SelectOption } from '@/types/main'
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from '@/components/ui/popover'
 import {
 	Command,
 	CommandEmpty,
@@ -10,10 +14,10 @@ import {
 	CommandInput,
 	CommandItem,
 	CommandList,
-} from 'components/ui/command'
-import { Button } from 'components/ui/button'
+} from '@/components/ui/command'
+import { Button } from '@/components/ui/button'
 import { Check, ChevronsUpDown } from 'lucide-react'
-import { cn } from 'lib/utils'
+import { cn } from '@/lib/utils'
 import { useState } from 'react'
 
 interface SelectProps {

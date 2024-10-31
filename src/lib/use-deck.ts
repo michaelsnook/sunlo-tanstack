@@ -1,4 +1,4 @@
-import supabase from 'lib/supabase-client'
+import supabase from '@/lib/supabase-client'
 import { type UseQueryResult, useQuery } from '@tanstack/react-query'
 
 import type {
@@ -10,9 +10,9 @@ import type {
 	uuid,
 	pids,
 	ReviewsCollated,
-} from 'types/main'
-import { mapArray } from 'lib/utils'
-import { useAuth } from 'lib/hooks'
+} from '@/types/main'
+import { mapArray } from '@/lib/utils'
+import { useAuth } from '@/lib/hooks'
 
 const qs = {
 	card_full: `*, reviews:user_card_review_plus(*)` as const,

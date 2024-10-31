@@ -5,12 +5,12 @@ import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import toast from 'react-hot-toast'
 
-import { Button, buttonVariants } from 'components/ui/button'
-import { CardContent, CardHeader, CardTitle } from 'components/ui/card'
-import supabase from 'lib/supabase-client'
-import { useAuth } from 'lib/hooks'
-import { ShowError } from 'components/errors'
-import { EmailField, PasswordField } from 'components/fields'
+import { Button, buttonVariants } from '@/components/ui/button'
+import { CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import supabase from '@/lib/supabase-client'
+import { useAuth } from '@/lib/hooks'
+import { ShowError } from '@/components/errors'
+import { EmailField, PasswordField } from '@/components/fields'
 
 interface LoginSearchParams {
 	redirectedFrom?: string

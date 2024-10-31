@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { Card, CardContent, CardFooter, CardHeader } from 'components/ui/card'
-import { Button } from 'components/ui/button'
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import { Play, ChevronLeft, ChevronRight } from 'lucide-react'
 import SuccessCheckmark from './SuccessCheckmark'
 import toast from 'react-hot-toast'
-import { CardsMap, uuid } from 'types/main'
+import { CardsMap, uuid } from '@/types/main'
 
 interface FlashCard {
 	originalPhrase: string

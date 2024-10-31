@@ -1,5 +1,5 @@
-import { SelectOneLanguage } from 'components/select-one-language'
-import { Label } from 'components/ui/label'
+import { SelectOneLanguage } from '@/components/select-one-language'
+import { Label } from '@/components/ui/label'
 import { useController } from 'react-hook-form'
 import { ErrorLabel, ControlledFieldProps } from '.'
 

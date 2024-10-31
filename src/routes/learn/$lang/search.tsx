@@ -12,12 +12,12 @@ import {
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from 'components/ui/card'
-import { Label } from 'components/ui/label'
-import { Input } from 'components/ui/input'
-import { Button } from 'components/ui/button'
-import languages from 'lib/languages'
-import { PhraseFull } from 'types/main'
+} from '@/components/ui/card'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import languages from '@/lib/languages'
+import { PhraseFull } from '@/types/main'
 
 interface SearchParams {
 	q?: string

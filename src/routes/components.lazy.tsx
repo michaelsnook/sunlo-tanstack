@@ -4,7 +4,7 @@ import {
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
-} from 'components/ui/accordion'
+} from '@/components/ui/accordion'
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -15,8 +15,8 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 	AlertDialogTrigger,
-} from 'components/ui/alert-dialog'
-import { Button } from 'components/ui/button'
+} from '@/components/ui/alert-dialog'
+import { Button } from '@/components/ui/button'
 import {
 	Card,
 	CardContent,
@@ -24,8 +24,8 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from 'components/ui/card'
-import { Checkbox } from 'components/ui/checkbox'
+} from '@/components/ui/card'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
 	Command,
 	CommandEmpty,
@@ -33,7 +33,7 @@ import {
 	CommandInput,
 	CommandItem,
 	CommandList,
-} from 'components/ui/command'
+} from '@/components/ui/command'
 import {
 	Dialog,
 	DialogContent,
@@ -42,7 +42,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from 'components/ui/dialog'
+} from '@/components/ui/dialog'
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -50,9 +50,9 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from 'components/ui/dropdown-menu'
-import { Input } from 'components/ui/input'
-import { Label } from 'components/ui/label'
+} from '@/components/ui/dropdown-menu'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import {
 	NavigationMenu,
 	NavigationMenuContent,
@@ -60,9 +60,13 @@ import {
 	NavigationMenuLink,
 	NavigationMenuList,
 	NavigationMenuTrigger,
-} from 'components/ui/navigation-menu'
-import { Popover, PopoverContent, PopoverTrigger } from 'components/ui/popover'
-import { ScrollArea } from 'components/ui/scroll-area'
+} from '@/components/ui/navigation-menu'
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from '@/components/ui/popover'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 export const Route = createLazyFileRoute('/components')({
 	component: ComponentsPage,

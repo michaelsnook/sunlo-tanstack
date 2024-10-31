@@ -5,8 +5,8 @@ import {
 	useEffect,
 } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import supabase from 'lib/supabase-client'
-import type { uuid } from 'types/main'
+import supabase from '@/lib/supabase-client'
+import type { uuid } from '@/types/main'
 import { Session } from '@supabase/supabase-js'
 
 export type AuthState = {

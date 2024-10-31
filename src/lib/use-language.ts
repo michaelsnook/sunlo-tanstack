@@ -7,9 +7,9 @@ import type {
 	PhraseFull,
 	pids,
 	uuid,
-} from 'types/main'
-import supabase from 'lib/supabase-client'
-import { mapArray } from 'lib/utils'
+} from '@/types/main'
+import supabase from '@/lib/supabase-client'
+import { mapArray } from '@/lib/utils'
 
 const qs = {
 	phrase_full: () => `*, translations:phrase_translation(*)` as const,

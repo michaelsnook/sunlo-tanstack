@@ -4,13 +4,13 @@ import {
 	useMutation,
 	useQueryClient,
 } from '@tanstack/react-query'
-import ModalWithOpener from 'components/modal-with-opener'
-import supabase from 'lib/supabase-client'
-import SelectLanguageYouKnow from 'components/select-language-you-know'
-import Loading from 'components/loading'
+import ModalWithOpener from '@/components/modal-with-opener'
+import supabase from '@/lib/supabase-client'
+import SelectLanguageYouKnow from '@/components/select-language-you-know'
+import Loading from '@/components/loading'
 import toast from 'react-hot-toast'
-import { ShowError } from 'components/errors'
-import { TranslationRow, SelectOption, PhraseFull } from 'types/main'
+import { ShowError } from '@/components/errors'
+import { TranslationRow, SelectOption, PhraseFull } from '@/types/main'
 import { PostgrestError, QueryResult } from '@supabase/supabase-js'
 import { Button } from './ui/button'
 

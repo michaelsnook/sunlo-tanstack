@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router'
-import { NavbarData } from 'types/main'
-import languages from 'lib/languages'
+import { NavbarData } from '@/types/main'
+import languages from '@/lib/languages'
 
 export const Route = createFileRoute('/learn/$lang')({
 	component: LanguageLayout,
