@@ -10,14 +10,19 @@ export const Route = createFileRoute('/_user/profile')({
 			icon: '',
 			contextMenu: [
 				{
+					name: 'Connect with friends',
+					to: '/profile/friend-request',
+					icon: 'handshake',
+				},
+				{
+					name: 'Invite to Sunlo',
+					to: '/profile/friend-invite',
+					icon: 'invite',
+				},
+				{
 					name: 'Edit profile',
 					to: '/profile',
 					icon: 'notebook-pen',
-				},
-				{
-					name: 'Friends and contacts',
-					to: '/profile/invite-friend',
-					icon: 'contact',
 				},
 				{
 					name: 'Update email',

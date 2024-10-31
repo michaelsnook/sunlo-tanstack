@@ -72,7 +72,7 @@ function FriendsSection({ lang }: LangOnlyComponentProps) {
 					<li>j-bhai (nothing special actually)</li>
 				</ul>
 				<Link
-					to="/profile/invite-friend"
+					to="/profile/friend-request"
 					from={Route.fullPath}
 					className={buttonVariants({ variant: 'secondary' })}
 				>
