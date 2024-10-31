@@ -101,17 +101,22 @@ export default function SearchProfiles() {
 		} = await supabase.auth.getUser()
 		if (!user) throw new Error('User not authenticated')
 
-		const { error } = await supabase
+		const { data } = await supabase
 			.from('friend_request_action')
-			.insert({ uid_from: userId, uid_to: friendId, status: 'requested' })
-
-		if (error) throw error
-		toast.success('Friend request sent successfully')
+			.insert({ uid_from: userId, uid_to: friendId, action_type: 'requested' })
+			.throwOnError()
+		return data
 	}
-
-	if (error) {
-		toast.error('Failed to search profiles')
-	}
+	const invite = useMutation({
+		mutationFn: requestFriend,
+		onSuccess: () => {
+			toast.success('Friend request sent successfully')
+		},
+		onError: (error) => {
+			toast.error('Failed to send friend request')
+			console.log(`Error requesting friendship`, error)
+		},
+	})
 
 	return (
 		<Card className="min-h-64">
@@ -171,12 +176,15 @@ export default function SearchProfiles() {
 									<Callout key={profile.uid}>
 										<AvatarIconRow {...profile}>
 											<Button
-												onClick={() => requestFriend(profile.uid)}
+												onClick={() => invite.mutate(profile.uid)}
 												size="icon"
 												className="p-1 h-8 w-8"
-												variant="secondary"
+												variant={invite.isError ? 'destructive' : 'secondary'}
+												disabled={invite.isError}
 											>
-												<PlusIcon />
+												{invite.isPending ?
+													<Loader2 className="opacity-50" />
+												:	<PlusIcon />}
 											</Button>
 										</AvatarIconRow>
 									</Callout>
