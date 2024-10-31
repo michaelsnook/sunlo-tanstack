@@ -26,11 +26,12 @@ export default function SelectLanguageYouKnow({
 	disabledLang,
 }: SelectProps) {
 	const { data, isPending } = useProfile()
+	const [open, setOpen] = useState(false)
+	const [value, setValue] = useState('')
+
 	if (isPending) return <Loading />
 	const languages_spoken = data?.languages_spoken || []
 	const selectOptions: SelectOption[] = opts(languages_spoken)
-	const [open, setOpen] = useState(false)
-	const [value, setValue] = useState('')
 
 	return (
 		<Popover open={open} onOpenChange={setOpen}>

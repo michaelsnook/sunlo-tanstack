@@ -48,7 +48,7 @@ function SignUp() {
 			toast.success(`Signed up as ${data.user?.email}`, {
 				position: 'bottom-center',
 			})
-			navigate({ to: '/getting-started', from: '/signup' })
+			void navigate({ to: '/getting-started', from: '/signup' })
 		},
 	})
 

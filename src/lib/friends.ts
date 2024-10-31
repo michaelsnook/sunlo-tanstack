@@ -32,8 +32,8 @@ export const useFriendsInvited = () => {
 	})
 }
 
-const actionsFrom = z.enum(['requested', 'cancelled', 'ended'])
-const actionsTo = z.enum(['rejected', 'accepted', 'ended'])
+// const actionsFrom = z.enum(['requested', 'cancelled', 'ended'])
+// const actionsTo = z.enum(['rejected', 'accepted', 'ended'])
 
 const GenericActionSchema = z.object({
 	uid_from: z.string().uuid(),

@@ -28,9 +28,9 @@ export const useNewDeckMutation = () => {
 		},
 		mutationKey: ['new-deck'],
 		onSuccess: (_, variables) => {
-			queryClient.invalidateQueries({ queryKey: ['user'] })
+			void queryClient.invalidateQueries({ queryKey: ['user'] })
 			toast.success(`Created a new deck to learn ${languages[variables.lang]}`)
-			navigate({ to: `/learn/$lang`, params: { lang: variables.lang } })
+			void navigate({ to: `/learn/$lang`, params: { lang: variables.lang } })
 		},
 		onError: (error) => {
 			console.log(`Error creating deck:`, error)

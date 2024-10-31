@@ -76,7 +76,7 @@ export function SearchProfilesComponent() {
 			mutationFn: addFriend,
 			onSuccess: () => {
 				toast.success('Friend request sent successfully')
-				queryClient.invalidateQueries({ queryKey: ['friendships'] })
+				void queryClient.invalidateQueries({ queryKey: ['friendships'] })
 			},
 			onError: (error) => {
 				toast.error('Failed to send friend request')

@@ -38,7 +38,7 @@ const SearchSchema = z.object({
 
 export const Route = createFileRoute('/_user/profile/friend-request')({
 	component: FriendRequestPage,
-	validateSearch: SearchSchema.parse,
+	validateSearch: (search) => SearchSchema.parse(search),
 })
 
 function FriendRequestPage() {
@@ -66,7 +66,7 @@ export default function SearchProfiles() {
 		})
 
 	const searchAsync = useCallback(async (): Promise<PublicProfile[]> => {
-		if (!query) return null
+		if (!debouncedQuery) return null
 		const { data } = await supabase
 			.from('public_profile')
 			.select('uid, username, avatar_url')
@@ -149,7 +149,7 @@ export default function SearchProfiles() {
 								placeholder="Search by username"
 								value={query || ''}
 								onChange={(event) => {
-									setQueryInputValue(event.target.value)
+									void setQueryInputValue(event.target.value)
 								}}
 								autoFocus
 							/>

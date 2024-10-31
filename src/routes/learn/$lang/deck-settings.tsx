@@ -149,7 +149,7 @@ function ArchiveForm({ meta: { id, archived, lang } }: { meta: DeckMeta }) {
 			if (error) throw error
 		},
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['user', lang] })
+			void queryClient.invalidateQueries({ queryKey: ['user', lang] })
 			if (archived) toast.success('The deck has been re-activated!')
 			else
 				toast.success(
