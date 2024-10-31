@@ -116,41 +116,44 @@ export default function SearchProfiles() {
 	})
 
 	return (
-		<Card className="min-h-[20.5rem]">
+		<Card className="min-h-[21rem]">
 			<CardHeader>
 				<CardTitle>
-					<div className="flex flex-row justify-between">
+					<div className="flex flex-row justify-between items-center">
 						<span>Search for friends</span>
 						<Link
 							to="/profile/friend-invite"
 							aria-disabled="true"
-							className={buttonVariants({ size: 'sm', variant: 'outline' })}
+							className={buttonVariants({ size: 'badge', variant: 'outline' })}
 						>
-							<Send /> Invite to Sunlo
+							<Send className="h-3 w-3" /> <span className="me-1">Invite</span>
 						</Link>
 					</div>
 				</CardTitle>
 				<CardDescription>
-					Use this form to find your friends on Sunlo and connect
+					Search to find friends on Sunlo, and connect.
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
 				<div className="space-y-4">
 					<form
-						className="flex flex-row gap-2"
+						className="flex flex-row gap-2 items-end"
 						onSubmit={(e) => {
 							e.preventDefault()
 							e.stopPropagation()
 						}}
 					>
-						<Input
-							placeholder="Search by username"
-							value={query || ''}
-							onChange={(event) => {
-								setQueryInputValue(event.target.value)
-							}}
-							autoFocus
-						/>
+						<div className="w-full">
+							<Label>Username</Label>
+							<Input
+								placeholder="Search by username"
+								value={query || ''}
+								onChange={(event) => {
+									setQueryInputValue(event.target.value)
+								}}
+								autoFocus
+							/>
+						</div>
 						<Button>
 							<Search />
 							<span className="hidden @md:block">Search</span>
@@ -158,9 +161,7 @@ export default function SearchProfiles() {
 					</form>
 
 					{debouncedQuery === undefined ?
-						<p className="italic opacity-60 py-[1.75rem]">
-							Enter search terms above
-						</p>
+						<p className="italic opacity-60 py-[1.75rem]">Search results...</p>
 					:	<div className="space-y-2">
 							<ShowError>{error?.message}</ShowError>
 							{showLoader ?
@@ -174,8 +175,8 @@ export default function SearchProfiles() {
 										<p>No users match that search.</p>
 										<p>
 											<Link
-												className={buttonVariants()}
-												to="/profile"
+												className={buttonVariants({ variant: 'secondary' })}
+												to="/profile/friend-invite"
 												from={Route.fullPath}
 											>
 												Invite a friend to Sunlo
