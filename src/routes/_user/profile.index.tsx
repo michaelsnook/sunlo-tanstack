@@ -1,20 +1,13 @@
 import { buttonVariants } from '@/components/ui/button'
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useProfile } from '@/lib/use-profile'
-import { FriendshipRow, LangOnlyComponentProps } from '@/types/main'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import {
 	AvatarSection,
 	UpdateProfileForm,
 	UserAuthCard,
 } from 'components/profile'
-import { ArrowRightIcon, Plus } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 
 export const Route = createFileRoute('/_user/profile/')({
 	component: ProfilePage,
@@ -26,7 +19,7 @@ function ProfilePage() {
 			<AvatarSection />
 			<div className="w-full text-center">
 				<Link to="/getting-started" className="s-link text-xl" tabIndex={-1}>
-					Get Started <ArrowRightIcon className="inline-block w-4 h-4 ml-1" />
+					Get Started <ArrowRight className="inline-block w-4 h-4 ml-1" />
 				</Link>
 			</div>
 			<div className="card-page">
@@ -51,14 +44,11 @@ function ProfilePage() {
 
 // TODO the database doesn't have friendships yet so this is all mockup-y
 // and the type is also mocked
-function FriendsSection({ lang }: LangOnlyComponentProps) {
+function FriendsSection() {
 	const profileQuery = useProfile()
 	if (profileQuery.data === null) return null
 
-	const friendsThisLanguage =
-		profileQuery.data?.friendships?.filter(
-			(f: FriendshipRow) => f.helping_with.indexOf(lang) !== -1
-		) || []
+	const friends = profileQuery.data?.friendships || []
 
 	return (
 		<Card>
