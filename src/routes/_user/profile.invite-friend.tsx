@@ -1,12 +1,12 @@
 import { useCallback, useState } from 'react'
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useDebounce, usePrevious } from '@uidotdev/usehooks'
-import { PlusIcon, Search, X } from 'lucide-react'
+import { Loader2, PlusIcon, Search, X } from 'lucide-react'
 
 import { Button } from 'components/ui/button'
 import {
@@ -31,6 +31,7 @@ import {
 import supabase from 'lib/supabase-client'
 import { useAuth } from '@/lib/hooks'
 import { ShowError } from '@/components/errors'
+import { Garlic } from '@/components/garlic'
 
 const SearchSchema = z.object({
 	query: z.string().optional(),
@@ -79,7 +80,11 @@ export default function SearchProfiles() {
 	}, [debouncedQuery])
 	console.log(`debouncedQuery`, debouncedQuery)
 
-	const { data: searchResults, error } = useQuery({
+	const {
+		data: searchResults,
+		error,
+		isFetching,
+	} = useQuery({
 		queryKey: ['public_profile', 'search', debouncedQuery],
 		queryFn: searchAsync,
 		enabled: debouncedQuery?.length > 0,
@@ -88,6 +93,7 @@ export default function SearchProfiles() {
 	const prevResults = usePrevious(searchResults)
 	const resultsToShow =
 		!debouncedQuery ? [] : (searchResults ?? prevResults ?? [])
+	const showLoader = resultsToShow.length === 0 && isFetching ? true : false
 
 	const requestFriend = async (friendId: string) => {
 		const {
@@ -143,10 +149,23 @@ export default function SearchProfiles() {
 						</p>
 					:	<div className="space-y-2">
 							<ShowError>{error?.message}</ShowError>
-							{!(resultsToShow?.length > 0) ?
+							{showLoader ?
+								<div className="h-20 flex justify-center items-center opacity-50">
+									<Loader2 />
+								</div>
+							: !(resultsToShow?.length > 0) ?
 								<Callout variant="ghost">
-									No users match that search. Use the form below to invite them
-									to Sunlo.
+									<Garlic size={32} />
+									<p>
+										<span>No users match that search.</span>{' '}
+										<Link
+											className="s-link border-b"
+											to="/profile"
+											from={Route.fullPath}
+										>
+											Invite a friend to Sunlo.
+										</Link>
+									</p>
 								</Callout>
 							:	resultsToShow.map((profile) => (
 									<Callout key={profile.uid}>
