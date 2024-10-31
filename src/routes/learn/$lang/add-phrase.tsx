@@ -54,7 +54,7 @@ function AddPhraseTab() {
 		},
 		onSuccess: () => {
 			toast.success('Your phrase has been added to your deck.')
-			navigate({
+			void navigate({
 				to: '/learn/$lang/add-phrase',
 				params: { lang },
 				search: { phrase: '' },
@@ -85,7 +85,7 @@ function AddPhraseTab() {
 								<Input
 									onChange={(e) => {
 										field.onChange(e)
-										navigate({
+										void navigate({
 											to: '.',
 											search: (search: SearchParams) => ({
 												...search,

@@ -1,7 +1,7 @@
 import type { uuid } from 'types/main'
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { FieldError, SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { toast } from 'react-hot-toast'

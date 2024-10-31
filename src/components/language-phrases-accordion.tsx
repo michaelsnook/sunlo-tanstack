@@ -1,16 +1,17 @@
+import type { ReactNode } from '@tanstack/react-router'
+import { useMutation } from '@tanstack/react-query'
+import { Zap, SkipForward, CheckCircle, PlusCircle } from 'lucide-react'
+
+import { PhraseFull, PhrasesMap, pids, uuid } from '@/types/main'
 import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
-} from 'components/ui/accordion'
-import { useDeck } from 'lib/use-deck'
-import { Zap, SkipForward, CheckCircle, PlusCircle } from 'lucide-react'
-import { PhraseFull, PhrasesMap, pids, uuid } from 'types/main'
-import { Button } from './ui/button'
-import { useMutation } from '@tanstack/react-query'
-import supabase from 'lib/supabase-client'
-import { ReactNode } from 'react'
+} from '@/components/ui/accordion'
+import { useDeck } from '@/lib/use-deck'
+import { Button } from '@/components/ui/button'
+import supabase from '@/lib/supabase-client'
 
 // TODO check if we can get this from the supabase types?
 type LearningStatus = 'active' | 'skipped' | 'learned'

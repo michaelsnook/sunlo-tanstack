@@ -15,6 +15,7 @@ import { ShowError } from 'components/errors'
 import languages from 'lib/languages'
 import SuccessCheckmark from 'components/SuccessCheckmark'
 import { Card, CardContent } from 'components/ui/card'
+import { ReactNode } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_user/getting-started')({
 	component: GettingStartedPage,
@@ -92,7 +93,7 @@ function GettingStartedPage() {
 		onSuccess: (data) => {
 			console.log(`Success! deck, profile`, data)
 			toast.success('Success!')
-			queryClient.invalidateQueries({ queryKey: ['user', 'profile'] })
+			void queryClient.invalidateQueries({ queryKey: ['user', 'profile'] })
 		},
 	})
 
@@ -228,10 +229,10 @@ const SetPrimaryLanguageStep = ({ value, setValue }: SetValueStepProps) => {
 			</CardContent>
 		:	<CardContent>
 				<form
-					onSubmit={(e: FormEvent<HTMLFormElement>) => {
+					onSubmit={(e) => {
 						e.preventDefault()
 						setClosed(true)
-						// @ts-expect-error
+						// @ts-expect-error -- TODO add rhf and zod
 						setValue(e.target['language_primary'].value)
 					}}
 				>
@@ -361,9 +362,9 @@ function SetUsernameStep({ value, setValue }: SetValueStepProps) {
 			</CardContent>
 		:	<CardContent>
 				<form
-					onSubmit={(e: FormEvent<HTMLFormElement>) => {
+					onSubmit={(e) => {
 						e.preventDefault()
-						// @ts-expect-error
+						// @ts-expect-error -- TODO add rhf and zod
 						if (e.target['username'].value) setClosed(true)
 					}}
 				>
@@ -406,7 +407,7 @@ function X({ set, plus = false }: XProps) {
 	)
 }
 
-function Highlight({ children }: { children: React.ReactNode }) {
+function Highlight({ children }: { children: ReactNode }) {
 	return (
 		<span className="inline bg-accent bg-opacity-60 px-1 font-bold">
 			{children}

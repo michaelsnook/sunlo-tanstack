@@ -48,7 +48,7 @@ function InviteFriendForm() {
 		},
 		onSuccess: () => {
 			toast.success('Your friend has been invited to help you learn.')
-			queryClient.invalidateQueries({
+			void queryClient.invalidateQueries({
 				queryKey: ['user', 'friend_invited'],
 			})
 		},
@@ -83,7 +83,7 @@ function InviteFriendForm() {
 						disabled={invite.isPending}
 					>
 						<div className="w-full">
-							<Label htmlFor="email">Friend's Email</Label>
+							<Label htmlFor="email">Friend's email</Label>
 							<Controller
 								name="email"
 								control={control}
