@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { z } from 'zod'
@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useDebounce, usePrevious } from '@uidotdev/usehooks'
+import { PlusIcon, Search, X } from 'lucide-react'
 
 import { Button } from 'components/ui/button'
 import {
@@ -21,7 +22,6 @@ import Callout from '@/components/ui/callout'
 import { AvatarIconRow } from '@/components/ui/avatar-icon'
 import { useFriendsInvited } from 'lib/friends'
 import Loading from 'components/loading'
-import { Loader2, PlusIcon, Search, X } from 'lucide-react'
 import {
 	FriendRequestAction,
 	FriendRequestActionInsert,
@@ -30,6 +30,7 @@ import {
 } from 'types/main'
 import supabase from 'lib/supabase-client'
 import { useAuth } from '@/lib/hooks'
+import { ShowError } from '@/components/errors'
 
 const SearchSchema = z.object({
 	query: z.string().optional(),
@@ -115,7 +116,13 @@ export default function SearchProfiles() {
 			</CardHeader>
 			<CardContent>
 				<div className="space-y-4">
-					<form className="flex flex-row gap-2">
+					<form
+						className="flex flex-row gap-2"
+						onSubmit={(e) => {
+							e.preventDefault()
+							e.stopPropagation()
+						}}
+					>
 						<Input
 							placeholder="Search by username"
 							value={query || ''}
@@ -130,8 +137,11 @@ export default function SearchProfiles() {
 						</Button>
 					</form>
 					{debouncedQuery === undefined ?
-						<p className="italic opacity-60">Enter search terms above</p>
+						<p className="italic opacity-60 py-[1.75rem]">
+							Enter search terms above
+						</p>
 					:	<div className="space-y-2">
+							<ShowError>{error?.message}</ShowError>
 							{!(resultsToShow?.length > 0) ?
 								<Callout variant="ghost">
 									No users match that search. Use the form below to invite them
