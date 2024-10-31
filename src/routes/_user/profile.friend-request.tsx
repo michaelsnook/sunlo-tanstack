@@ -1,14 +1,12 @@
 import { useCallback, useState } from 'react'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Controller, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useDebounce, usePrevious } from '@uidotdev/usehooks'
-import { Loader2, PlusIcon, Search, X } from 'lucide-react'
+import { Loader2, PlusIcon, Search, Send, X } from 'lucide-react'
 
-import { Button } from 'components/ui/button'
+import { Button, buttonVariants } from 'components/ui/button'
 import {
 	Card,
 	CardContent,
@@ -17,7 +15,6 @@ import {
 	CardTitle,
 } from 'components/ui/card'
 import { Input } from 'components/ui/input'
-import { Label } from 'components/ui/label'
 import Callout from '@/components/ui/callout'
 import { AvatarIconRow } from '@/components/ui/avatar-icon'
 import { useFriendsInvited } from 'lib/friends'
@@ -32,22 +29,22 @@ import supabase from 'lib/supabase-client'
 import { useAuth } from '@/lib/hooks'
 import { ShowError } from '@/components/errors'
 import { Garlic } from '@/components/garlic'
+import { Label } from '@/components/ui/label'
 
 const SearchSchema = z.object({
 	query: z.string().optional(),
 	lang: z.string().optional(),
 })
 
-export const Route = createFileRoute('/_user/profile/invite-friend')({
-	component: InviteFriendPage,
+export const Route = createFileRoute('/_user/profile/friend-request')({
+	component: FriendRequestPage,
 	validateSearch: SearchSchema.parse,
 })
 
-function InviteFriendPage() {
+function FriendRequestPage() {
 	return (
 		<main className="flex flex-col gap-6">
 			<SearchProfiles />
-			<InviteFriendForm />
 			<PendingRequestsSection />
 		</main>
 	)
@@ -119,11 +116,22 @@ export default function SearchProfiles() {
 	})
 
 	return (
-		<Card className="min-h-64">
+		<Card className="min-h-[20.5rem]">
 			<CardHeader>
-				<CardTitle>Search Profiles</CardTitle>
+				<CardTitle>
+					<div className="flex flex-row justify-between">
+						<span>Search for friends</span>
+						<Link
+							to="/profile/friend-invite"
+							aria-disabled="true"
+							className={buttonVariants({ size: 'sm', variant: 'outline' })}
+						>
+							<Send /> Invite to Sunlo
+						</Link>
+					</div>
+				</CardTitle>
 				<CardDescription>
-					Find your friends by username, and connect.
+					Use this form to find your friends on Sunlo and connect
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
@@ -148,6 +156,7 @@ export default function SearchProfiles() {
 							<span className="hidden @md:block">Search</span>
 						</Button>
 					</form>
+
 					{debouncedQuery === undefined ?
 						<p className="italic opacity-60 py-[1.75rem]">
 							Enter search terms above
@@ -161,16 +170,18 @@ export default function SearchProfiles() {
 							: !(resultsToShow?.length > 0) ?
 								<Callout variant="ghost">
 									<Garlic size={32} />
-									<p>
-										<span>No users match that search.</span>{' '}
-										<Link
-											className="s-link border-b"
-											to="/profile"
-											from={Route.fullPath}
-										>
-											Invite a friend to Sunlo.
-										</Link>
-									</p>
+									<div className="ms-4 space-y-4">
+										<p>No users match that search.</p>
+										<p>
+											<Link
+												className={buttonVariants()}
+												to="/profile"
+												from={Route.fullPath}
+											>
+												Invite a friend to Sunlo
+											</Link>
+										</p>
+									</div>
 								</Callout>
 							:	resultsToShow.map((profile) => (
 									<Callout key={profile.uid}>
@@ -193,65 +204,6 @@ export default function SearchProfiles() {
 						</div>
 					}
 				</div>
-			</CardContent>
-		</Card>
-	)
-}
-
-const inviteFriendSchema = z.object({
-	email: z.string().email('Please enter a valid email'),
-})
-function InviteFriendForm() {
-	const { control, handleSubmit } = useForm<z.infer<typeof inviteFriendSchema>>(
-		{
-			resolver: zodResolver(inviteFriendSchema),
-		}
-	)
-	const queryClient = useQueryClient()
-
-	const inviteRequestMutation = useMutation({
-		mutationKey: ['user', 'invite_friend'],
-		mutationFn: async (data: z.infer<typeof inviteFriendSchema>) => {
-			return new Promise((resolve) => setTimeout(() => resolve(data), 1000))
-		},
-		onSuccess: () => {
-			toast.success('Your friend has been invited to help you learn.')
-			queryClient.invalidateQueries({
-				queryKey: ['user', 'friend_invited'],
-			})
-		},
-	})
-
-	const onSubmit = handleSubmit((data) => {
-		inviteRequestMutation.mutate(data)
-	})
-
-	return (
-		<Card>
-			<CardHeader>
-				<CardTitle>Invite a Friend</CardTitle>
-				<CardDescription>
-					Learn together with a friend who can help you practice.
-				</CardDescription>
-			</CardHeader>
-			<CardContent>
-				<form onSubmit={onSubmit} className="space-y-4">
-					<div>
-						<Label htmlFor="email">Friend's Email</Label>
-						<Controller
-							name="email"
-							control={control}
-							render={({ field }) => (
-								<Input
-									{...field}
-									type="email"
-									placeholder="Enter your friend's email"
-								/>
-							)}
-						/>
-					</div>
-					<Button type="submit">Send Invitation</Button>
-				</form>
 			</CardContent>
 		</Card>
 	)
@@ -293,13 +245,13 @@ function PendingRequestsSection() {
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle>Pending friend invites</CardTitle>
+				<CardTitle>Pending requests</CardTitle>
 			</CardHeader>
 			<CardContent className="space-y-4">
 				{isPending ?
 					<Loading />
 				: data.length === 0 ?
-					<p>You don't have any invites pending at this time.</p>
+					<p>You don't have any requests pending at this time.</p>
 				:	data.map((invite) => {
 						return hiddenRequests.indexOf(invite.uid_to) > -1 ?
 								null

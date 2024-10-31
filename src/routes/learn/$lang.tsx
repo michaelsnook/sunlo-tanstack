@@ -34,16 +34,16 @@ export const Route = createFileRoute('/learn/$lang')({
 					icon: 'wallet-cards',
 				},
 				{
-					name: 'Friends and contacts',
-					to: '/learn/$lang/invite-friend',
-					params: { lang },
-					icon: 'contact',
-				},
-				{
 					name: 'Deck settings',
 					to: '/learn/$lang/deck-settings',
 					params: { lang },
 					icon: 'settings',
+				},
+				{
+					name: 'Friends and contacts',
+					to: '/learn/$lang/friend-request',
+					params: { lang },
+					icon: 'contact',
 				},
 			],
 		} as NavbarData,

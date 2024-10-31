@@ -3,6 +3,7 @@ ISSUES
 	should handle this. (inspect and special-case the error before throwing, and toast accordingly)
 1. Signup workflow should not be a toast-redirect, it should be a success alert, saying go check
 	and verify your email; redirect should happen after this
+1. why is class s-link not working correctly in the "find a friend" search empty results section? (have manually added a border-b, like a barbarian)
 
 JOURNEYS TO MOCK
 1. Invite a friend (for a learner to invite someone by email)
@@ -25,12 +26,18 @@ MOCKS / Incompletes
 	1. ✅ Accept invite from your friend page is built; the mutation is kind of real and there are success/error states build, 
 		1. We can't really test it yet, till we have actual invites
 	1. ✅ Search profiles (to invite a friend)
-		1. Write a mutation to send the friend request
+		1. ✅ Write a mutation to send the friend request, wire up UI states
+			1. This list should become aware of your current friend status with people -- change the button based on whether you've already requested the person, or are friends; (based on server state, not just for the pending mutation or error); 
+				1. Then the mutation can just invalidate the page's queries
+			1. Maybe don't use one mutation: use 1 per item so you can disable just that button and show that isSuccess checkmark icon instead of sharing state across all records. see example: 
 		1. ISBAT see in the search results if I've already requested this person, or if we're already friends, and show that in the UI
 		1. ✅ type-as-you-search, debounce it, make sure it's smooth
 	1. Invite a new user (by email) is a separate screen to add (split off from the find-friend route)
-
-	1. ✅ 🪲 Tabs have a number of problems; the active tab doesn't update & we should probably rewrite
+1. ✅ The "Deck Home" screen or Welcome Screen
+1. The "new friend signup" screens -- what are we doing here? selecting which deck(s) we're helping with... and then what?
+	1. How does the friend mode sidebar look? is it the same? are some people Learners _and_ Helpers?
+			(ideally, yes?) should we be switching "modes" like one context switcher that has options for
+			each deck we're learning and each deck we're helping with...
 	1. Public Library is a special browsing experience that needs to be built!
 	1. ✅ Deck Settings: replace with the nicer radio: https://v0.dev/chat/PNg3tT-DSoC, 
 			✅ and wire up the mutation

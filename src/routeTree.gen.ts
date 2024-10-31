@@ -32,7 +32,8 @@ import { Route as LearnLangReviewImport } from './routes/learn/$lang/review'
 import { Route as LearnLangPublicLibraryImport } from './routes/learn/$lang/public-library'
 import { Route as LearnLangDeckSettingsImport } from './routes/learn/$lang/deck-settings'
 import { Route as LearnLangAddPhraseImport } from './routes/learn/$lang/add-phrase'
-import { Route as UserProfileInviteFriendImport } from './routes/_user/profile.invite-friend'
+import { Route as UserProfileFriendRequestImport } from './routes/_user/profile.friend-request'
+import { Route as UserProfileFriendInviteImport } from './routes/_user/profile.friend-invite'
 import { Route as UserProfileChangePasswordImport } from './routes/_user/profile.change-password'
 import { Route as UserProfileChangeEmailImport } from './routes/_user/profile.change-email'
 
@@ -186,8 +187,13 @@ const LearnLangAddPhraseRoute = LearnLangAddPhraseImport.update({
   getParentRoute: () => LearnLangRoute,
 } as any)
 
-const UserProfileInviteFriendRoute = UserProfileInviteFriendImport.update({
-  path: '/invite-friend',
+const UserProfileFriendRequestRoute = UserProfileFriendRequestImport.update({
+  path: '/friend-request',
+  getParentRoute: () => UserProfileRoute,
+} as any)
+
+const UserProfileFriendInviteRoute = UserProfileFriendInviteImport.update({
+  path: '/friend-invite',
   getParentRoute: () => UserProfileRoute,
 } as any)
 
@@ -352,11 +358,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserProfileChangePasswordImport
       parentRoute: typeof UserProfileImport
     }
-    '/_user/profile/invite-friend': {
-      id: '/_user/profile/invite-friend'
-      path: '/invite-friend'
-      fullPath: '/profile/invite-friend'
-      preLoaderRoute: typeof UserProfileInviteFriendImport
+    '/_user/profile/friend-invite': {
+      id: '/_user/profile/friend-invite'
+      path: '/friend-invite'
+      fullPath: '/profile/friend-invite'
+      preLoaderRoute: typeof UserProfileFriendInviteImport
+      parentRoute: typeof UserProfileImport
+    }
+    '/_user/profile/friend-request': {
+      id: '/_user/profile/friend-request'
+      path: '/friend-request'
+      fullPath: '/profile/friend-request'
+      preLoaderRoute: typeof UserProfileFriendRequestImport
       parentRoute: typeof UserProfileImport
     }
     '/learn/$lang/add-phrase': {
@@ -428,7 +441,8 @@ export const routeTree = rootRoute.addChildren({
     UserProfileRoute: UserProfileRoute.addChildren({
       UserProfileChangeEmailRoute,
       UserProfileChangePasswordRoute,
-      UserProfileInviteFriendRoute,
+      UserProfileFriendInviteRoute,
+      UserProfileFriendRequestRoute,
       UserProfileIndexRoute,
     }),
   }),
@@ -528,7 +542,8 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/_user/profile/change-email",
         "/_user/profile/change-password",
-        "/_user/profile/invite-friend",
+        "/_user/profile/friend-invite",
+        "/_user/profile/friend-request",
         "/_user/profile/"
       ]
     },
@@ -576,8 +591,12 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_user/profile.change-password.tsx",
       "parent": "/_user/profile"
     },
-    "/_user/profile/invite-friend": {
-      "filePath": "_user/profile.invite-friend.tsx",
+    "/_user/profile/friend-invite": {
+      "filePath": "_user/profile.friend-invite.tsx",
+      "parent": "/_user/profile"
+    },
+    "/_user/profile/friend-request": {
+      "filePath": "_user/profile.friend-request.tsx",
       "parent": "/_user/profile"
     },
     "/learn/$lang/add-phrase": {

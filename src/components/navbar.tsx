@@ -3,8 +3,8 @@ import {
 	type LucideProps,
 	BookHeart,
 	ChevronLeft,
-	Contact,
 	FolderPlus,
+	Handshake,
 	Home,
 	Lock,
 	Mail,
@@ -12,6 +12,7 @@ import {
 	NotebookPen,
 	Rocket,
 	Search,
+	Send,
 	Settings,
 	SquarePlus,
 	WalletCards,
@@ -99,14 +100,16 @@ function renderIcon(icon: string, props: LucideProps = { size: 20 }) {
 	switch (icon) {
 		case 'book-heart': // for your /learn page
 			return <BookHeart {...props} />
-		case 'contact': // for adding friends
-			return <Contact {...props} />
 		case 'email': // for change-email page
 			return <Mail {...props} />
 		case 'folder-plus': // for a new deck
 			return <FolderPlus {...props} />
+		case 'handshake':
+			return <Handshake {...props} />
 		case 'home': // for your /learn page
 			return <Home {...props} />
+		case 'invite': // for adding friends
+			return <Send {...props} />
 		case 'notebook-pen':
 			return <NotebookPen {...props} />
 		case 'password':

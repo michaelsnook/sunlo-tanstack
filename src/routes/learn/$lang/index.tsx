@@ -82,7 +82,7 @@ function FriendsSection({ lang }: LangOnlyComponentProps) {
 					<li>j-bhai (nothing special actually)</li>
 				</ul>
 				<Link
-					to="/profile/invite-friend"
+					to="/profile/friend-request"
 					search={{ lang }}
 					from={Route.fullPath}
 					className={buttonVariants({ variant: 'secondary' })}
@@ -209,7 +209,7 @@ function Empty({ lang }: LangOnlyComponentProps) {
 						</Link>
 
 						<Link
-							to="/learn/$lang/invite-friend"
+							to="/learn/$lang/friend-request"
 							params={{ lang }}
 							className={buttonVariants({ variant: 'secondary' })}
 						>
