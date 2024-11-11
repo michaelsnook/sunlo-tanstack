@@ -12,6 +12,7 @@ import LanguagePrimaryField from './language-primary-field'
 import LanguagesSpokenField from './languages-spoken-field'
 import PasswordField from './password-field'
 import UsernameField from './username-field'
+import UserRoleField from './user-role-field'
 
 export type FieldProps = {
 	register: UseFormRegister<FieldValues>
@@ -30,4 +31,5 @@ export {
 	LanguagesSpokenField,
 	PasswordField,
 	UsernameField,
+	UserRoleField,
 }
