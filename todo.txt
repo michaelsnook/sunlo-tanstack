@@ -1,3 +1,13 @@
+EPICS
+1. Got to actually build the signup workflow, for learners and friends
+	1. add a mock for the form input
+		1. make the form input look niceeee
+	1. make the form input work
+	1. make the signup email nice
+	1. differentiate the landing page
+	1. landing page followup steps (/getting-started, etc.)
+
+
 ISSUES
 1. When you try to sign up using existing creds you get an error and then get logged in. We
 	should handle this. (inspect and special-case the error before throwing, and toast accordingly)

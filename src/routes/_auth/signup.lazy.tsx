@@ -10,7 +10,7 @@ import { CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 import supabase from '@/lib/supabase-client'
 import { ShowError } from '@/components/errors'
-import { EmailField, PasswordField } from '@/components/fields'
+import { EmailField, PasswordField, UserRoleField } from '@/components/fields'
 
 export const Route = createLazyFileRoute('/_auth/signup')({
 	component: SignUp,
@@ -22,6 +22,7 @@ const FormSchema = z.object({
 		.min(1, `Email is required`)
 		.email(`Email is required to be a real email`),
 	password: z.string().min(8, 'Password must be at least 8 characters'),
+	user_role: z.enum(['learner', 'helper', 'both']),
 })
 
 type FormInputs = z.infer<typeof FormSchema>
@@ -58,6 +59,11 @@ function SignUp() {
 		formState: { errors, isSubmitting },
 	} = useForm<FormInputs>({
 		resolver: zodResolver(FormSchema),
+		defaultValues: {
+			email: '',
+			password: '',
+			user_role: 'learner',
+		},
 	})
 
 	return (
@@ -77,6 +83,7 @@ function SignUp() {
 					<fieldset className="flex flex-col gap-y-4" disabled={isSubmitting}>
 						<EmailField register={register} error={errors.email} />
 						<PasswordField register={register} error={errors.password} />
+						<UserRoleField register={register} error={errors.user_role} />
 					</fieldset>
 					<div className="flex flex-row justify-between">
 						<Button disabled={signupMutation.isPending}>Sign Up</Button>

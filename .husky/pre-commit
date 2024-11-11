@@ -1,4 +1,4 @@
-bun run format:check
-# npm run lint
+pnpm format:check
+# pnpm run lint
 
 echo '\n✅✅✅✅ Everything looks good! I am committing this now. ✅✅✅✅\n'
