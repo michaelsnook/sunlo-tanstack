@@ -31,12 +31,15 @@ function SignUp() {
 	const { navigate } = useRouter()
 	const signupMutation = useMutation({
 		mutationKey: ['signup'],
-		mutationFn: async ({ email, password }: FormInputs) => {
+		mutationFn: async ({ email, password, user_role }: FormInputs) => {
 			const { data, error } = await supabase.auth.signUp({
 				email,
 				password,
 				options: {
 					emailRedirectTo: `${import.meta.env.VITE_BASE_URL}/getting-started`,
+					data: {
+						role: user_role,
+					},
 				},
 			})
 			if (error) {

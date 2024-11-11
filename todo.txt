@@ -1,11 +1,12 @@
 EPICS
 1. Got to actually build the signup workflow, for learners and friends
-	1. add a mock for the form input
+	1. ✅ add a mock for the form input
 		1. make the form input look niceeee
-	1. make the form input work
+	1. ✅ make the form input work
 	1. make the signup email nice
 	1. differentiate the landing page
 	1. landing page followup steps (/getting-started, etc.)
+	1. implications: there should be someplace in /profile to change this? to "open up" the rest of the app?
 
 
 ISSUES
