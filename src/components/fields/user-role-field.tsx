@@ -8,7 +8,8 @@ const outer = 'flex flex-row gap-2 items-center',
 
 export default function UserRoleField({ register, error }: FieldProps) {
 	return (
-		<div>
+		<div className="space-y-2">
+			<p>Are you learning for yourself, or helping a friend?</p>
 			<RadioGroup {...register('user_role')}>
 				<div className={outer}>
 					<RadioGroupItem value="learner" id="learner" />
