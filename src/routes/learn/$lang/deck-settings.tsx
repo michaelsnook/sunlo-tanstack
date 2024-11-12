@@ -73,13 +73,12 @@ function GoalForm({ meta: { learning_goal, id, lang } }: { meta: DeckMeta }) {
 	>({
 		mutationKey: ['user', lang, 'deck-settings'],
 		mutationFn: async (values: DeckGoalFormInputs) => {
-			const { data, error } = await supabase
+			const { data } = await supabase
 				.from('user_deck')
 				.update({ learning_goal: values.learning_goal })
 				.eq('id', values.id)
 				.throwOnError()
 				.select()
-			if (error) throw error
 			return data[0]
 		},
 		onSuccess: (data) => {
@@ -103,7 +102,7 @@ function GoalForm({ meta: { learning_goal, id, lang } }: { meta: DeckMeta }) {
 			</CardHeader>
 			<CardContent>
 				<form
-					onSubmit={handleSubmit((v) => updateDeckGoalMutation.mutate(v))}
+					onSubmit={handleSubmit(updateDeckGoalMutation.mutate)}
 					className="space-y-4"
 				>
 					<Controller
@@ -145,8 +144,7 @@ function ArchiveForm({ meta: { id, archived, lang } }: { meta: DeckMeta }) {
 				.from('user_deck')
 				.update({ archived: !archived })
 				.eq('id', id)
-
-			if (error) throw error
+				.throwOnError()
 		},
 		onSuccess: () => {
 			void queryClient.invalidateQueries({ queryKey: ['user', lang] })
