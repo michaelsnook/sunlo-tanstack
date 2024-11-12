@@ -11,6 +11,10 @@ import { CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import supabase from '@/lib/supabase-client'
 import { ShowError } from '@/components/errors'
 import { EmailField, PasswordField, UserRoleField } from '@/components/fields'
+import Callout from '@/components/ui/callout'
+import { GarlicBroccoli } from '@/components/garlic'
+import SuccessCheckmark from '@/components/SuccessCheckmark'
+import { SquareCheckBig } from 'lucide-react'
 
 export const Route = createLazyFileRoute('/_auth/signup')({
 	component: SignUp,
@@ -78,40 +82,53 @@ function SignUp() {
 				<CardTitle>Sign Up</CardTitle>
 			</CardHeader>
 			<CardContent>
-				<form
-					role="form"
-					noValidate
-					className="space-y-4"
-					onSubmit={handleSubmit(signupMutation.mutate)}
-				>
-					<fieldset className="flex flex-col gap-y-4" disabled={isSubmitting}>
-						<EmailField
-							register={register}
-							error={errors.email}
-							autoFocus
-							tabIndex={1}
-						/>
-						<PasswordField
-							register={register}
-							error={errors.password}
-							tabIndex={2}
-						/>
-						<UserRoleField
-							control={control}
-							error={errors.user_role}
-							tabIndex={3}
-						/>
-					</fieldset>
-					<div className="flex flex-row justify-between">
-						<Button disabled={signupMutation.isPending}>Sign Up</Button>
-						<Link to="/login" className={buttonVariants({ variant: 'link' })}>
-							Already have an account?
-						</Link>
-					</div>
-					<ShowError show={!!signupMutation.error}>
-						Problem signing up: {signupMutation.error?.message}
-					</ShowError>
-				</form>
+				{signupMutation.isSuccess ?
+					<Callout>
+						<SuccessCheckmark className="bg-transparent" />
+						<div className="space-y-2">
+							<p>Almost done!</p>
+							<p>
+								Find the confirmation link in your email to activate your
+								account.
+							</p>
+							<p>You can close this window.</p>
+						</div>
+					</Callout>
+				:	<form
+						role="form"
+						noValidate
+						className="space-y-4"
+						onSubmit={handleSubmit(signupMutation.mutate)}
+					>
+						<fieldset className="flex flex-col gap-y-4" disabled={isSubmitting}>
+							<EmailField
+								register={register}
+								error={errors.email}
+								autoFocus
+								tabIndex={1}
+							/>
+							<PasswordField
+								register={register}
+								error={errors.password}
+								tabIndex={2}
+							/>
+							<UserRoleField
+								control={control}
+								error={errors.user_role}
+								tabIndex={3}
+							/>
+						</fieldset>
+						<div className="flex flex-row justify-between">
+							<Button disabled={signupMutation.isPending}>Sign Up</Button>
+							<Link to="/login" className={buttonVariants({ variant: 'link' })}>
+								Already have an account?
+							</Link>
+						</div>
+						<ShowError show={!!signupMutation.error}>
+							Problem signing up: {signupMutation.error?.message}
+						</ShowError>
+					</form>
+				}
 			</CardContent>
 		</>
 	)
