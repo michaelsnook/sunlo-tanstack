@@ -9,10 +9,13 @@ import supabase from '@/lib/supabase-client'
 import type { uuid } from '@/types/main'
 import { Session } from '@supabase/supabase-js'
 
+type RolesEnum = 'learner' | 'helper' | 'both' | null
+
 export type AuthState = {
 	isAuth: boolean
 	userId: uuid | null
 	userEmail: string | null
+	userRole: RolesEnum
 }
 
 export const AuthContext = createContext<AuthState>(undefined)
@@ -61,6 +64,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 		isAuth: sessionState?.user.role === 'authenticated',
 		userId: sessionState?.user.id,
 		userEmail: sessionState?.user.email,
+		userRole: (sessionState?.user?.user_metadata?.role as RolesEnum) ?? null,
 	}
 
 	return (

@@ -1,4 +1,4 @@
-import { type FormEvent, SyntheticEvent, useState } from 'react'
+import { SyntheticEvent, useState } from 'react'
 import toast from 'react-hot-toast'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
