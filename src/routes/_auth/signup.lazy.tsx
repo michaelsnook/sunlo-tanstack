@@ -1,6 +1,6 @@
-import { Link, createLazyFileRoute, useRouter } from '@tanstack/react-router'
+import { Link, createLazyFileRoute } from '@tanstack/react-router'
 import { useMutation } from '@tanstack/react-query'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import toast from 'react-hot-toast'
@@ -21,14 +21,15 @@ const FormSchema = z.object({
 		.string()
 		.min(1, `Email is required`)
 		.email(`Email is required to be a real email`),
-	password: z.string().min(8, 'Password must be at least 8 characters'),
-	user_role: z.enum(['learner', 'helper', 'both']),
+	password: z.string().min(8, 'Password should be 8 characters or more'),
+	user_role: z.enum(['learner', 'helper', 'both'], {
+		message: 'Please select a role',
+	}),
 })
 
 type FormInputs = z.infer<typeof FormSchema>
 
 function SignUp() {
-	const { navigate } = useRouter()
 	const signupMutation = useMutation({
 		mutationKey: ['signup'],
 		mutationFn: async ({ email, password, user_role }: FormInputs) => {
@@ -38,7 +39,7 @@ function SignUp() {
 				options: {
 					emailRedirectTo: `${import.meta.env.VITE_BASE_URL}/getting-started`,
 					data: {
-						role: user_role,
+						role: user_role || 'learner',
 					},
 				},
 			})
@@ -47,18 +48,20 @@ function SignUp() {
 				throw error
 			}
 			return data
+			// console.log(`form data`, email, user_role)
+			// return { user: { email: '@fake email@' } }
 		},
 		onSuccess: (data) => {
-			toast.success(`Signed up as ${data.user?.email}`, {
+			toast.success(`Account created for ${data.user?.email}`, {
 				position: 'bottom-center',
 			})
-			void navigate({ to: '/getting-started', from: '/signup' })
 		},
 	})
 
 	const {
 		handleSubmit,
 		register,
+		control,
 		formState: { errors, isSubmitting },
 	} = useForm<FormInputs>({
 		resolver: zodResolver(FormSchema),
@@ -79,9 +82,7 @@ function SignUp() {
 					role="form"
 					noValidate
 					className="space-y-4"
-					onSubmit={handleSubmit(
-						signupMutation.mutate as SubmitHandler<FormInputs>
-					)}
+					onSubmit={handleSubmit(signupMutation.mutate)}
 				>
 					<fieldset className="flex flex-col gap-y-4" disabled={isSubmitting}>
 						<EmailField
@@ -96,7 +97,7 @@ function SignUp() {
 							tabIndex={2}
 						/>
 						<UserRoleField
-							register={register}
+							control={control}
 							error={errors.user_role}
 							tabIndex={3}
 						/>
