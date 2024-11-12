@@ -84,9 +84,22 @@ function SignUp() {
 					)}
 				>
 					<fieldset className="flex flex-col gap-y-4" disabled={isSubmitting}>
-						<EmailField register={register} error={errors.email} />
-						<PasswordField register={register} error={errors.password} />
-						<UserRoleField register={register} error={errors.user_role} />
+						<EmailField
+							register={register}
+							error={errors.email}
+							autoFocus
+							tabIndex={1}
+						/>
+						<PasswordField
+							register={register}
+							error={errors.password}
+							tabIndex={2}
+						/>
+						<UserRoleField
+							register={register}
+							error={errors.user_role}
+							tabIndex={3}
+						/>
 					</fieldset>
 					<div className="flex flex-row justify-between">
 						<Button disabled={signupMutation.isPending}>Sign Up</Button>

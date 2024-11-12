@@ -85,11 +85,20 @@ export default function LoginForm() {
 					)}
 				>
 					<fieldset className="flex flex-col gap-y-4" disabled={isSubmitting}>
-						<EmailField register={register} error={errors.email} />
-						<PasswordField register={register} error={errors.password} />
+						<EmailField
+							register={register}
+							error={errors.email}
+							autoFocus
+							tabIndex={1}
+						/>
+						<PasswordField
+							register={register}
+							error={errors.password}
+							tabIndex={2}
+						/>
 					</fieldset>
 					<div className="flex flex-row justify-between">
-						<Button type="submit" disabled={isSubmitting}>
+						<Button type="submit" disabled={isSubmitting} tabIndex={3}>
 							Log in
 						</Button>
 
@@ -97,6 +106,7 @@ export default function LoginForm() {
 							to="/signup"
 							from={Route.fullPath}
 							className={buttonVariants({ variant: 'link' })}
+							tabIndex={4}
 						>
 							Create account
 						</Link>
@@ -109,6 +119,7 @@ export default function LoginForm() {
 							to="/forgot-password"
 							from={Route.fullPath}
 							className="s-link text-sm"
+							tabIndex={5}
 						>
 							Forgot password?
 						</Link>

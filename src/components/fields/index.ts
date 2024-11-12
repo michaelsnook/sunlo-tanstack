@@ -14,13 +14,17 @@ import PasswordField from './password-field'
 import UsernameField from './username-field'
 import UserRoleField from './user-role-field'
 
-export type FieldProps = {
-	register: UseFormRegister<FieldValues>
+type AnyFieldType = {
 	error: FieldError
+	tabIndex?: number
+	autoFocus?: boolean
 }
-export type ControlledFieldProps = {
+
+export type FieldProps = AnyFieldType & {
+	register: UseFormRegister<FieldValues>
+}
+export type ControlledFieldProps = AnyFieldType & {
 	control: Control
-	error: FieldError
 }
 
 export {
