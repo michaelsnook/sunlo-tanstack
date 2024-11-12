@@ -13,7 +13,7 @@ export function LearningGoalField({ control, error }: ControlledFieldProps) {
 	return (
 		<div>
 			<RadioGroup onValueChange={onChange} className="gap-0">
-				<RadioGroupItem value="moving" id="moving" className="hidden" />
+				<RadioGroupItem value="moving" id="moving" className="sr-only" />
 				<Label
 					htmlFor="moving"
 					className={cn(
@@ -34,7 +34,7 @@ export function LearningGoalField({ control, error }: ControlledFieldProps) {
 					</div>
 				</Label>
 
-				<RadioGroupItem value="family" id="family" className="hidden" />
+				<RadioGroupItem value="family" id="family" className="sr-only" />
 				<Label
 					htmlFor="family"
 					className={cn(
@@ -56,7 +56,7 @@ export function LearningGoalField({ control, error }: ControlledFieldProps) {
 					</div>
 				</Label>
 
-				<RadioGroupItem value="visiting" id="visiting" className="hidden" />
+				<RadioGroupItem value="visiting" id="visiting" className="sr-only" />
 				<Label
 					htmlFor="visiting"
 					className={cn(
