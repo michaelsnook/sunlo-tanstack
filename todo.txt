@@ -3,11 +3,18 @@ EPICS
 	1. ✅ add a mock for the form input
 		1. make the form input look niceeee
 	1. ✅ make the form input work
-	1. make the signup email nice
+	1. ~make the signup email nice~
 	1. differentiate the landing page
+		1. getting-started page just has the username and primary language, creates the profile only.
+			* primary: they reach with null profile
+			* edge: they reach with a profile
+			* primary: they create a profile
+			* edge ?? they edit their profile and go back ??
+		1. _then_ the differentiated page: 
+			*	learners get the add-first-deck page
+			* friends get an accept-friendship page
 	1. landing page followup steps (/getting-started, etc.)
 	1. implications: there should be someplace in /profile to change this? to "open up" the rest of the app?
-
 
 ISSUES
 1. When you try to sign up using existing creds you get an error and then get logged in. We

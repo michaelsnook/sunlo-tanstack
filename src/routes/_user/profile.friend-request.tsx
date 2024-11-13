@@ -44,8 +44,8 @@ export const Route = createFileRoute('/_user/profile/friend-request')({
 function FriendRequestPage() {
 	return (
 		<main className="flex flex-col gap-6">
-			<SearchProfiles />
 			<PendingRequestsSection />
+			<SearchProfiles />
 		</main>
 	)
 }
