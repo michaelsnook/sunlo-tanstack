@@ -29,11 +29,11 @@ export default function SelectLanguageYouKnow({
 	onChange,
 	disabledLang,
 }: SelectProps) {
-	const { data, isPending } = useProfile()
+	const { data } = useProfile()
 	const [open, setOpen] = useState(false)
 	const [value, setValue] = useState('')
 
-	if (isPending) return <Loading />
+	if (!data) return <Loading />
 	const languages_spoken = data?.languages_spoken || []
 	const selectOptions: SelectOption[] = opts(languages_spoken)
 

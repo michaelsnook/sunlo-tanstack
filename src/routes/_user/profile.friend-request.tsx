@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { z } from 'zod'
 import toast from 'react-hot-toast'
 import { useDebounce, usePrevious } from '@uidotdev/usehooks'
@@ -53,6 +53,7 @@ function FriendRequestPage() {
 export default function SearchProfiles() {
 	const { query } = Route.useSearch()
 	const debouncedQuery = useDebounce(query, 500)
+	const queryClient = useQueryClient()
 	const navigate = useNavigate({ from: Route.fullPath })
 	const { userId } = useAuth()
 	const setQueryInputValue = (val: string) =>
@@ -92,22 +93,28 @@ export default function SearchProfiles() {
 		!debouncedQuery ? [] : (searchResults ?? prevResults ?? [])
 	const showLoader = resultsToShow.length === 0 && isFetching ? true : false
 
-	const requestFriend = async (friendId: string) => {
-		const {
-			data: { user },
-		} = await supabase.auth.getUser()
-		if (!user) throw new Error('User not authenticated')
-
-		const { data } = await supabase
-			.from('friend_request_action')
-			.insert({ uid_from: userId, uid_to: friendId, action_type: 'requested' })
-			.throwOnError()
-		return data
-	}
 	const invite = useMutation({
-		mutationFn: requestFriend,
+		mutationFn: async (friendId: string) => {
+			const {
+				data: { user },
+			} = await supabase.auth.getUser()
+			if (!user) throw new Error('User not authenticated')
+
+			const { data } = await supabase
+				.from('friend_request_action')
+				.insert({
+					uid_from: userId,
+					uid_to: friendId,
+					action_type: 'requested',
+				})
+				.throwOnError()
+			return data
+		},
 		onSuccess: () => {
 			toast.success('Friend request sent successfully')
+			void queryClient.invalidateQueries({
+				queryKey: ['user', 'friend_invited'],
+			})
 		},
 		onError: (error) => {
 			toast.error('Failed to send friend request')
@@ -211,6 +218,7 @@ export default function SearchProfiles() {
 }
 
 function PendingRequestsSection() {
+	const queryClient = useQueryClient()
 	const { data, isPending } = useFriendsInvited()
 	const [hiddenRequests, setHiddenRequests] = useState<Array<uuid>>([])
 	const addOneHiddenRequest = (uid_to: uuid) =>
@@ -225,6 +233,9 @@ function PendingRequestsSection() {
 			// TODO it would be really nice to slide this away, like pass a ref in
 			// the mutation context and animate it away
 			addOneHiddenRequest(variables.uid_to)
+			void queryClient.invalidateQueries({
+				queryKey: ['user', 'friend_invited'],
+			})
 		},
 		onError: (error, variables) => {
 			console.log(

@@ -18,6 +18,7 @@ import {
 	LanguagesSpokenField,
 	UsernameField,
 } from '@/components/fields'
+import { Navigate } from '@tanstack/react-router'
 
 const ProfileEditFormSchema = z.object({
 	username: z
@@ -38,8 +39,11 @@ export default function UpdateProfileForm() {
 	if (error) return <ShowError>{error.message}</ShowError>
 
 	// we use placeholders for the profile, so there's no isPending
-	return !data.uid ?
-			<Loading className="mt-0" />
+	return (
+		!data ?
+			data === undefined ?
+				<Loading className="mt-0" />
+			:	<Navigate to={`/getting-started`} />
 		:	<PrefilledForm
 				initialData={{
 					avatar_url: data.avatar_url,
@@ -49,6 +53,7 @@ export default function UpdateProfileForm() {
 				}}
 				uid={data.uid}
 			/>
+	)
 }
 
 interface PrefilledFormProps {

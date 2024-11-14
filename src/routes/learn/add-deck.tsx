@@ -11,7 +11,7 @@ import { NavbarData } from '@/types/main'
 export const Route = createFileRoute('/learn/add-deck')({
 	loader: () => ({
 		navbar: {
-			title: `StartLearning a New Language`,
+			title: `Start Learning a New Language`,
 		} as NavbarData,
 	}),
 	component: NewDeckForm,
@@ -20,10 +20,8 @@ export const Route = createFileRoute('/learn/add-deck')({
 function NewDeckForm() {
 	const [lang, setLang] = useState('')
 	const createNewDeck = useNewDeckMutation()
-	const {
-		data: { deckLanguages },
-	} = useProfile()
-
+	const { data } = useProfile()
+	const deckLanguages = data?.deckLanguages ?? []
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		createNewDeck.mutate({ lang })
