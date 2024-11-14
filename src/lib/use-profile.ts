@@ -18,18 +18,30 @@ async function fetchAndShapeProfileFull() {
 	return { ...profile, decksMap, deckLanguages } as ProfileFull
 }
 
-export const profileQuery = (userId = '') =>
+const emptyProfile: ProfileFull = {
+	uid: '',
+	username: '',
+	language_primary: '',
+	languages_spoken: [],
+	avatar_url: '',
+	created_at: '',
+	updated_at: '',
+	decksMap: {},
+	deckLanguages: [],
+}
+
+export const profileQuery = (userId?: string) =>
 	queryOptions<ProfileFull, PostgrestError>({
 		queryKey: ['user', userId],
 		queryFn: async () => {
-			if (!userId) return null
+			if (!userId) return emptyProfile
 			return await fetchAndShapeProfileFull()
 		},
 	})
 
 export const useProfile = () => {
 	const { userId } = useAuth()
-	return useQuery({ ...profileQuery(userId) })
+	return useQuery({ ...profileQuery(userId), initialData: emptyProfile })
 }
 
 export const usePublicProfile = (uid: uuid) => {

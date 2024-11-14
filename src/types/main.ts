@@ -5,7 +5,7 @@ import {
 	PostgrestMaybeSingleResponse,
 	PostgrestResponse,
 } from '@supabase/supabase-js'
-import { Route } from '@tanstack/react-router'
+import { AnyRoute } from '@tanstack/react-router'
 
 export type uuid = string
 export type pids = Array<uuid>
@@ -18,8 +18,8 @@ export type SelectOption = { value: string; label: string }
 // Don't keep using these. use the framework's types for links and routes
 export type LinkType = {
 	name: string
-	to: Route['types']['to']
-	params?: Route['types']['params']
+	to: AnyRoute['types']['to']
+	params: AnyRoute['types']['params']
 	// TODO enum these for the caller
 	icon?: string
 }
