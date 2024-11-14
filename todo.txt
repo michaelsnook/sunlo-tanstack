@@ -4,17 +4,14 @@ EPICS
 		1. make the form input look niceeee
 	1. ✅ make the form input work
 	1. ~make the signup email nice~
-	1. differentiate the landing page
+	1. ✅ differentiate the landing page
 		1. ✅ getting-started page just has the username and primary language, creates the profile only.
-			* primary: they reach with null profile
-			* edge: they reach with a profile
-			* primary: they create a profile
-			* edge ?? they edit their profile and go back ??
 		1. _then_ the differentiated page: 
-			*	learners get the add-first-deck page
+			*	✅ learners get the add-first-deck page
 			* friends get an accept-friendship page
-	1. landing page followup steps (/getting-started, etc.)
+	1. ✅ landing page followup steps (/getting-started, etc.)
 	1. implications: there should be someplace in /profile to change this? to "open up" the rest of the app?
+		*	so far, no; the user_role is only used for the getting-started page's redirect
 
 ISSUES
 1. When you try to sign up using existing creds you get an error and then get logged in. We
@@ -22,6 +19,7 @@ ISSUES
 1. Signup workflow should not be a toast-redirect, it should be a success alert, saying go check
 	and verify your email; redirect should happen after this
 1. why is class s-link not working correctly in the "find a friend" search empty results section? (have manually added a border-b, like a barbarian)
+1. accent color isn't working; comes through as light grey; makes the s-link not visible (enough)
 
 EDGE CASES LEFT BEHIND
 1. When you reach the getting-started page with no "user role" set
