@@ -17,16 +17,16 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import languages from '@/lib/languages'
-import { PhraseFull, UserCardInsert } from '@/types/main'
+import { PhraseFull } from '@/types/main'
 
 interface SearchParams {
-	text?: string
+	q?: string
 }
 
 export const Route = createFileRoute('/learn/$lang/search')({
 	validateSearch: (search: Record<string, unknown>): SearchParams => {
 		return {
-			text: (search.text as string) || '',
+			q: (search.q as string) || '',
 		}
 	},
 	component: SearchTab,
@@ -38,18 +38,25 @@ const SearchPhraseSchema = z.object({
 
 type SearchFormInputs = z.infer<typeof SearchPhraseSchema>
 
+const AddCardSchema = z.object({
+	phrase_id: z.string().uuid(),
+	deck_id: z.string().uuid(),
+})
+
+type AddCardSubmission = z.infer<typeof AddCardSchema>
+
 function SearchTab() {
 	const { navigate } = useRouter()
 	const { lang } = Route.useParams()
-	const { text } = Route.useSearch()
+	const { q } = Route.useSearch()
 
 	const { control, handleSubmit } = useForm<SearchFormInputs>({
 		resolver: zodResolver(SearchPhraseSchema),
-		defaultValues: { text },
+		defaultValues: { text: q },
 	})
 
 	const searchResults = useQuery({
-		queryKey: ['user', lang, 'search', text],
+		queryKey: ['user', lang, 'search', q],
 		queryFn: (): PhraseFull[] => {
 			return []
 		},
@@ -58,7 +65,7 @@ function SearchTab() {
 	})
 
 	const addCardMutation = useMutation({
-		mutationFn: async (data: UserCardInsert) => {
+		mutationFn: async (data: AddCardSubmission) => {
 			return new Promise((resolve) => setTimeout(() => resolve(data), 200))
 		},
 		onSuccess: () => toast.success('Your phrase has been added to your deck.'),
@@ -87,16 +94,15 @@ function SearchTab() {
 								<Input
 									{...field}
 									placeholder="Enter a phrase to search or add"
-									onChange={(e) => {
+									onChange={async (e) => {
 										field.onChange(e)
-										void navigate({
+										void (await navigate({
 											to: '.',
-											replace: true,
 											search: (search: SearchParams) => ({
 												...search,
-												text: e.target.value,
+												q: e.target.value,
 											}),
-										})
+										}))
 									}}
 								/>
 							)}
@@ -110,7 +116,7 @@ function SearchTab() {
 							<Link
 								to="/learn/$lang/add-phrase"
 								from={Route.fullPath}
-								search={(search: SearchParams) => ({ ...search, text })}
+								search={(search: SearchParams) => ({ ...search, phrase: q })}
 							>
 								<NotebookPen />
 								Add New Phrase

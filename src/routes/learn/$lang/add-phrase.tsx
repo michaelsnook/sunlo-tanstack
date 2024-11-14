@@ -19,13 +19,13 @@ import { Textarea } from '@/components/ui/textarea'
 import { NotebookPen, Search } from 'lucide-react'
 
 interface SearchParams {
-	text?: string
+	phrase?: string
 }
 
 export const Route = createFileRoute('/learn/$lang/add-phrase')({
 	validateSearch: (search: Record<string, unknown>): SearchParams => {
 		return {
-			text: (search?.text as string) ?? '',
+			phrase: (search?.phrase as string) ?? '',
 		}
 	},
 	component: AddPhraseTab,
@@ -39,9 +39,9 @@ const addPhraseSchema = z.object({
 function AddPhraseTab() {
 	const navigate = Route.useNavigate()
 	const { lang } = Route.useParams()
-	const { text } = Route.useSearch()
+	const { phrase } = Route.useSearch()
 
-	const searchPhrase = text || ''
+	const searchPhrase = phrase || ''
 	const { control: addPhraseControl, handleSubmit: handleAddPhraseSubmit } =
 		useForm<z.infer<typeof addPhraseSchema>>({
 			resolver: zodResolver(addPhraseSchema),
@@ -57,7 +57,7 @@ function AddPhraseTab() {
 			void navigate({
 				to: '/learn/$lang/add-phrase',
 				params: { lang },
-				search: { text: '' },
+				search: { phrase: '' },
 			})
 		},
 	})
@@ -83,19 +83,17 @@ function AddPhraseTab() {
 							control={addPhraseControl}
 							render={({ field }) => (
 								<Input
-									{...field}
-									placeholder="The text of the phrase to learn"
 									onChange={(e) => {
 										field.onChange(e)
 										void navigate({
 											to: '.',
-											replace: true,
 											search: (search: SearchParams) => ({
 												...search,
-												text: e.target.value,
+												phrase: e.target.value,
 											}),
 										})
 									}}
+									{...field}
 								/>
 							)}
 						/>
@@ -122,7 +120,7 @@ function AddPhraseTab() {
 							<Link
 								to="/learn/$lang/search"
 								from={Route.fullPath}
-								search={(search: SearchParams) => ({ ...search, text })}
+								search={(search: SearchParams) => ({ ...search, q: phrase })}
 							>
 								<Search />
 								Search for sumilar phrases
