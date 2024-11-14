@@ -10,7 +10,6 @@ export default function UsernameField({ register, error }: FieldProps) {
 			</Label>
 			<Input
 				type="text"
-				placeholder="e.g. Learnie McLearnerson, Helpar1992"
 				{...register('username')}
 				inputMode="text"
 				aria-invalid={!!error}

@@ -1,9 +1,9 @@
-import { createFileRoute, Navigate } from '@tanstack/react-router'
+import { createFileRoute, useRouter } from '@tanstack/react-router'
+import { Loader } from 'lucide-react'
+
 import { useAuth } from '@/lib/hooks'
-import ProfileCreationForm from '@/components/profile-creation-form'
 import { useProfile } from '@/lib/use-profile'
-import { Loader2 } from 'lucide-react'
-import SuccessCheckmark from '@/components/SuccessCheckmark'
+import ProfileCreationForm from '@/components/profile-creation-form'
 
 export const Route = createFileRoute('/_user/getting-started')({
 	component: GettingStartedPage,
@@ -11,26 +11,28 @@ export const Route = createFileRoute('/_user/getting-started')({
 
 function GettingStartedPage() {
 	const { userId, userRole } = useAuth()
-	const { data: profile } = useProfile()
-
+	const { data: profile, isPending: profilePending } = useProfile()
+	console.log(`GettingStartedPage`, userId, userRole, profile)
 	const nextPage =
 		userRole === 'learner' ? '/learn/add-deck' : '/profile/friend-request'
+	const { navigate } = useRouter()
+	const proceed = () => navigate({ to: nextPage, from: Route.fullPath })
 
-	return (
-		profile === undefined ? <Loader2 className="mx-auto my-10" />
-		: profile !== null ? <Navigate to={nextPage} />
-		: <main className="dark w-app py-10 px-[5cqw]">
+	return profilePending ?
+			<Loader />
+		:	<main className="dark w-app py-10">
 				<div className="space-y-4 my-4 text-center">
-					<h1 className="d1">Welcome to Sunlo</h1>
-					<div className="max-w-sm flex flex-row gap-4  mx-auto items-center">
-						<SuccessCheckmark className="bg-transparent" />
-						<p className="text-2xl font-thin text-muted-foreground">
-							Thanks&nbsp;for&nbsp;confirming your email &ndash; let&apos;s
-							get&nbsp;you&nbsp;set&nbsp;up.
-						</p>
-					</div>
+					<h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+						Welcome to Sunlo
+					</h1>
+					<p className="text-2xl text-muted-foreground">
+						Let&apos;s get started
+					</p>
 				</div>
-				<ProfileCreationForm userId={userId} />
+				<ProfileCreationForm
+					userId={userId}
+					profile={profile}
+					proceed={proceed}
+				/>
 			</main>
-	)
 }

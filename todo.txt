@@ -5,7 +5,7 @@ EPICS
 	1. ✅ make the form input work
 	1. ~make the signup email nice~
 	1. differentiate the landing page
-		1. ✅ getting-started page just has the username and primary language, creates the profile only.
+		1. getting-started page just has the username and primary language, creates the profile only.
 			* primary: they reach with null profile
 			* edge: they reach with a profile
 			* primary: they create a profile
@@ -22,11 +22,6 @@ ISSUES
 1. Signup workflow should not be a toast-redirect, it should be a success alert, saying go check
 	and verify your email; redirect should happen after this
 1. why is class s-link not working correctly in the "find a friend" search empty results section? (have manually added a border-b, like a barbarian)
-
-EDGE CASES LEFT BEHIND
-1. When you reach the getting-started page with no "user role" set
-	* rn the redirect pretends you're a helper
-	* we should probably ask ppl instead
 
 JOURNEYS TO MOCK
 1. Invite a friend (for a learner to invite someone by email)
