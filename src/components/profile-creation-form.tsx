@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { Button } from '@/components/ui/button'
-import { ProfileFull, ProfileInsert } from '@/types/main'
+import { ProfileInsert } from '@/types/main'
 import { LanguagePrimaryField, UsernameField } from './fields'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import supabase from '@/lib/supabase-client'
@@ -20,15 +20,7 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>
 
-export default function ProfileCreationForm({
-	userId,
-	profile,
-	proceed,
-}: {
-	userId: string
-	profile: ProfileFull
-	proceed: () => Promise<void>
-}) {
+export default function ProfileCreationForm({ userId }: { userId: string }) {
 	const queryClient = useQueryClient()
 
 	const {
@@ -36,17 +28,12 @@ export default function ProfileCreationForm({
 		register,
 		handleSubmit,
 		formState: { errors },
-		reset,
 	} = useForm<FormData>({
 		resolver: zodResolver(formSchema),
-		defaultValues: {
-			username: profile.username || '',
-			language_primary: profile.language_primary || '',
-		},
 	})
 
 	const mainForm = useMutation({
-		mutationKey: ['user', 'profile'],
+		mutationKey: ['user', userId],
 		mutationFn: async (values: ProfileInsert) => {
 			const { data } = await supabase
 				.from('user_profile')
@@ -59,8 +46,7 @@ export default function ProfileCreationForm({
 		onSuccess: async (data) => {
 			console.log(`Success! deck, profile`, data)
 			toast.success('Success!')
-			await queryClient.invalidateQueries({ queryKey: ['user', 'profile'] })
-			void proceed()
+			await queryClient.invalidateQueries({ queryKey: ['user'] })
 		},
 		onError: (error) => {
 			console.log(`Error:`, error)
@@ -69,7 +55,7 @@ export default function ProfileCreationForm({
 	})
 
 	return (
-		<div className="max-w-xl space-y-8 mx-auto">
+		<div className="max-w-sm space-y-8 mx-auto">
 			<form onSubmit={handleSubmit(mainForm.mutate)} className="space-y-6">
 				<UsernameField register={register} error={errors.username} />
 				<LanguagePrimaryField
@@ -78,18 +64,8 @@ export default function ProfileCreationForm({
 				/>
 				<div className="flex flex-col gap-4 sm:flex-row sm:justify-between">
 					<Button type="submit" className="w-full sm:w-auto">
-						Confirm and get started!
+						Confirm
 					</Button>
-					{profile.uid === '' ? null : (
-						<Button
-							type="button"
-							variant="outline"
-							className="w-full sm:w-auto"
-							onClick={() => reset()}
-						>
-							Reset form
-						</Button>
-					)}
 				</div>
 			</form>
 		</div>
