@@ -7,14 +7,12 @@ import toast from 'react-hot-toast'
 
 import { Button, buttonVariants } from '@/components/ui/button'
 import { CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import Callout from '@/components/ui/callout'
+import { EmailField, PasswordField, UserRoleField } from '@/components/fields'
 
 import supabase from '@/lib/supabase-client'
 import { ShowError } from '@/components/errors'
-import { EmailField, PasswordField, UserRoleField } from '@/components/fields'
-import Callout from '@/components/ui/callout'
-import { GarlicBroccoli } from '@/components/garlic'
 import SuccessCheckmark from '@/components/SuccessCheckmark'
-import { SquareCheckBig } from 'lucide-react'
 
 export const Route = createLazyFileRoute('/_auth/signup')({
 	component: SignUp,
@@ -25,9 +23,9 @@ const FormSchema = z.object({
 		.string()
 		.min(1, `Email is required`)
 		.email(`Email is required to be a real email`),
-	password: z.string().min(8, 'Password should be 8 characters or more'),
+	password: z.string().min(8, 'Password should be 8 characters at least'),
 	user_role: z.enum(['learner', 'helper', 'both'], {
-		message: 'Please select a role',
+		message: `Let us know how you'll use the app`,
 	}),
 })
 
@@ -56,9 +54,13 @@ function SignUp() {
 			// return { user: { email: '@fake email@' } }
 		},
 		onSuccess: (data) => {
-			toast.success(`Account created for ${data.user?.email}`, {
-				position: 'bottom-center',
-			})
+			console.log(`Signup form response data`, data)
+			toast.success(
+				`Account created for ${data.user?.email}. Please check your email to confirm.`,
+				{
+					position: 'bottom-center',
+				}
+			)
 		},
 	})
 
