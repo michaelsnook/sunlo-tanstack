@@ -20,6 +20,14 @@ ISSUES
 	and verify your email; redirect should happen after this
 1. why is class s-link not working correctly in the "find a friend" search empty results section? (have manually added a border-b, like a barbarian)
 1. accent color isn't working; comes through as light grey; makes the s-link not visible (enough)
+1. Friends data model: we have a problem with stacking multiple invites/requests between the same two people
+	* Solution seems to be a single `friend_relationship` type table that has unique set for the left_uid and right_uid.
+	* then all the actions can have a `friend_relationship_id` and a `friend_action_id`
+	* then some view like `friend_relationship_status_current` can be a view that takes the most recent record from the friend_action table and also calulates another overall status of "no | yes | pending"
+	* then the RLS for the actions can validate inserts based on this "current" status
+		* initial invites can only be sent when overall status is "no" or the relationship is not present
+		* other rules apply as they currently are (but we need to review the setup; and more reason to VC the database, as we put more business logic into it)
+	* the client can respond to RLS mismatches by invalidating the cache only
 
 EDGE CASES LEFT BEHIND
 1. When you reach the getting-started page with no "user role" set

@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { z } from 'zod'
 import toast from 'react-hot-toast'
 import { useDebounce, usePrevious } from '@uidotdev/usehooks'
-import { Loader2, PlusIcon, Search, Send, X } from 'lucide-react'
+import { Loader2, PlusIcon, Search, Send, ThumbsUp, X } from 'lucide-react'
 
 import { Button, buttonVariants } from '@/components/ui/button'
 import {
@@ -17,7 +17,7 @@ import {
 import { Input } from '@/components/ui/input'
 import Callout from '@/components/ui/callout'
 import { AvatarIconRow } from '@/components/ui/avatar-icon'
-import { useFriendsInvited } from '@/lib/friends'
+import { useFriendInvitations, useFriendsInvited } from '@/lib/friends'
 import Loading from '@/components/loading'
 import {
 	FriendRequestAction,
@@ -44,9 +44,191 @@ export const Route = createFileRoute('/_user/profile/friend-request')({
 function FriendRequestPage() {
 	return (
 		<main className="flex flex-col gap-6">
+			<PendingInvitationsSection />
 			<PendingRequestsSection />
 			<SearchProfiles />
 		</main>
+	)
+}
+
+function PendingInvitationsSection() {
+	const queryClient = useQueryClient()
+	const { data, isPending } = useFriendInvitations()
+	const [hiddenRequests, setHiddenRequests] = useState<Array<uuid>>([])
+	const addOneHiddenRequest = (uid_from: uuid) =>
+		setHiddenRequests((start) => [...start, uid_from])
+
+	const inviteAcceptMutation = useMutation({
+		mutationKey: ['user', 'accept_invite_request'],
+		mutationFn: async (values: FriendRequestActionInsert) => {
+			await supabase.from('friend_request_action').insert(values).throwOnError()
+		},
+		onSuccess: () => {
+			toast.success('Accepted invitation')
+			// TODO it would be really nice to slide this away, like pass a ref in
+			// the mutation context and animate it away
+			// addOneHiddenRequest(variables.uid_from)
+			void queryClient.invalidateQueries({
+				queryKey: ['user', 'friend_invitation'],
+			})
+		},
+		onError: (error, variables) => {
+			console.log(
+				`Something went wrong trying to accept this invitation:`,
+				error,
+				variables
+			)
+			toast.error(`Something went wrong accepting the invitation`)
+		},
+	})
+
+	const inviteRejectMutation = useMutation({
+		mutationKey: ['user', 'reject_invite_request'],
+		mutationFn: async (values: FriendRequestActionInsert) => {
+			await supabase.from('friend_request_action').insert(values).throwOnError()
+		},
+		onSuccess: (_, variables) => {
+			toast('Declined this invitation')
+			// TODO it would be really nice to slide this away, like pass a ref in
+			// the mutation context and animate it away
+			addOneHiddenRequest(variables.uid_from)
+			void queryClient.invalidateQueries({
+				queryKey: ['user', 'friend_invitation'],
+			})
+		},
+		onError: (error, variables) => {
+			console.log(
+				`Something went wrong trying to reject this friend invitation:`,
+				error,
+				variables
+			)
+			toast.error(`Something went wrong declining the invitation`)
+		},
+	})
+
+	const onClickRejectInvite = (invitate: FriendRequestAction) => {
+		inviteRejectMutation.mutate({
+			uid_from: invitate.uid_from,
+			uid_to: invitate.uid_to,
+			action_type: 'rejected',
+		})
+	}
+	const onClickAcceptInvite = (invitate: FriendRequestAction) => {
+		inviteAcceptMutation.mutate({
+			uid_from: invitate.uid_from,
+			uid_to: invitate.uid_to,
+			action_type: 'accepted',
+		})
+	}
+	return (
+		<Card>
+			<CardHeader>
+				<CardTitle>Invitations from friends</CardTitle>
+			</CardHeader>
+			<CardContent className="space-y-4">
+				{isPending ?
+					<Loading />
+				: data.length === 0 ?
+					<p>You don't have any pending invitations at this time.</p>
+				:	data.map((invite) => {
+						return hiddenRequests.indexOf(invite.uid_to) > -1 ?
+								null
+							:	<AvatarIconRow {...invite.friend} key={invite.uid_to}>
+									<div className="flex flex-row gap-2">
+										<Button
+											variant="default"
+											className="w-8 h-8"
+											size="icon"
+											title="Accept pending invitation"
+											onClick={() => onClickAcceptInvite(invite)}
+										>
+											<ThumbsUp />
+										</Button>
+										<Button
+											variant="secondary"
+											className="w-8 h-8"
+											size="icon"
+											title="Decline pending invitation"
+											onClick={() => onClickRejectInvite(invite)}
+										>
+											<X className="w-6 h-6 p-0" />
+										</Button>
+									</div>
+								</AvatarIconRow>
+					})
+				}
+			</CardContent>
+		</Card>
+	)
+}
+
+function PendingRequestsSection() {
+	const queryClient = useQueryClient()
+	const { data, isPending } = useFriendsInvited()
+	const [hiddenRequests, setHiddenRequests] = useState<Array<uuid>>([])
+
+	const addOneHiddenRequest = (uid_to: uuid) =>
+		setHiddenRequests((start) => [...start, uid_to])
+
+	const inviteCancelMutation = useMutation({
+		mutationKey: ['user', 'cancel_invite_request'],
+		mutationFn: async (values: FriendRequestActionInsert) => {
+			await supabase.from('friend_request_action').insert(values).throwOnError()
+		},
+		onSuccess: (_, variables) => {
+			toast('Cancelled this friend request')
+			// TODO it would be really nice to slide this away, like pass a ref in
+			// the mutation context and animate it away
+			addOneHiddenRequest(variables.uid_to)
+			void queryClient.invalidateQueries({
+				queryKey: ['user', 'friend_invited'],
+			})
+		},
+		onError: (error, variables) => {
+			console.log(
+				`Something went wrong trying to cancel this friend request:`,
+				error,
+				variables
+			)
+			toast.error(`Something went wrong; maybe log out and try again`)
+		},
+	})
+
+	const onClickCancelInvite = (invitate: FriendRequestAction) => {
+		inviteCancelMutation.mutate({
+			uid_from: invitate.uid_from,
+			uid_to: invitate.uid_to,
+			action_type: 'cancelled',
+		})
+	}
+	return (
+		<Card>
+			<CardHeader>
+				<CardTitle>Pending requests</CardTitle>
+			</CardHeader>
+			<CardContent className="space-y-4">
+				{isPending ?
+					<Loading />
+				: data.length === 0 ?
+					<p>You don't have any requests pending at this time.</p>
+				:	data.map((invite) => {
+						return hiddenRequests.indexOf(invite.uid_to) > -1 ?
+								null
+							:	<AvatarIconRow {...invite.friend} key={invite.uid_to}>
+									<Button
+										variant="secondary"
+										className="w-8 h-8"
+										size="icon"
+										title="Cancel pending request"
+										onClick={() => onClickCancelInvite(invite)}
+									>
+										<X className="w-6 h-6 p-0" />
+									</Button>
+								</AvatarIconRow>
+					})
+				}
+			</CardContent>
+		</Card>
 	)
 }
 
@@ -212,74 +394,6 @@ export default function SearchProfiles() {
 						</div>
 					}
 				</div>
-			</CardContent>
-		</Card>
-	)
-}
-
-function PendingRequestsSection() {
-	const queryClient = useQueryClient()
-	const { data, isPending } = useFriendsInvited()
-	const [hiddenRequests, setHiddenRequests] = useState<Array<uuid>>([])
-	const addOneHiddenRequest = (uid_to: uuid) =>
-		setHiddenRequests((start) => [...start, uid_to])
-	const inviteCancelMutation = useMutation({
-		mutationKey: ['user', 'cancel_invite_request'],
-		mutationFn: async (values: FriendRequestActionInsert) => {
-			await supabase.from('friend_request_action').insert(values).throwOnError()
-		},
-		onSuccess: (_, variables) => {
-			toast('Cancelled this friend request')
-			// TODO it would be really nice to slide this away, like pass a ref in
-			// the mutation context and animate it away
-			addOneHiddenRequest(variables.uid_to)
-			void queryClient.invalidateQueries({
-				queryKey: ['user', 'friend_invited'],
-			})
-		},
-		onError: (error, variables) => {
-			console.log(
-				`Something went wrong trying to cancel this friend request:`,
-				error,
-				variables
-			)
-			toast.error(`Something went wrong; maybe log out and try again`)
-		},
-	})
-
-	const onClickCancelInvite = (invitate: FriendRequestAction) => {
-		inviteCancelMutation.mutate({
-			uid_from: invitate.uid_from,
-			uid_to: invitate.uid_to,
-			action_type: 'cancelled',
-		})
-	}
-	return (
-		<Card>
-			<CardHeader>
-				<CardTitle>Pending requests</CardTitle>
-			</CardHeader>
-			<CardContent className="space-y-4">
-				{isPending ?
-					<Loading />
-				: data.length === 0 ?
-					<p>You don't have any requests pending at this time.</p>
-				:	data.map((invite) => {
-						return hiddenRequests.indexOf(invite.uid_to) > -1 ?
-								null
-							:	<AvatarIconRow {...invite.friend} key={invite.uid_to}>
-									<Button
-										variant="secondary"
-										className="w-8 h-8"
-										size="icon"
-										title="Cancel pending invitation"
-										onClick={() => onClickCancelInvite(invite)}
-									>
-										<X className="w-6 h-6 p-0" />
-									</Button>
-								</AvatarIconRow>
-					})
-				}
 			</CardContent>
 		</Card>
 	)

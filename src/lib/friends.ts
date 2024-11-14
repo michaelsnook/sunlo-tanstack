@@ -32,6 +32,23 @@ export const useFriendsInvited = () => {
 	})
 }
 
+export const useFriendInvitations = () => {
+	const { userId } = useAuth()
+	return useQuery({
+		queryKey: ['user', 'friend_invitation', userId],
+		queryFn: async () => {
+			const { data } = await supabase
+				.from('friend_request_action_recent')
+				.select(
+					'*, friend:public_profile!friend_request_action_uid_from_fkey(*)'
+				)
+				.eq('action_type', 'requested')
+				.throwOnError()
+			return data
+		},
+	})
+}
+
 // const actionsFrom = z.enum(['requested', 'cancelled', 'ended'])
 // const actionsTo = z.enum(['rejected', 'accepted', 'ended'])
 
