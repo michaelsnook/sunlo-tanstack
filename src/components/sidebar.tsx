@@ -15,19 +15,19 @@ import Callout from './ui/callout'
 
 const staticMenu: MenuType = {
 	name: 'Menu',
-	to: '/',
+	href: null,
 	links: [
 		{
 			name: 'Home',
-			to: '/',
+			href: '/',
 		},
 		{
 			name: 'Log in or sign up',
-			to: '/login',
+			href: '/login',
 		},
 		{
 			name: 'Browse Languages',
-			to: '/languages',
+			href: '/language',
 		},
 	],
 }
@@ -36,23 +36,22 @@ const GenericMenu = ({ menu }: { menu: MenuType }) => {
 	return (
 		<div>
 			<p className="my-4 font-bold">
-				{menu.to === null ?
-					menu.name
-				:	<Link
+				{menu.href ?
+					<Link
 						className="nav-link"
-						to={menu.to as string}
+						to={menu.href}
 						activeOptions={{
 							exact: true,
 						}}
 					>
 						{menu.name}
 					</Link>
-				}
+				:	menu.name}
 			</p>
 			<ul className="flex flex-col gap-2">
 				{menu.links?.map((i) => (
-					<li key={i.to}>
-						<Link className="nav-link" to={i.to as string}>
+					<li key={i.href}>
+						<Link className="nav-link" to={i.href}>
 							{i.name}
 						</Link>
 					</li>
@@ -110,12 +109,11 @@ function DeckMenu() {
 	} = useProfile()
 	const menuData = {
 		name: 'Learning decks',
-		to: '/learn',
-		links: data.deckLanguages?.map((lang) => {
+		href: '/learn',
+		links: deckLanguages?.map((lang) => {
 			return {
 				name: languages[lang],
-				to: `/learn/$lang`,
-				params: { lang },
+				href: `/learn/${lang}`,
 			}
 		}),
 	}
