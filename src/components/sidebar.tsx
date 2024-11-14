@@ -51,7 +51,7 @@ const GenericMenu = ({ menu }: { menu: MenuType }) => {
 			</p>
 			<ul className="flex flex-col gap-2">
 				{menu.links?.map((i) => (
-					<li key={i.to}>
+					<li key={`${i.to}-${i.params ? JSON.stringify(i.params) : ''}`}>
 						<Link className="nav-link" to={i.to as string}>
 							{i.name}
 						</Link>
@@ -105,9 +105,9 @@ export default function Sidebar() {
 }
 
 function DeckMenu() {
-	const {
-		data: { uid, deckLanguages },
-	} = useProfile()
+	const { data } = useProfile()
+	if (!data) return null
+
 	const menuData = {
 		name: 'Learning decks',
 		to: '/learn',
@@ -119,29 +119,29 @@ function DeckMenu() {
 			}
 		}),
 	}
-	return uid ?
-			<>
-				<Link to="/profile" className="nav-link">
-					<p className="flex flex-row gap-2">
-						<Avatar size={24} />
-						Your profile
-					</p>
-				</Link>
-				{deckLanguages.length === 0 ?
-					<Callout>
-						<div>
-							<p>
-								It seems like you're not learning any languages yet! Get
-								started.
-							</p>
-							<Button className="w-full mt-2" asChild>
-								<Link to="/learn/add-deck">Start Learning</Link>
-							</Button>
-						</div>
-					</Callout>
-				:	<GenericMenu menu={menuData} />}
-			</>
-		:	null
+
+	return (
+		<>
+			<Link to="/profile" className="nav-link">
+				<p className="flex flex-row gap-2">
+					<Avatar size={24} />
+					Your profile
+				</p>
+			</Link>
+			{data.deckLanguages.length === 0 ?
+				<Callout>
+					<div>
+						<p>
+							It seems like you're not learning any languages yet! Get started.
+						</p>
+						<Button className="w-full mt-2" asChild>
+							<Link to="/learn/add-deck">Start Learning</Link>
+						</Button>
+					</div>
+				</Callout>
+			:	<GenericMenu menu={menuData} />}
+		</>
+	)
 }
 
 function SignOutButton({ shy = false }) {

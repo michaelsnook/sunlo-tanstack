@@ -3,7 +3,7 @@ import { User } from 'lucide-react'
 
 export default function Avatar({ size = 144 }) {
 	const { data: profile } = useProfile()
-	return profile.avatar_url ?
+	return profile?.avatar_url ?
 			<img
 				src={profile.avatar_url}
 				width={size}
