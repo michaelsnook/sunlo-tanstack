@@ -10,7 +10,12 @@ export const Route = createFileRoute('/_user/profile')({
 			icon: '',
 			contextMenu: [
 				{
-					name: 'Connect with friends',
+					name: 'Friends list',
+					to: '/profile/friend-list',
+					icon: 'friend',
+				},
+				{
+					name: 'Browse profiles',
 					to: '/profile/friend-request',
 					icon: 'handshake',
 				},
