@@ -14,7 +14,7 @@ function GettingStartedPage() {
 	const { data: profile } = useProfile()
 
 	const nextPage =
-		userRole === 'learner' ? '/learn/add-deck' : '/profile/friend-request'
+		userRole === 'learner' ? '/learn/add-deck' : '/friends/request'
 
 	return (
 		profile === undefined ? <Loader2 className="mx-auto my-10" />

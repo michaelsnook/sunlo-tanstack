@@ -18,7 +18,7 @@ import { Label } from '@/components/ui/label'
 import { Search, Send } from 'lucide-react'
 import { ShowError } from '@/components/errors'
 
-export const Route = createFileRoute('/_user/profile/friend-invite')({
+export const Route = createFileRoute('/_user/friends/invite')({
 	component: InviteFriendPage,
 })
 
@@ -65,7 +65,7 @@ function InviteFriendForm() {
 					<div className="flex flex-row justify-between items-center">
 						<span>Invite a Friend</span>
 						<Link
-							to="/profile/friend-request"
+							to="/friends/request"
 							aria-disabled="true"
 							className={buttonVariants({ size: 'badge', variant: 'outline' })}
 						>
