@@ -99,7 +99,11 @@ function ViewProfileWithRelationship({
 	return (
 		<AvatarIconRow {...otherPerson}>
 			<div className="flex flex-row gap-2">
-				{inviteResponseMutation.isSuccess ?
+				{inviteResponseMutation.isPending ?
+					<span className="h-8 w-8 rounded-full p-1">
+						<Loader2 className="w-6 h-6" />
+					</span>
+				: inviteResponseMutation.isSuccess ?
 					<span className="bg-green-600 h-8 w-8 rounded-full p-1">
 						<Check className="text-white w-6 h-6" />
 					</span>
