@@ -1,10 +1,7 @@
-WHERE I AM NOW:
-We've updated the DB types, but not updates the code accordingly
-
 EPICS
 1. Got to actually build the signup workflow, for learners and friends
 	1. ✅ add a mock for the form input
-		1. make the form input look niceeee
+		1. ✅ make the form input look niceeee
 	1. ✅ make the form input work
 	1. ~make the signup email nice~
 	1. ✅ differentiate the landing page
@@ -29,6 +26,9 @@ EDGE CASES LEFT BEHIND
 1. When you reach the getting-started page with no "user role" set
 	* rn the redirect pretends you're a helper
 	* we should probably ask ppl instead
+1. If you hack the client it's possible to "Accept" an invitation that hasn't been sent;
+		the RLS can reject these and/or the friend_summary view can check and verify the who sequence.
+		Both of these options seem secure, and they won't conflict.
 
 JOURNEYS TO MOCK
 1. Invite a friend (for a learner to invite someone by email)
@@ -59,7 +59,7 @@ MOCKS / Incompletes
 		1. ✅ type-as-you-search, debounce it, make sure it's smooth
 	1. Invite a new user (by email) is a separate screen to add (split off from the find-friend route)
 1. ✅ The "Deck Home" screen or Welcome Screen
-1. The "new friend signup" screens -- what are we doing here? selecting which deck(s) we're helping with... and then what?
+1. ✅ The "new friend signup" screens -- what are we doing here? selecting which deck(s) we're helping with... and then what?
 	1. How does the friend mode sidebar look? is it the same? are some people Learners _and_ Helpers?
 			(ideally, yes?) should we be switching "modes" like one context switcher that has options for
 			each deck we're learning and each deck we're helping with...
@@ -106,16 +106,17 @@ UI POLISH
 1. When a loader awaits, this is a time to show blank shell and transition in
 
 UPGRADE FORMS
-1. Some existing forms don't use react-hook-form: --- the Getting Started page, the add-deck form.
+1. Some existing forms don't use react-hook-form: -- the add-deck form, for one.
 
 DATA LOADING
 1. ✅ replace useLang with router feature
 1. ✅ replace the old useProfile and ProfileFull
 1. ✅ refresh all the fetcher hooks w the select-paradigm code
-1. don't use `enabled` to waterfall useQueries on auth context
+1. ✅ don't use `enabled` to waterfall useQueries on auth context
 		perhaps this will just be a code convention only render components after auth
 		perhaps there is a better way to use the params / data / keys
-1. Cache structure: we need to be able to retrieve objects by their UUID alone... phrases in particular.
+1. Cache structure: we need to be able to retrieve objects by their UUID alone...
+		phrases in particular. now also relationships or public profiles, bc search results
 
 ROUTER
 1. ✅ if the navbar is not present, use its parent, somehow. (unclear why this is not happening)

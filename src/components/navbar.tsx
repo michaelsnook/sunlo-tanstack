@@ -3,6 +3,7 @@ import {
 	type LucideProps,
 	BookHeart,
 	ChevronLeft,
+	Contact,
 	FolderPlus,
 	Handshake,
 	Home,
@@ -75,7 +76,7 @@ export default function Navbar() {
 						{data?.contextMenu.map(({ to, params, name, icon }, index) => (
 							<DropdownMenuItem key={index}>
 								<Link
-									to={to}
+									to={to as string}
 									params={params}
 									className="w-full flex flex-row gap-2 justify-content-center"
 								>
@@ -104,6 +105,8 @@ function renderIcon(icon: string, props: LucideProps = { size: 20 }) {
 			return <Mail {...props} />
 		case 'folder-plus': // for a new deck
 			return <FolderPlus {...props} />
+		case 'friend':
+			return <Contact {...props} />
 		case 'handshake':
 			return <Handshake {...props} />
 		case 'home': // for your /learn page

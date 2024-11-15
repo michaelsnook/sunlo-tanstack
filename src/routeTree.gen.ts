@@ -33,6 +33,7 @@ import { Route as LearnLangPublicLibraryImport } from './routes/learn/$lang/publ
 import { Route as LearnLangDeckSettingsImport } from './routes/learn/$lang/deck-settings'
 import { Route as LearnLangAddPhraseImport } from './routes/learn/$lang/add-phrase'
 import { Route as UserProfileFriendRequestImport } from './routes/_user/profile.friend-request'
+import { Route as UserProfileFriendListImport } from './routes/_user/profile.friend-list'
 import { Route as UserProfileFriendInviteImport } from './routes/_user/profile.friend-invite'
 import { Route as UserProfileChangePasswordImport } from './routes/_user/profile.change-password'
 import { Route as UserProfileChangeEmailImport } from './routes/_user/profile.change-email'
@@ -189,6 +190,11 @@ const LearnLangAddPhraseRoute = LearnLangAddPhraseImport.update({
 
 const UserProfileFriendRequestRoute = UserProfileFriendRequestImport.update({
   path: '/friend-request',
+  getParentRoute: () => UserProfileRoute,
+} as any)
+
+const UserProfileFriendListRoute = UserProfileFriendListImport.update({
+  path: '/friend-list',
   getParentRoute: () => UserProfileRoute,
 } as any)
 
@@ -365,6 +371,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserProfileFriendInviteImport
       parentRoute: typeof UserProfileImport
     }
+    '/_user/profile/friend-list': {
+      id: '/_user/profile/friend-list'
+      path: '/friend-list'
+      fullPath: '/profile/friend-list'
+      preLoaderRoute: typeof UserProfileFriendListImport
+      parentRoute: typeof UserProfileImport
+    }
     '/_user/profile/friend-request': {
       id: '/_user/profile/friend-request'
       path: '/friend-request'
@@ -442,6 +455,7 @@ export const routeTree = rootRoute.addChildren({
       UserProfileChangeEmailRoute,
       UserProfileChangePasswordRoute,
       UserProfileFriendInviteRoute,
+      UserProfileFriendListRoute,
       UserProfileFriendRequestRoute,
       UserProfileIndexRoute,
     }),
@@ -543,6 +557,7 @@ export const routeTree = rootRoute.addChildren({
         "/_user/profile/change-email",
         "/_user/profile/change-password",
         "/_user/profile/friend-invite",
+        "/_user/profile/friend-list",
         "/_user/profile/friend-request",
         "/_user/profile/"
       ]
@@ -593,6 +608,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_user/profile/friend-invite": {
       "filePath": "_user/profile.friend-invite.tsx",
+      "parent": "/_user/profile"
+    },
+    "/_user/profile/friend-list": {
+      "filePath": "_user/profile.friend-list.tsx",
       "parent": "/_user/profile"
     },
     "/_user/profile/friend-request": {
