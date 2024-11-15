@@ -11,51 +11,91 @@ export type Database = {
     Tables: {
       friend_request_action: {
         Row: {
-          action_type: Database["public"]["Enums"]["friend_request_action_type"]
+          action_type:
+            | Database["public"]["Enums"]["friend_request_response"]
+            | null
           created_at: string
           id: string
-          uid_from: string
-          uid_to: string
+          uid_by: string
+          uid_for: string
+          uid_less: string | null
+          uid_more: string | null
         }
         Insert: {
-          action_type?: Database["public"]["Enums"]["friend_request_action_type"]
+          action_type?:
+            | Database["public"]["Enums"]["friend_request_response"]
+            | null
           created_at?: string
           id?: string
-          uid_from: string
-          uid_to: string
+          uid_by: string
+          uid_for: string
+          uid_less?: string | null
+          uid_more?: string | null
         }
         Update: {
-          action_type?: Database["public"]["Enums"]["friend_request_action_type"]
+          action_type?:
+            | Database["public"]["Enums"]["friend_request_response"]
+            | null
           created_at?: string
           id?: string
-          uid_from?: string
-          uid_to?: string
+          uid_by?: string
+          uid_for?: string
+          uid_less?: string | null
+          uid_more?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "friend_request_action_uid_from_fkey"
-            columns: ["uid_from"]
+            foreignKeyName: "friend_request_action_uid_by_fkey"
+            columns: ["uid_by"]
             isOneToOne: false
             referencedRelation: "public_profile"
             referencedColumns: ["uid"]
           },
           {
-            foreignKeyName: "friend_request_action_uid_from_fkey"
-            columns: ["uid_from"]
+            foreignKeyName: "friend_request_action_uid_by_fkey"
+            columns: ["uid_by"]
             isOneToOne: false
             referencedRelation: "user_profile"
             referencedColumns: ["uid"]
           },
           {
-            foreignKeyName: "friend_request_action_uid_to_fkey"
-            columns: ["uid_to"]
+            foreignKeyName: "friend_request_action_uid_for_fkey"
+            columns: ["uid_for"]
             isOneToOne: false
             referencedRelation: "public_profile"
             referencedColumns: ["uid"]
           },
           {
-            foreignKeyName: "friend_request_action_uid_to_fkey"
-            columns: ["uid_to"]
+            foreignKeyName: "friend_request_action_uid_for_fkey"
+            columns: ["uid_for"]
+            isOneToOne: false
+            referencedRelation: "user_profile"
+            referencedColumns: ["uid"]
+          },
+          {
+            foreignKeyName: "friend_request_action_uid_less_fkey"
+            columns: ["uid_less"]
+            isOneToOne: false
+            referencedRelation: "public_profile"
+            referencedColumns: ["uid"]
+          },
+          {
+            foreignKeyName: "friend_request_action_uid_less_fkey"
+            columns: ["uid_less"]
+            isOneToOne: false
+            referencedRelation: "user_profile"
+            referencedColumns: ["uid"]
+          },
+          {
+            foreignKeyName: "friend_request_action_uid_more_fkey"
+            columns: ["uid_more"]
+            isOneToOne: false
+            referencedRelation: "public_profile"
+            referencedColumns: ["uid"]
+          },
+          {
+            foreignKeyName: "friend_request_action_uid_more_fkey"
+            columns: ["uid_more"]
             isOneToOne: false
             referencedRelation: "user_profile"
             referencedColumns: ["uid"]
@@ -484,41 +524,71 @@ export type Database = {
       }
     }
     Views: {
-      friend_request_action_recent: {
+      friend_summary: {
         Row: {
-          action_type:
-            | Database["public"]["Enums"]["friend_request_action_type"]
+          most_recent_action_type:
+            | Database["public"]["Enums"]["friend_request_response"]
             | null
-          created_at: string | null
-          id: string | null
-          uid_from: string | null
-          uid_to: string | null
+          most_recent_created_at: string | null
+          most_recent_uid_by: string | null
+          most_recent_uid_for: string | null
+          status: string | null
+          uid_less: string | null
+          uid_more: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "friend_request_action_uid_from_fkey"
-            columns: ["uid_from"]
+            foreignKeyName: "friend_request_action_uid_by_fkey"
+            columns: ["most_recent_uid_by"]
             isOneToOne: false
             referencedRelation: "public_profile"
             referencedColumns: ["uid"]
           },
           {
-            foreignKeyName: "friend_request_action_uid_from_fkey"
-            columns: ["uid_from"]
+            foreignKeyName: "friend_request_action_uid_by_fkey"
+            columns: ["most_recent_uid_by"]
             isOneToOne: false
             referencedRelation: "user_profile"
             referencedColumns: ["uid"]
           },
           {
-            foreignKeyName: "friend_request_action_uid_to_fkey"
-            columns: ["uid_to"]
+            foreignKeyName: "friend_request_action_uid_for_fkey"
+            columns: ["most_recent_uid_for"]
             isOneToOne: false
             referencedRelation: "public_profile"
             referencedColumns: ["uid"]
           },
           {
-            foreignKeyName: "friend_request_action_uid_to_fkey"
-            columns: ["uid_to"]
+            foreignKeyName: "friend_request_action_uid_for_fkey"
+            columns: ["most_recent_uid_for"]
+            isOneToOne: false
+            referencedRelation: "user_profile"
+            referencedColumns: ["uid"]
+          },
+          {
+            foreignKeyName: "friend_request_action_uid_less_fkey"
+            columns: ["uid_less"]
+            isOneToOne: false
+            referencedRelation: "public_profile"
+            referencedColumns: ["uid"]
+          },
+          {
+            foreignKeyName: "friend_request_action_uid_less_fkey"
+            columns: ["uid_less"]
+            isOneToOne: false
+            referencedRelation: "user_profile"
+            referencedColumns: ["uid"]
+          },
+          {
+            foreignKeyName: "friend_request_action_uid_more_fkey"
+            columns: ["uid_more"]
+            isOneToOne: false
+            referencedRelation: "public_profile"
+            referencedColumns: ["uid"]
+          },
+          {
+            foreignKeyName: "friend_request_action_uid_more_fkey"
+            columns: ["uid_more"]
             isOneToOne: false
             referencedRelation: "user_profile"
             referencedColumns: ["uid"]
@@ -774,12 +844,12 @@ export type Database = {
     }
     Enums: {
       card_status: "active" | "learned" | "skipped"
-      friend_request_action_type:
-        | "requested"
-        | "cancelled"
-        | "rejected"
-        | "accepted"
-        | "ended"
+      friend_request_response:
+        | "accept"
+        | "decline"
+        | "cancel"
+        | "remove"
+        | "invite"
       learning_goal: "moving" | "family" | "visiting"
     }
     CompositeTypes: {

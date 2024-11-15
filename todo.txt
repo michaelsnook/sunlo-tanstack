@@ -1,3 +1,6 @@
+WHERE I AM NOW:
+We've updated the DB types, but not updates the code accordingly
+
 EPICS
 1. Got to actually build the signup workflow, for learners and friends
 	1. ✅ add a mock for the form input
@@ -8,7 +11,7 @@ EPICS
 		1. ✅ getting-started page just has the username and primary language, creates the profile only.
 		1. _then_ the differentiated page: 
 			*	✅ learners get the add-first-deck page
-			* friends get an accept-friendship page
+			* ✅ friends get an accept-friendship page
 	1. ✅ landing page followup steps (/getting-started, etc.)
 	1. implications: there should be someplace in /profile to change this? to "open up" the rest of the app?
 		*	so far, no; the user_role is only used for the getting-started page's redirect
@@ -20,14 +23,7 @@ ISSUES
 	and verify your email; redirect should happen after this
 1. why is class s-link not working correctly in the "find a friend" search empty results section? (have manually added a border-b, like a barbarian)
 1. accent color isn't working; comes through as light grey; makes the s-link not visible (enough)
-1. Friends data model: we have a problem with stacking multiple invites/requests between the same two people
-	* Solution seems to be a single `friend_relationship` type table that has unique set for the left_uid and right_uid.
-	* then all the actions can have a `friend_relationship_id` and a `friend_action_id`
-	* then some view like `friend_relationship_status_current` can be a view that takes the most recent record from the friend_action table and also calulates another overall status of "no | yes | pending"
-	* then the RLS for the actions can validate inserts based on this "current" status
-		* initial invites can only be sent when overall status is "no" or the relationship is not present
-		* other rules apply as they currently are (but we need to review the setup; and more reason to VC the database, as we put more business logic into it)
-	* the client can respond to RLS mismatches by invalidating the cache only
+1. ✅ Friends data model: we have a problem with stacking multiple invites/requests between the same two people
 
 EDGE CASES LEFT BEHIND
 1. When you reach the getting-started page with no "user role" set
@@ -37,7 +33,7 @@ EDGE CASES LEFT BEHIND
 JOURNEYS TO MOCK
 1. Invite a friend (for a learner to invite someone by email)
 		* invite email for the friend
-		* accept invitation page, account signup form
+		* ✅ accept invitation page, account signup form
 		* landing page for the friend when they sign up... (what can they see?)
 1. ✅ Find a friend screen (for an anon visitor to find a learner)
 		* friend request dialog w signup
@@ -53,13 +49,13 @@ MOCKS / Incompletes
 		we have the component submitting mutations
 1. Invite-A-Friend is a whole feature-set that needs to be built!
 	1. ✅ Accept invite from your friend page is built; the mutation is kind of real and there are success/error states build, 
-		1. We can't really test it yet, till we have actual invites
+		1. ✅ We can't really test it yet, till we have actual invites
 	1. ✅ Search profiles (to invite a friend)
 		1. ✅ Write a mutation to send the friend request, wire up UI states
-			1. This list should become aware of your current friend status with people -- change the button based on whether you've already requested the person, or are friends; (based on server state, not just for the pending mutation or error); 
-				1. Then the mutation can just invalidate the page's queries
-			1. Maybe don't use one mutation: use 1 per item so you can disable just that button and show that isSuccess checkmark icon instead of sharing state across all records. see example: 
-		1. ISBAT see in the search results if I've already requested this person, or if we're already friends, and show that in the UI
+			1. ✅ This list should become aware of your current friend status with people -- change the button based on whether you've already requested the person, or are friends; (based on server state, not just for the pending mutation or error); 
+				1. ✅ Then the mutation can just invalidate the page's queries
+			1. ✅ Maybe don't use one mutation: use 1 per item so you can disable just that button and show that isSuccess checkmark icon instead of sharing state across all records. see example: 
+		1. ✅ ISBAT see in the search results if I've already requested this person, or if we're already friends, and show that in the UI
 		1. ✅ type-as-you-search, debounce it, make sure it's smooth
 	1. Invite a new user (by email) is a separate screen to add (split off from the find-friend route)
 1. ✅ The "Deck Home" screen or Welcome Screen
@@ -78,8 +74,7 @@ MOCKS / Incompletes
 COMPONENTS (ShadCN/Radix)
 1. ✅ Add a Components page to keep track of / showcase all components
 1. ✅ Removing daisyUI
-	1. replace dark:decoration-accent/warning
-	1. disable active link (removed class `disabled`)
+		1. disable active link (removed class `disabled`)
 	1. ✅ 🪲 find-and-fix all these: .page-card .card-white .card .alert
 	1. ✅ fix color codes (text-base) in SelectOneLanguage
 	1. find-replace all these colors: text-base text-base-content etc
