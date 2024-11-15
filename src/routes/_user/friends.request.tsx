@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { z } from 'zod'
 
 import { useDebounce, usePrevious } from '@uidotdev/usehooks'
-import { Loader2, Search, Send } from 'lucide-react'
+import { Contact, Loader2, Mail, Search, Send } from 'lucide-react'
 
 import { Button, buttonVariants } from '@/components/ui/button'
 import {
@@ -25,13 +25,14 @@ import { ShowError } from '@/components/errors'
 import { Garlic } from '@/components/garlic'
 import { Label } from '@/components/ui/label'
 import { ProfileWithRelationship } from '@/components/profile-with-relationship'
+import { EmailField } from '@/components/fields'
 
 const SearchSchema = z.object({
 	query: z.string().optional(),
 	lang: z.string().optional(),
 })
 
-export const Route = createFileRoute('/_user/profile/friend-request')({
+export const Route = createFileRoute('/_user/friends/request')({
 	component: FriendRequestPage,
 	validateSearch: (search) => SearchSchema.parse(search),
 })
@@ -51,7 +52,19 @@ function PendingInvitationsSection() {
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle>Invitations from friends</CardTitle>
+				<CardTitle>
+					<div className="flex flex-row justify-between items-center">
+						<span>Invitations to connect</span>
+						<Link
+							to="/friends"
+							aria-disabled="true"
+							className={buttonVariants({ size: 'badge', variant: 'outline' })}
+						>
+							<Contact className="h-3 w-3" />{' '}
+							<span className="me-1">Friends list</span>
+						</Link>
+					</div>
+				</CardTitle>
 			</CardHeader>
 			<CardContent className="space-y-4">
 				{isPending ?
@@ -117,11 +130,11 @@ export default function SearchProfiles() {
 					<div className="flex flex-row justify-between items-center">
 						<span>Search for friends</span>
 						<Link
-							to="/profile/friend-invite"
+							to="/friends/invite"
 							aria-disabled="true"
 							className={buttonVariants({ size: 'badge', variant: 'outline' })}
 						>
-							<Send className="h-3 w-3" /> <span className="me-1">Invite</span>
+							<Mail className="h-3 w-3" /> <span className="me-1">Invite</span>
 						</Link>
 					</div>
 				</CardTitle>
@@ -171,7 +184,7 @@ export default function SearchProfiles() {
 										<p>
 											<Link
 												className={buttonVariants({ variant: 'secondary' })}
-												to="/profile/friend-invite"
+												to="/friends/invite"
 												from={Route.fullPath}
 											>
 												Invite a friend to Sunlo

@@ -2,32 +2,32 @@ import Navbar from '@/components/navbar'
 import { NavbarData } from '@/types/main'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/_user/profile')({
-	component: ProfilePage,
+export const Route = createFileRoute('/_user/friends')({
+	component: FriendsPage,
 	loader: () => ({
 		navbar: {
-			title: `Profile Menu`,
+			title: `Manage Friends and Contacts`,
 			icon: '',
 			contextMenu: [
+				{
+					name: 'Friends list',
+					to: '/friends',
+					icon: 'friend',
+				},
+				{
+					name: 'Browse profiles',
+					to: '/friends/request',
+					icon: 'handshake',
+				},
+				{
+					name: 'Invite to Sunlo',
+					to: '/friends/invite',
+					icon: 'invite',
+				},
 				{
 					name: 'Edit profile',
 					to: '/profile',
 					icon: 'notebook-pen',
-				},
-				{
-					name: 'Update email',
-					to: '/profile/change-email',
-					icon: 'email',
-				},
-				{
-					name: `Update password`,
-					to: '/profile/change-password',
-					icon: 'password',
-				},
-				{
-					name: 'Friends',
-					to: '/friends',
-					icon: 'friend',
 				},
 				{
 					name: 'Start a new Language',
@@ -39,7 +39,7 @@ export const Route = createFileRoute('/_user/profile')({
 	}),
 })
 
-function ProfilePage() {
+function FriendsPage() {
 	return (
 		<div className="w-app @container">
 			<Navbar />

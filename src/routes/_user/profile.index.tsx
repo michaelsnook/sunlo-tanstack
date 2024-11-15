@@ -62,7 +62,7 @@ function FriendsSection() {
 					<li>j-bhai (nothing special actually)</li>
 				</ul>
 				<Link
-					to="/profile/friend-request"
+					to="/friends/request"
 					from={Route.fullPath}
 					className={buttonVariants({ variant: 'secondary' })}
 				>

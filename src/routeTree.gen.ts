@@ -22,21 +22,22 @@ import { Route as LearnAddDeckImport } from './routes/learn/add-deck'
 import { Route as LearnLangImport } from './routes/learn/$lang'
 import { Route as UserProfileImport } from './routes/_user/profile'
 import { Route as UserGettingStartedImport } from './routes/_user/getting-started'
+import { Route as UserFriendsImport } from './routes/_user/friends'
 import { Route as UserAcceptInviteImport } from './routes/_user/accept-invite'
 import { Route as AuthLoginImport } from './routes/_auth/login'
 import { Route as AuthFindAFriendImport } from './routes/_auth/find-a-friend'
 import { Route as LearnLangIndexImport } from './routes/learn/$lang/index'
 import { Route as UserProfileIndexImport } from './routes/_user/profile.index'
+import { Route as UserFriendsIndexImport } from './routes/_user/friends.index'
 import { Route as LearnLangSearchImport } from './routes/learn/$lang/search'
 import { Route as LearnLangReviewImport } from './routes/learn/$lang/review'
 import { Route as LearnLangPublicLibraryImport } from './routes/learn/$lang/public-library'
 import { Route as LearnLangDeckSettingsImport } from './routes/learn/$lang/deck-settings'
 import { Route as LearnLangAddPhraseImport } from './routes/learn/$lang/add-phrase'
-import { Route as UserProfileFriendRequestImport } from './routes/_user/profile.friend-request'
-import { Route as UserProfileFriendListImport } from './routes/_user/profile.friend-list'
-import { Route as UserProfileFriendInviteImport } from './routes/_user/profile.friend-invite'
 import { Route as UserProfileChangePasswordImport } from './routes/_user/profile.change-password'
 import { Route as UserProfileChangeEmailImport } from './routes/_user/profile.change-email'
+import { Route as UserFriendsRequestImport } from './routes/_user/friends.request'
+import { Route as UserFriendsInviteImport } from './routes/_user/friends.invite'
 
 // Create Virtual Routes
 
@@ -138,6 +139,11 @@ const UserGettingStartedRoute = UserGettingStartedImport.update({
   getParentRoute: () => UserRoute,
 } as any)
 
+const UserFriendsRoute = UserFriendsImport.update({
+  path: '/friends',
+  getParentRoute: () => UserRoute,
+} as any)
+
 const UserAcceptInviteRoute = UserAcceptInviteImport.update({
   path: '/accept-invite',
   getParentRoute: () => UserRoute,
@@ -161,6 +167,11 @@ const LearnLangIndexRoute = LearnLangIndexImport.update({
 const UserProfileIndexRoute = UserProfileIndexImport.update({
   path: '/',
   getParentRoute: () => UserProfileRoute,
+} as any)
+
+const UserFriendsIndexRoute = UserFriendsIndexImport.update({
+  path: '/',
+  getParentRoute: () => UserFriendsRoute,
 } as any)
 
 const LearnLangSearchRoute = LearnLangSearchImport.update({
@@ -188,21 +199,6 @@ const LearnLangAddPhraseRoute = LearnLangAddPhraseImport.update({
   getParentRoute: () => LearnLangRoute,
 } as any)
 
-const UserProfileFriendRequestRoute = UserProfileFriendRequestImport.update({
-  path: '/friend-request',
-  getParentRoute: () => UserProfileRoute,
-} as any)
-
-const UserProfileFriendListRoute = UserProfileFriendListImport.update({
-  path: '/friend-list',
-  getParentRoute: () => UserProfileRoute,
-} as any)
-
-const UserProfileFriendInviteRoute = UserProfileFriendInviteImport.update({
-  path: '/friend-invite',
-  getParentRoute: () => UserProfileRoute,
-} as any)
-
 const UserProfileChangePasswordRoute = UserProfileChangePasswordImport.update({
   path: '/change-password',
   getParentRoute: () => UserProfileRoute,
@@ -211,6 +207,16 @@ const UserProfileChangePasswordRoute = UserProfileChangePasswordImport.update({
 const UserProfileChangeEmailRoute = UserProfileChangeEmailImport.update({
   path: '/change-email',
   getParentRoute: () => UserProfileRoute,
+} as any)
+
+const UserFriendsRequestRoute = UserFriendsRequestImport.update({
+  path: '/request',
+  getParentRoute: () => UserFriendsRoute,
+} as any)
+
+const UserFriendsInviteRoute = UserFriendsInviteImport.update({
+  path: '/invite',
+  getParentRoute: () => UserFriendsRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -287,6 +293,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserAcceptInviteImport
       parentRoute: typeof UserImport
     }
+    '/_user/friends': {
+      id: '/_user/friends'
+      path: '/friends'
+      fullPath: '/friends'
+      preLoaderRoute: typeof UserFriendsImport
+      parentRoute: typeof UserImport
+    }
     '/_user/getting-started': {
       id: '/_user/getting-started'
       path: '/getting-started'
@@ -350,6 +363,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LearnIndexImport
       parentRoute: typeof LearnImport
     }
+    '/_user/friends/invite': {
+      id: '/_user/friends/invite'
+      path: '/invite'
+      fullPath: '/friends/invite'
+      preLoaderRoute: typeof UserFriendsInviteImport
+      parentRoute: typeof UserFriendsImport
+    }
+    '/_user/friends/request': {
+      id: '/_user/friends/request'
+      path: '/request'
+      fullPath: '/friends/request'
+      preLoaderRoute: typeof UserFriendsRequestImport
+      parentRoute: typeof UserFriendsImport
+    }
     '/_user/profile/change-email': {
       id: '/_user/profile/change-email'
       path: '/change-email'
@@ -362,27 +389,6 @@ declare module '@tanstack/react-router' {
       path: '/change-password'
       fullPath: '/profile/change-password'
       preLoaderRoute: typeof UserProfileChangePasswordImport
-      parentRoute: typeof UserProfileImport
-    }
-    '/_user/profile/friend-invite': {
-      id: '/_user/profile/friend-invite'
-      path: '/friend-invite'
-      fullPath: '/profile/friend-invite'
-      preLoaderRoute: typeof UserProfileFriendInviteImport
-      parentRoute: typeof UserProfileImport
-    }
-    '/_user/profile/friend-list': {
-      id: '/_user/profile/friend-list'
-      path: '/friend-list'
-      fullPath: '/profile/friend-list'
-      preLoaderRoute: typeof UserProfileFriendListImport
-      parentRoute: typeof UserProfileImport
-    }
-    '/_user/profile/friend-request': {
-      id: '/_user/profile/friend-request'
-      path: '/friend-request'
-      fullPath: '/profile/friend-request'
-      preLoaderRoute: typeof UserProfileFriendRequestImport
       parentRoute: typeof UserProfileImport
     }
     '/learn/$lang/add-phrase': {
@@ -420,6 +426,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LearnLangSearchImport
       parentRoute: typeof LearnLangImport
     }
+    '/_user/friends/': {
+      id: '/_user/friends/'
+      path: '/'
+      fullPath: '/friends/'
+      preLoaderRoute: typeof UserFriendsIndexImport
+      parentRoute: typeof UserFriendsImport
+    }
     '/_user/profile/': {
       id: '/_user/profile/'
       path: '/'
@@ -450,13 +463,15 @@ export const routeTree = rootRoute.addChildren({
   }),
   UserRoute: UserRoute.addChildren({
     UserAcceptInviteRoute,
+    UserFriendsRoute: UserFriendsRoute.addChildren({
+      UserFriendsInviteRoute,
+      UserFriendsRequestRoute,
+      UserFriendsIndexRoute,
+    }),
     UserGettingStartedRoute,
     UserProfileRoute: UserProfileRoute.addChildren({
       UserProfileChangeEmailRoute,
       UserProfileChangePasswordRoute,
-      UserProfileFriendInviteRoute,
-      UserProfileFriendListRoute,
-      UserProfileFriendRequestRoute,
       UserProfileIndexRoute,
     }),
   }),
@@ -512,6 +527,7 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_user.tsx",
       "children": [
         "/_user/accept-invite",
+        "/_user/friends",
         "/_user/getting-started",
         "/_user/profile"
       ]
@@ -546,6 +562,15 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_user/accept-invite.tsx",
       "parent": "/_user"
     },
+    "/_user/friends": {
+      "filePath": "_user/friends.tsx",
+      "parent": "/_user",
+      "children": [
+        "/_user/friends/invite",
+        "/_user/friends/request",
+        "/_user/friends/"
+      ]
+    },
     "/_user/getting-started": {
       "filePath": "_user/getting-started.tsx",
       "parent": "/_user"
@@ -556,9 +581,6 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/_user/profile/change-email",
         "/_user/profile/change-password",
-        "/_user/profile/friend-invite",
-        "/_user/profile/friend-list",
-        "/_user/profile/friend-request",
         "/_user/profile/"
       ]
     },
@@ -598,24 +620,20 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "learn/index.tsx",
       "parent": "/learn"
     },
+    "/_user/friends/invite": {
+      "filePath": "_user/friends.invite.tsx",
+      "parent": "/_user/friends"
+    },
+    "/_user/friends/request": {
+      "filePath": "_user/friends.request.tsx",
+      "parent": "/_user/friends"
+    },
     "/_user/profile/change-email": {
       "filePath": "_user/profile.change-email.tsx",
       "parent": "/_user/profile"
     },
     "/_user/profile/change-password": {
       "filePath": "_user/profile.change-password.tsx",
-      "parent": "/_user/profile"
-    },
-    "/_user/profile/friend-invite": {
-      "filePath": "_user/profile.friend-invite.tsx",
-      "parent": "/_user/profile"
-    },
-    "/_user/profile/friend-list": {
-      "filePath": "_user/profile.friend-list.tsx",
-      "parent": "/_user/profile"
-    },
-    "/_user/profile/friend-request": {
-      "filePath": "_user/profile.friend-request.tsx",
       "parent": "/_user/profile"
     },
     "/learn/$lang/add-phrase": {
@@ -637,6 +655,10 @@ export const routeTree = rootRoute.addChildren({
     "/learn/$lang/search": {
       "filePath": "learn/$lang/search.tsx",
       "parent": "/learn/$lang"
+    },
+    "/_user/friends/": {
+      "filePath": "_user/friends.index.tsx",
+      "parent": "/_user/friends"
     },
     "/_user/profile/": {
       "filePath": "_user/profile.index.tsx",

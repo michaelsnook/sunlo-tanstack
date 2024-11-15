@@ -7,15 +7,15 @@ import { useFriendsInvited, useFriends } from '@/lib/friends'
 import { ShowError } from '@/components/errors'
 import { ProfileWithRelationship } from '@/components/profile-with-relationship'
 
-export const Route = createFileRoute('/_user/profile/friend-list')({
+export const Route = createFileRoute('/_user/friends/')({
 	component: FriendListPage,
 })
 
 function FriendListPage() {
 	return (
 		<main className="flex flex-col gap-6">
-			<PendingRequestsSection />
 			<FriendProfiles />
+			<PendingRequestsSection />
 		</main>
 	)
 }
@@ -26,7 +26,7 @@ function PendingRequestsSection() {
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle>Pending requests</CardTitle>
+				<CardTitle>Friend requests sent</CardTitle>
 			</CardHeader>
 			<CardContent className="space-y-4">
 				{isPending ?
@@ -53,7 +53,7 @@ function FriendProfiles() {
 					<div className="flex flex-row justify-between items-center">
 						<span>Your friends</span>
 						<Link
-							to="/profile/friend-request"
+							to="/friends/request"
 							search
 							aria-disabled="true"
 							className={buttonVariants({ size: 'badge', variant: 'outline' })}
