@@ -130,8 +130,10 @@ export type FriendshipRow = {
 	updated_at: string
 }
 
-export type FriendRequestAction = Tables<'friend_request_action'>
 export type FriendRequestActionInsert = TablesInsert<'friend_request_action'>
+export type PublicProfileFull = PublicProfile & {
+	friend_summary?: Tables<'friend_summary'>
+}
 
 // for legacy hooks and such
 

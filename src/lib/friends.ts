@@ -1,8 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import supabase from './supabase-client'
-import { PublicProfile } from '@/types/main'
+import { PublicProfile, PublicProfileFull } from '@/types/main'
 import { useAuth } from './hooks'
-import { z } from 'zod'
 
 export const usePublicProfileSearch = () =>
 	useMutation({
@@ -17,66 +16,52 @@ export const usePublicProfileSearch = () =>
 		},
 	})
 
-export const useFriendsInvited = () => {
+export const useFriendSummaries = (
+	select: (data: Array<PublicProfileFull>) => Array<PublicProfileFull>
+) => {
 	const { userId } = useAuth()
 	return useQuery({
-		queryKey: ['user', 'friend_invited', userId],
+		queryKey: ['user', 'friends', 'summaries'],
 		queryFn: async () => {
 			const { data } = await supabase
-				.from('friend_request_action_recent')
-				.select('*, friend:public_profile!friend_request_action_uid_to_fkey(*)')
-				.eq('action_type', 'requested')
+				.from('friend_summary')
+				.select(
+					'*, profile_less:public_profile!friend_request_action_uid_less_fkey(*), profile_more:public_profile!friend_request_action_uid_more_fkey(*)'
+				)
 				.throwOnError()
-			return data
+
+			return data.map(({ profile_less, profile_more, ...summary }) => {
+				const profile =
+					userId === profile_less.uid ? profile_more : profile_less
+				return { ...profile, friend_summary: summary }
+			})
 		},
+		select,
 	})
+}
+
+export const useFriendsInvited = () => {
+	const { userId } = useAuth()
+	return useFriendSummaries((data: Array<PublicProfileFull>) =>
+		data.filter(
+			({ friend_summary: sum }) =>
+				sum.status === 'pending' && sum.most_recent_uid_by === userId
+		)
+	)
 }
 
 export const useFriendInvitations = () => {
 	const { userId } = useAuth()
-	return useQuery({
-		queryKey: ['user', 'friend_invitation', userId],
-		queryFn: async () => {
-			const { data } = await supabase
-				.from('friend_request_action_recent')
-				.select(
-					'*, friend:public_profile!friend_request_action_uid_from_fkey(*)'
-				)
-				.eq('action_type', 'requested')
-				.throwOnError()
-			return data
-		},
-	})
+	return useFriendSummaries((data: Array<PublicProfileFull>) =>
+		data.filter(
+			({ friend_summary: sum }) =>
+				sum.status === 'pending' && sum.most_recent_uid_for === userId
+		)
+	)
 }
 
-// const actionsFrom = z.enum(['requested', 'cancelled', 'ended'])
-// const actionsTo = z.enum(['rejected', 'accepted', 'ended'])
-
-const GenericActionSchema = z.object({
-	uid_from: z.string().uuid(),
-	uid_to: z.string().uuid(),
-	// lang: z.string().length(3).optional(),
-	// user_deck_id: z.string().uuid(),
-	action_type: z.string(),
-})
-
-const FriendRequestActionSchema = GenericActionSchema.extend({
-	action_type: z.literal('requested'),
-})
-
-type FriendRequestSubmission = z.infer<typeof FriendRequestActionSchema>
-
-export const useFriendRequestSend = () => {
-	const { userId: uid_from } = useAuth()
-	return useMutation({
-		mutationKey: ['user', 'friends', 'request_action'],
-		mutationFn: async (values: FriendRequestSubmission) => {
-			const { data } = await supabase
-				.from('friend_request_action') // this instead needs to be some RPC function
-				.insert({ ...values, uid_from })
-				.select()
-				.throwOnError()
-			return data[0]
-		},
-	})
+export const useFriends = () => {
+	return useFriendSummaries((data: Array<PublicProfileFull>) =>
+		data.filter(({ friend_summary: sum }) => sum.status === 'friends')
+	)
 }

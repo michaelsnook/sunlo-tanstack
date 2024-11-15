@@ -1,10 +1,10 @@
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { z } from 'zod'
 import toast from 'react-hot-toast'
 import { useDebounce, usePrevious } from '@uidotdev/usehooks'
-import { Loader2, PlusIcon, Search, Send, ThumbsUp, X } from 'lucide-react'
+import { Check, Loader2, Search, Send, ThumbsUp, X } from 'lucide-react'
 
 import { Button, buttonVariants } from '@/components/ui/button'
 import {
@@ -19,11 +19,10 @@ import Callout from '@/components/ui/callout'
 import { AvatarIconRow } from '@/components/ui/avatar-icon'
 import { useFriendInvitations, useFriendsInvited } from '@/lib/friends'
 import Loading from '@/components/loading'
-import {
-	FriendRequestAction,
+import type {
+	PublicProfileFull,
 	FriendRequestActionInsert,
 	PublicProfile,
-	uuid,
 } from '@/types/main'
 import supabase from '@/lib/supabase-client'
 import { useAuth } from '@/lib/hooks'
@@ -51,75 +50,128 @@ function FriendRequestPage() {
 	)
 }
 
-function PendingInvitationsSection() {
+// we'll use uid_by and uid_for
+// uid_by is always the current user
+
+function ViewProfileWithRelationship({
+	otherPerson,
+}: {
+	otherPerson: PublicProfileFull
+}) {
+	const { userId } = useAuth()
+	const [uid_less, uid_more] = [userId, otherPerson.uid].sort()
 	const queryClient = useQueryClient()
-	const { data, isPending } = useFriendInvitations()
-	const [hiddenRequests, setHiddenRequests] = useState<Array<uuid>>([])
-	const addOneHiddenRequest = (uid_from: uuid) =>
-		setHiddenRequests((start) => [...start, uid_from])
-
-	const inviteAcceptMutation = useMutation({
-		mutationKey: ['user', 'accept_invite_request'],
-		mutationFn: async (values: FriendRequestActionInsert) => {
-			await supabase.from('friend_request_action').insert(values).throwOnError()
+	const inviteResponseMutation = useMutation({
+		mutationKey: ['user', 'friend_request_action'],
+		mutationFn: async (action_type: string) => {
+			await supabase
+				.from('friend_request_action')
+				.insert({
+					uid_less,
+					uid_more,
+					uid_by: userId,
+					uid_for: otherPerson.uid,
+					action_type,
+				} as FriendRequestActionInsert)
+				.throwOnError()
 		},
-		onSuccess: () => {
-			toast.success('Accepted invitation')
-			// TODO it would be really nice to slide this away, like pass a ref in
-			// the mutation context and animate it away
-			// addOneHiddenRequest(variables.uid_from)
+		onSuccess: (_, variable) => {
+			if (variable === 'invite') toast.success('Friend request sent 👍')
+			if (variable === 'accept')
+				toast.success('Accepted invitation. You are now connected 👍')
+			if (variable === 'decline') toast('Declined this invitation')
+			if (variable === 'cancel') toast('Cancelled this invitation')
+			if (variable === 'remove') toast('You are no longer friends')
 			void queryClient.invalidateQueries({
-				queryKey: ['user', 'friend_invitation'],
+				queryKey: ['user', 'friends', 'summaries'],
 			})
 		},
 		onError: (error, variables) => {
 			console.log(
-				`Something went wrong trying to accept this invitation:`,
+				`Something went wrong trying to modify your relationship:`,
 				error,
 				variables
 			)
-			toast.error(`Something went wrong accepting the invitation`)
+			toast.error(`Something went wrong with this interaction`)
 		},
 	})
 
-	const inviteRejectMutation = useMutation({
-		mutationKey: ['user', 'reject_invite_request'],
-		mutationFn: async (values: FriendRequestActionInsert) => {
-			await supabase.from('friend_request_action').insert(values).throwOnError()
-		},
-		onSuccess: (_, variables) => {
-			toast('Declined this invitation')
-			// TODO it would be really nice to slide this away, like pass a ref in
-			// the mutation context and animate it away
-			addOneHiddenRequest(variables.uid_from)
-			void queryClient.invalidateQueries({
-				queryKey: ['user', 'friend_invitation'],
-			})
-		},
-		onError: (error, variables) => {
-			console.log(
-				`Something went wrong trying to reject this friend invitation:`,
-				error,
-				variables
-			)
-			toast.error(`Something went wrong declining the invitation`)
-		},
-	})
+	return (
+		<AvatarIconRow {...otherPerson}>
+			<div className="flex flex-row gap-2">
+				{inviteResponseMutation.isSuccess ?
+					<span className="bg-green-600 h-8 w-8 rounded-full p-1">
+						<Check className="text-white w-6 h-6" />
+					</span>
+				: (
+					!otherPerson.friend_summary ||
+					otherPerson.friend_summary.status === 'unconnected'
+				) ?
+					<Button
+						variant="default"
+						className="w-8 h-8"
+						size="icon"
+						title="Send friend request"
+						onClick={() => inviteResponseMutation.mutate('invite')}
+					>
+						<Send className="w-6 h-6 mr-[0.1rem] mt-[0.1rem]" />
+					</Button>
+				: (
+					otherPerson.friend_summary?.status === 'pending' &&
+					userId === otherPerson.friend_summary?.most_recent_uid_by
+				) ?
+					<Button
+						variant="secondary"
+						className="w-8 h-8"
+						size="icon"
+						title="Cancel friend request"
+						onClick={() => inviteResponseMutation.mutate('cancel')}
+					>
+						<X className="w-6 h-6 p-0" />
+					</Button>
+				: (
+					otherPerson.friend_summary?.status === 'pending' &&
+					userId === otherPerson.friend_summary?.most_recent_uid_for
+				) ?
+					<>
+						<Button
+							variant="default"
+							className="w-8 h-8"
+							size="icon"
+							title="Accept pending invitation"
+							onClick={() => inviteResponseMutation.mutate('accept')}
+						>
+							<ThumbsUp />
+						</Button>
+						<Button
+							variant="secondary"
+							className="w-8 h-8"
+							size="icon"
+							title="Decline pending invitation"
+							onClick={() => inviteResponseMutation.mutate('decline')}
+						>
+							<X className="w-6 h-6 p-0" />
+						</Button>
+					</>
+				: otherPerson.friend_summary.status === 'friends' ?
+					<Button
+						variant="secondary"
+						className="w-8 h-8"
+						size="icon"
+						title="Disconnect from this person (you will lose access to each other's decks)"
+						onClick={() => inviteResponseMutation.mutate('remove')}
+					>
+						<X className="w-6 h-6 p-0" />
+					</Button>
+				:	<> status is null for some reason</>}
+			</div>
+		</AvatarIconRow>
+	)
+}
 
-	const onClickRejectInvite = (invitate: FriendRequestAction) => {
-		inviteRejectMutation.mutate({
-			uid_from: invitate.uid_from,
-			uid_to: invitate.uid_to,
-			action_type: 'rejected',
-		})
-	}
-	const onClickAcceptInvite = (invitate: FriendRequestAction) => {
-		inviteAcceptMutation.mutate({
-			uid_from: invitate.uid_from,
-			uid_to: invitate.uid_to,
-			action_type: 'accepted',
-		})
-	}
+function PendingInvitationsSection() {
+	const { data, isPending, error } = useFriendInvitations()
+
 	return (
 		<Card>
 			<CardHeader>
@@ -128,34 +180,16 @@ function PendingInvitationsSection() {
 			<CardContent className="space-y-4">
 				{isPending ?
 					<Loading />
-				: data.length === 0 ?
+				: error ?
+					<ShowError>{error.message}</ShowError>
+				: !(data?.length > 0) ?
 					<p>You don't have any pending invitations at this time.</p>
-				:	data.map((invite) => {
-						return hiddenRequests.indexOf(invite.uid_to) > -1 ?
-								null
-							:	<AvatarIconRow {...invite.friend} key={invite.uid_to}>
-									<div className="flex flex-row gap-2">
-										<Button
-											variant="default"
-											className="w-8 h-8"
-											size="icon"
-											title="Accept pending invitation"
-											onClick={() => onClickAcceptInvite(invite)}
-										>
-											<ThumbsUp />
-										</Button>
-										<Button
-											variant="secondary"
-											className="w-8 h-8"
-											size="icon"
-											title="Decline pending invitation"
-											onClick={() => onClickRejectInvite(invite)}
-										>
-											<X className="w-6 h-6 p-0" />
-										</Button>
-									</div>
-								</AvatarIconRow>
-					})
+				:	data.map((person) => (
+						<ViewProfileWithRelationship
+							key={person.uid}
+							otherPerson={person}
+						/>
+					))
 				}
 			</CardContent>
 		</Card>
@@ -163,44 +197,8 @@ function PendingInvitationsSection() {
 }
 
 function PendingRequestsSection() {
-	const queryClient = useQueryClient()
-	const { data, isPending } = useFriendsInvited()
-	const [hiddenRequests, setHiddenRequests] = useState<Array<uuid>>([])
+	const { data, isPending, error } = useFriendsInvited()
 
-	const addOneHiddenRequest = (uid_to: uuid) =>
-		setHiddenRequests((start) => [...start, uid_to])
-
-	const inviteCancelMutation = useMutation({
-		mutationKey: ['user', 'cancel_invite_request'],
-		mutationFn: async (values: FriendRequestActionInsert) => {
-			await supabase.from('friend_request_action').insert(values).throwOnError()
-		},
-		onSuccess: (_, variables) => {
-			toast('Cancelled this friend request')
-			// TODO it would be really nice to slide this away, like pass a ref in
-			// the mutation context and animate it away
-			addOneHiddenRequest(variables.uid_to)
-			void queryClient.invalidateQueries({
-				queryKey: ['user', 'friend_invited'],
-			})
-		},
-		onError: (error, variables) => {
-			console.log(
-				`Something went wrong trying to cancel this friend request:`,
-				error,
-				variables
-			)
-			toast.error(`Something went wrong; maybe log out and try again`)
-		},
-	})
-
-	const onClickCancelInvite = (invitate: FriendRequestAction) => {
-		inviteCancelMutation.mutate({
-			uid_from: invitate.uid_from,
-			uid_to: invitate.uid_to,
-			action_type: 'cancelled',
-		})
-	}
 	return (
 		<Card>
 			<CardHeader>
@@ -209,23 +207,16 @@ function PendingRequestsSection() {
 			<CardContent className="space-y-4">
 				{isPending ?
 					<Loading />
-				: data.length === 0 ?
+				: error ?
+					<ShowError>{error.message}</ShowError>
+				: !(data?.length > 0) ?
 					<p>You don't have any requests pending at this time.</p>
-				:	data.map((invite) => {
-						return hiddenRequests.indexOf(invite.uid_to) > -1 ?
-								null
-							:	<AvatarIconRow {...invite.friend} key={invite.uid_to}>
-									<Button
-										variant="secondary"
-										className="w-8 h-8"
-										size="icon"
-										title="Cancel pending request"
-										onClick={() => onClickCancelInvite(invite)}
-									>
-										<X className="w-6 h-6 p-0" />
-									</Button>
-								</AvatarIconRow>
-					})
+				:	data.map((person) => (
+						<ViewProfileWithRelationship
+							key={person.uid}
+							otherPerson={person}
+						/>
+					))
 				}
 			</CardContent>
 		</Card>
@@ -235,9 +226,7 @@ function PendingRequestsSection() {
 export default function SearchProfiles() {
 	const { query } = Route.useSearch()
 	const debouncedQuery = useDebounce(query, 500)
-	const queryClient = useQueryClient()
 	const navigate = useNavigate({ from: Route.fullPath })
-	const { userId } = useAuth()
 	const setQueryInputValue = (val: string) =>
 		navigate({
 			search: (old) => ({
@@ -274,35 +263,6 @@ export default function SearchProfiles() {
 	const resultsToShow =
 		!debouncedQuery ? [] : (searchResults ?? prevResults ?? [])
 	const showLoader = resultsToShow.length === 0 && isFetching ? true : false
-
-	const invite = useMutation({
-		mutationFn: async (friendId: string) => {
-			const {
-				data: { user },
-			} = await supabase.auth.getUser()
-			if (!user) throw new Error('User not authenticated')
-
-			const { data } = await supabase
-				.from('friend_request_action')
-				.insert({
-					uid_from: userId,
-					uid_to: friendId,
-					action_type: 'requested',
-				})
-				.throwOnError()
-			return data
-		},
-		onSuccess: () => {
-			toast.success('Friend request sent successfully')
-			void queryClient.invalidateQueries({
-				queryKey: ['user', 'friend_invited'],
-			})
-		},
-		onError: (error) => {
-			toast.error('Failed to send friend request')
-			console.log(`Error requesting friendship`, error)
-		},
-	})
 
 	return (
 		<Card className="min-h-[21rem]">
@@ -373,22 +333,11 @@ export default function SearchProfiles() {
 										</p>
 									</div>
 								</Callout>
-							:	resultsToShow.map((profile) => (
-									<Callout key={profile.uid}>
-										<AvatarIconRow {...profile}>
-											<Button
-												onClick={() => invite.mutate(profile.uid)}
-												size="icon"
-												className="p-1 h-8 w-8"
-												variant={invite.isError ? 'destructive' : 'secondary'}
-												disabled={invite.isError}
-											>
-												{invite.isPending ?
-													<Loader2 className="opacity-50" />
-												:	<PlusIcon />}
-											</Button>
-										</AvatarIconRow>
-									</Callout>
+							:	resultsToShow.map((person) => (
+									<ViewProfileWithRelationship
+										key={person.uid}
+										otherPerson={person}
+									/>
 								))
 							}
 						</div>
