@@ -8,7 +8,7 @@ import { useProfile } from '@/lib/use-profile'
 import { useAuth, useSignOut } from '@/lib/hooks'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { LogOut } from 'lucide-react'
+import { CircleUser, LogOut } from 'lucide-react'
 import { ModeToggle } from './mode-toggle'
 import Avatar from './avatar'
 import Callout from './ui/callout'
@@ -126,6 +126,12 @@ function DeckMenu() {
 				<p className="flex flex-row gap-2">
 					<Avatar size={24} />
 					Your profile
+				</p>
+			</Link>
+			<Link to="/friends" className="nav-link">
+				<p className="flex flex-row gap-2">
+					<CircleUser size={24} />
+					Your friends
 				</p>
 			</Link>
 			{data.deckLanguages.length === 0 ?
