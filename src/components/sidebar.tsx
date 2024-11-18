@@ -41,6 +41,7 @@ const GenericMenu = ({ menu }: { menu: MenuType }) => {
 				:	<Link
 						className="nav-link"
 						to={menu.to as string}
+						params={menu.params}
 						activeOptions={{
 							exact: true,
 						}}
@@ -52,7 +53,7 @@ const GenericMenu = ({ menu }: { menu: MenuType }) => {
 			<ul className="flex flex-col gap-2">
 				{menu.links?.map((i) => (
 					<li key={`${i.to}-${i.params ? JSON.stringify(i.params) : ''}`}>
-						<Link className="nav-link" to={i.to as string}>
+						<Link className="nav-link" to={i.to as string} params={i.params}>
 							{i.name}
 						</Link>
 					</li>

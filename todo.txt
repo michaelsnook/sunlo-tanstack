@@ -19,6 +19,7 @@ EPIC OF SIGNUPS AND GETTING STARTED AND CONNECTING FRIENDS
 1. ✅ destructive buttons like "unfriend" and "cancel invite" and "decline invitation" should all have dialog confirmations
 
 ISSUES
+1. erroneous link like /learn/undefined should 404, or at least say 'do you wanna start learning this?'
 1. When you try to sign up using existing creds you get an error and then get logged in. We
 	should handle this. (inspect and special-case the error before throwing, and toast accordingly)
 1. Signup workflow should not be a toast-redirect, it should be a success alert, saying go check
@@ -34,6 +35,10 @@ EDGE CASES LEFT BEHIND
 1. If you hack the client it's possible to "Accept" an invitation that hasn't been sent;
 		the RLS can reject these and/or the friend_summary view can check and verify the who sequence.
 		Both of these options seem secure, and they won't conflict.
+1. you can no longer unfriend someone. I would like to build some "info" page/modal or something,
+	just for friends, for the primary purpose of providing this unfriend button, but it would probably 
+	also show	some other info about them. like a profile page. show their decks or something and let
+	you say which ones you'll help with, maybe.
 
 JOURNEYS TO MOCK
 1. Invite a friend (for a learner to invite someone by email)
