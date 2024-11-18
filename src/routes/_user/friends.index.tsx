@@ -38,7 +38,7 @@ function PendingRequestsSection() {
 				:	data.uids.invited.map((uid) => (
 						<ProfileWithRelationship
 							key={uid}
-							otherPerson={data.relationsMap[uid]}
+							otherPerson={data?.relationsMap[uid]}
 						/>
 					))
 				}

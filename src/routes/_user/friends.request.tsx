@@ -198,7 +198,7 @@ export default function SearchProfiles() {
 										key={person.uid}
 										otherPerson={person}
 										relationship={
-											data.relationsMap[person.uid].friend_summary || null
+											data?.relationsMap[person.uid].friend_summary || null
 										}
 									/>
 								))
