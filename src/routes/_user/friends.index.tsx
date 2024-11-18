@@ -3,7 +3,7 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { buttonVariants } from '@/components/ui/button'
 import { Loader2, Search } from 'lucide-react'
-import { useFriendsInvited, useFriends } from '@/lib/friends'
+import { useRelationsQuery } from '@/lib/friends'
 import { ShowError } from '@/components/errors'
 import { ProfileWithRelationship } from '@/components/profile-with-relationship'
 
@@ -21,7 +21,7 @@ function FriendListPage() {
 }
 
 function PendingRequestsSection() {
-	const { data, isPending, error } = useFriendsInvited()
+	const { data, isPending, error } = useRelationsQuery()
 
 	return (
 		<Card>
@@ -33,10 +33,13 @@ function PendingRequestsSection() {
 					<Loader2 />
 				: error ?
 					<ShowError>{error.message}</ShowError>
-				: !(data?.length > 0) ?
+				: !(data?.uids.invited.length > 0) ?
 					<p>You don't have any requests pending at this time.</p>
-				:	data.map((person) => (
-						<ProfileWithRelationship key={person.uid} otherPerson={person} />
+				:	data.uids.invited.map((uid) => (
+						<ProfileWithRelationship
+							key={uid}
+							otherPerson={data.relationsMap[uid]}
+						/>
 					))
 				}
 			</CardContent>
@@ -45,7 +48,7 @@ function PendingRequestsSection() {
 }
 
 function FriendProfiles() {
-	const { data, isPending, error } = useFriends()
+	const { data, isPending, error } = useRelationsQuery()
 	return (
 		<Card>
 			<CardHeader>
@@ -70,10 +73,13 @@ function FriendProfiles() {
 						<Loader2 />
 					: error ?
 						<></>
-					: !(data?.length > 0) ?
+					: !(data?.uids.friends?.length > 0) ?
 						<>no friends</>
-					:	data.map((otherPerson) => (
-							<ProfileWithRelationship otherPerson={otherPerson} />
+					:	data?.uids.friends.map((uid) => (
+							<ProfileWithRelationship
+								key={uid}
+								otherPerson={data?.relationsMap[uid]}
+							/>
 						))
 					}
 				</div>
