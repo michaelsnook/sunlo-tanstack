@@ -8,6 +8,16 @@ import { AvatarIconRow } from '@/components/ui/avatar-icon'
 import supabase from '@/lib/supabase-client'
 import { useAuth } from '@/lib/hooks'
 import { Tables } from '@/types/supabase'
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from './ui/dialog'
 
 export function ProfileWithRelationship({
 	otherPerson,
@@ -42,6 +52,9 @@ export function ProfileWithRelationship({
 			if (variable === 'remove') toast('You are no longer friends')
 			void queryClient.invalidateQueries({
 				queryKey: ['user', 'friends', 'summaries'],
+			})
+			void queryClient.invalidateQueries({
+				queryKey: ['public_profile', 'search'],
 			})
 		},
 		onError: (error, variables) => {
@@ -105,15 +118,42 @@ export function ProfileWithRelationship({
 					relationship?.status === 'pending' &&
 					userId === relationship?.most_recent_uid_by
 				) ?
-					<Button
-						variant="secondary"
-						className="w-8 h-8"
-						size="icon"
-						title="Cancel friend request"
-						onClick={() => inviteResponseMutation.mutate('cancel')}
-					>
-						<X className="w-6 h-6 p-0" />
-					</Button>
+					<Dialog>
+						<DialogTrigger asChild>
+							<Button
+								variant="secondary"
+								className="w-8 h-8"
+								size="icon"
+								title="Cancel friend request"
+							>
+								<X className="w-6 h-6 p-0" />
+							</Button>
+						</DialogTrigger>
+						<DialogContent className="sm:max-w-[425px]">
+							<DialogHeader>
+								<DialogTitle>Cancel this invitation</DialogTitle>
+								<DialogDescription>
+									Please confirm whether you'd like to cancel this invitation
+								</DialogDescription>
+							</DialogHeader>
+							<DialogFooter className="justify-between">
+								<DialogClose asChild>
+									<Button variant="secondary">Go back</Button>
+								</DialogClose>
+								<Button
+									variant="destructive"
+									title="Confirm: Cancel friend request"
+									onClick={() => inviteResponseMutation.mutate('cancel')}
+								>
+									{inviteResponseMutation.isPending ?
+										<Loader2 />
+									: inviteResponseMutation.isSuccess ?
+										<Check className="text-white w-6 h-6" />
+									:	<>Confirm</>}
+								</Button>
+							</DialogFooter>
+						</DialogContent>
+					</Dialog>
 				: relationship.status === 'friends' ?
 					<Handshake className="w-6 h-6 p-0" />
 				:	<> status is null for some reason</>}
