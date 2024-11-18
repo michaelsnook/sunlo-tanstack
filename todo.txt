@@ -15,7 +15,7 @@ EPIC OF SIGNUPS AND GETTING STARTED AND CONNECTING FRIENDS
 1. ✅ search for friends -- results should include relationship if present
 	* ✅ this may mean actually the search unit should take an ID and we should fetch the relationship from a map 
 		(so do like how we have deck.pids and and such, with relationships, refactoring this cache entry)
-1. mutation keys for invitations/responses
+1. ✅ use specific mutation keys for invitations/response actions
 1. destructive buttons like "unfriend" and "cancel invite" and "decline invitation" should all have dialog confirmations
 
 ISSUES
