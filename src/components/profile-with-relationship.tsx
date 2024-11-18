@@ -20,7 +20,7 @@ export function ProfileWithRelationship({
 	const [uid_less, uid_more] = [userId, otherPerson.uid].sort()
 	const queryClient = useQueryClient()
 	const inviteResponseMutation = useMutation({
-		mutationKey: ['user', 'friend_request_action'],
+		mutationKey: ['user', 'friend_request_action', otherPerson.uid],
 		mutationFn: async (action_type: string) => {
 			await supabase
 				.from('friend_request_action')
