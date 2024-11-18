@@ -140,7 +140,7 @@ function ArchiveForm({ meta: { id, archived, lang } }: { meta: DeckMeta }) {
 
 	const mutation = useMutation({
 		mutationFn: async () => {
-			const { error } = await supabase
+			await supabase
 				.from('user_deck')
 				.update({ archived: !archived })
 				.eq('id', id)
