@@ -1,5 +1,5 @@
 EPIC OF SIGNUPS AND GETTING STARTED AND CONNECTING FRIENDS
-1. Got to actually build the signup workflow, for learners and friends
+1. ✅ Got to actually build the signup workflow, for learners and friends
 	1. ✅ add a mock for the form input
 		1. ✅ make the form input look niceeee
 	1. ✅ make the form input work
@@ -16,7 +16,7 @@ EPIC OF SIGNUPS AND GETTING STARTED AND CONNECTING FRIENDS
 	* ✅ this may mean actually the search unit should take an ID and we should fetch the relationship from a map 
 		(so do like how we have deck.pids and and such, with relationships, refactoring this cache entry)
 1. ✅ use specific mutation keys for invitations/response actions
-1. destructive buttons like "unfriend" and "cancel invite" and "decline invitation" should all have dialog confirmations
+1. ✅ destructive buttons like "unfriend" and "cancel invite" and "decline invitation" should all have dialog confirmations
 
 ISSUES
 1. When you try to sign up using existing creds you get an error and then get logged in. We

@@ -104,15 +104,42 @@ export function ProfileWithRelationship({
 						>
 							<ThumbsUp />
 						</Button>
-						<Button
-							variant="secondary"
-							className="w-8 h-8"
-							size="icon"
-							title="Decline pending invitation"
-							onClick={() => inviteResponseMutation.mutate('decline')}
-						>
-							<X className="w-6 h-6 p-0" />
-						</Button>
+						<Dialog>
+							<DialogTrigger asChild>
+								<Button
+									variant="secondary"
+									className="w-8 h-8"
+									size="icon"
+									title="Decline pending invitation"
+								>
+									<X className="w-6 h-6 p-0" />
+								</Button>
+							</DialogTrigger>
+							<DialogContent>
+								<DialogHeader>
+									<DialogTitle>Decline this invitation</DialogTitle>
+									<DialogDescription>
+										Please confirm whether you'd like to decline this invitation
+									</DialogDescription>
+								</DialogHeader>
+								<DialogFooter>
+									<DialogClose asChild>
+										<Button variant="secondary">Go back</Button>
+									</DialogClose>
+									<Button
+										variant="destructive"
+										title="Confirm: Cancel friend request"
+										onClick={() => inviteResponseMutation.mutate('decline')}
+									>
+										{inviteResponseMutation.isPending ?
+											<Loader2 />
+										: inviteResponseMutation.isSuccess ?
+											<Check className="text-white w-6 h-6" />
+										:	<>Confirm</>}
+									</Button>
+								</DialogFooter>
+							</DialogContent>
+						</Dialog>
 					</>
 				: (
 					relationship?.status === 'pending' &&
@@ -131,12 +158,13 @@ export function ProfileWithRelationship({
 						</DialogTrigger>
 						<DialogContent className="sm:max-w-[425px]">
 							<DialogHeader>
-								<DialogTitle>Cancel this invitation</DialogTitle>
+								<DialogTitle>Cancel this request</DialogTitle>
 								<DialogDescription>
-									Please confirm whether you'd like to cancel this invitation
+									Please confirm whether you'd like to cancel this friend
+									request
 								</DialogDescription>
 							</DialogHeader>
-							<DialogFooter className="justify-between">
+							<DialogFooter>
 								<DialogClose asChild>
 									<Button variant="secondary">Go back</Button>
 								</DialogClose>
