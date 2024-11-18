@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
@@ -17,6 +17,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Search, Send } from 'lucide-react'
 import { ShowError } from '@/components/errors'
+import supabase from '@/lib/supabase-client'
 
 export const Route = createFileRoute('/_user/friends/invite')({
 	component: InviteFriendPage,
@@ -39,18 +40,22 @@ function InviteFriendForm() {
 			resolver: zodResolver(inviteFriendSchema),
 		}
 	)
-	const queryClient = useQueryClient()
+	// const queryClient = useQueryClient()
 
 	const invite = useMutation({
 		mutationKey: ['user', 'invite_friend'],
-		mutationFn: async (data: z.infer<typeof inviteFriendSchema>) => {
-			return new Promise((resolve) => setTimeout(() => resolve(data), 1000))
+		mutationFn: async (values: z.infer<typeof inviteFriendSchema>) => {
+			const { data, error } = await supabase.auth.admin.inviteUserByEmail(
+				values.email
+			)
+			if (error) throw error
+			return data
 		},
-		onSuccess: () => {
-			toast.success('Your friend has been invited to help you learn.')
-			void queryClient.invalidateQueries({
+		onSuccess: (_, values) => {
+			toast.success(`Invitation sent to ${values.email}.`)
+			/*void queryClient.invalidateQueries({
 				queryKey: ['user', 'friend_invited'],
-			})
+			})*/
 		},
 	})
 
