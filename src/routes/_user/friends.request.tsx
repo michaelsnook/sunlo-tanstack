@@ -96,6 +96,7 @@ const searchAsync = async (query: string): Promise<PublicProfile[]> => {
 
 export default function SearchProfiles() {
 	const { query } = Route.useSearch()
+	const { data } = useRelationsQuery()
 	const debouncedQuery = useDebounce(query, 500)
 	const navigate = useNavigate({ from: Route.fullPath })
 	const setQueryInputValue = (val: string) =>
@@ -196,6 +197,9 @@ export default function SearchProfiles() {
 									<ProfileWithRelationship
 										key={person.uid}
 										otherPerson={person}
+										relationship={
+											data.relationsMap[person.uid].friend_summary || null
+										}
 									/>
 								))
 							}
