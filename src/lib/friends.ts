@@ -2,6 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import supabase from './supabase-client'
 import { PublicProfile, PublicProfileFull } from '@/types/main'
 import { useAuth } from './hooks'
+import { mapArray } from './utils'
 
 export const usePublicProfileSearch = () =>
 	useMutation({
@@ -16,9 +17,17 @@ export const usePublicProfileSearch = () =>
 		},
 	})
 
-export const useFriendSummaries = (
-	select: (data: Array<PublicProfileFull>) => Array<PublicProfileFull>
-) => {
+type FriendSummariesFull = {
+	relationsMap: { [key: string]: PublicProfileFull }
+	uids: {
+		all: Array<string>
+		friends: Array<string>
+		invited: Array<string>
+		invitations: Array<string>
+	}
+}
+
+export const useRelationsQuery = () => {
 	const { userId } = useAuth()
 	return useQuery({
 		queryKey: ['user', 'friends', 'summaries'],
@@ -30,38 +39,34 @@ export const useFriendSummaries = (
 				)
 				.throwOnError()
 
-			return data.map(({ profile_less, profile_more, ...summary }) => {
-				const profile =
-					userId === profile_less.uid ? profile_more : profile_less
-				return { ...profile, friend_summary: summary }
-			})
+			const cleanArray = data.map(
+				({ profile_less, profile_more, ...summary }) => {
+					const profile =
+						userId === profile_less.uid ? profile_more : profile_less
+					return { ...profile, friend_summary: summary }
+				}
+			)
+			return {
+				relationsMap: mapArray(cleanArray, 'uid'),
+				uids: {
+					all: cleanArray.map((d) => d.uid),
+					friends: cleanArray
+						.filter((d) => d.friend_summary.status === 'friends')
+						.map((d) => d.uid),
+					invited: cleanArray
+						.filter(
+							({ friend_summary: sum }) =>
+								sum.status === 'pending' && sum.most_recent_uid_by === userId
+						)
+						.map((d) => d.uid),
+					invitations: cleanArray
+						.filter(
+							({ friend_summary: sum }) =>
+								sum.status === 'pending' && sum.most_recent_uid_for === userId
+						)
+						.map((d) => d.uid),
+				},
+			} as FriendSummariesFull
 		},
-		select,
 	})
-}
-
-export const useFriendsInvited = () => {
-	const { userId } = useAuth()
-	return useFriendSummaries((data: Array<PublicProfileFull>) =>
-		data.filter(
-			({ friend_summary: sum }) =>
-				sum.status === 'pending' && sum.most_recent_uid_by === userId
-		)
-	)
-}
-
-export const useFriendInvitations = () => {
-	const { userId } = useAuth()
-	return useFriendSummaries((data: Array<PublicProfileFull>) =>
-		data.filter(
-			({ friend_summary: sum }) =>
-				sum.status === 'pending' && sum.most_recent_uid_for === userId
-		)
-	)
-}
-
-export const useFriends = () => {
-	return useFriendSummaries((data: Array<PublicProfileFull>) =>
-		data.filter(({ friend_summary: sum }) => sum.status === 'friends')
-	)
 }

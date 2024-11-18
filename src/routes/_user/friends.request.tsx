@@ -16,7 +16,7 @@ import {
 import { Input } from '@/components/ui/input'
 import Callout from '@/components/ui/callout'
 
-import { useFriendInvitations } from '@/lib/friends'
+import { useRelationsQuery } from '@/lib/friends'
 import Loading from '@/components/loading'
 import type { PublicProfile } from '@/types/main'
 import supabase from '@/lib/supabase-client'
@@ -45,7 +45,7 @@ function FriendRequestPage() {
 }
 
 function PendingInvitationsSection() {
-	const { data, isPending, error } = useFriendInvitations()
+	const { data, isPending, error } = useRelationsQuery()
 
 	return (
 		<Card>
@@ -69,10 +69,13 @@ function PendingInvitationsSection() {
 					<Loading />
 				: error ?
 					<ShowError>{error.message}</ShowError>
-				: !(data?.length > 0) ?
+				: !(data?.uids.invitations?.length > 0) ?
 					<p>You don't have any pending invitations at this time.</p>
-				:	data.map((person) => (
-						<ProfileWithRelationship key={person.uid} otherPerson={person} />
+				:	data?.uids.invitations.map((uid) => (
+						<ProfileWithRelationship
+							key={uid}
+							otherPerson={data?.relationsMap[uid]}
+						/>
 					))
 				}
 			</CardContent>
