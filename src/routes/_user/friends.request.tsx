@@ -1,10 +1,9 @@
-import { useCallback } from 'react'
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
 import { z } from 'zod'
 
 import { useDebounce, usePrevious } from '@uidotdev/usehooks'
-import { Contact, Loader2, Mail, Search, Send } from 'lucide-react'
+import { Contact, Loader2, Mail, Search } from 'lucide-react'
 
 import { Button, buttonVariants } from '@/components/ui/button'
 import {
@@ -25,7 +24,6 @@ import { ShowError } from '@/components/errors'
 import { Garlic } from '@/components/garlic'
 import { Label } from '@/components/ui/label'
 import { ProfileWithRelationship } from '@/components/profile-with-relationship'
-import { EmailField } from '@/components/fields'
 
 const SearchSchema = z.object({
 	query: z.string().optional(),
@@ -82,6 +80,17 @@ function PendingInvitationsSection() {
 	)
 }
 
+const searchAsync = async (query: string): Promise<PublicProfile[]> => {
+	if (!query) return null
+	const { data } = await supabase
+		.from('public_profile')
+		.select('uid, username, avatar_url')
+		.ilike('username', `%${query}%`)
+		.limit(10)
+		.throwOnError()
+	return data || []
+}
+
 export default function SearchProfiles() {
 	const { query } = Route.useSearch()
 	const debouncedQuery = useDebounce(query, 500)
@@ -96,25 +105,13 @@ export default function SearchProfiles() {
 			params: true,
 		})
 
-	const searchAsync = useCallback(async (): Promise<PublicProfile[]> => {
-		if (!debouncedQuery) return null
-		const { data } = await supabase
-			.from('public_profile')
-			.select('uid, username, avatar_url')
-			.ilike('username', `%${debouncedQuery}%`)
-			.limit(10)
-			.throwOnError()
-		return data || []
-	}, [debouncedQuery])
-	console.log(`debouncedQuery`, debouncedQuery)
-
 	const {
 		data: searchResults,
 		error,
 		isFetching,
 	} = useQuery({
 		queryKey: ['public_profile', 'search', debouncedQuery],
-		queryFn: searchAsync,
+		queryFn: async ({ queryKey }) => searchAsync(queryKey[2]),
 		enabled: debouncedQuery?.length > 0,
 	})
 

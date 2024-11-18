@@ -72,7 +72,10 @@ function FriendProfiles() {
 						<></>
 					: !(data?.length > 0) ?
 						<>no friends</>
-					:	data.map((f) => <ProfileWithRelationship otherPerson={f} />)}
+					:	data.map((otherPerson) => (
+							<ProfileWithRelationship otherPerson={otherPerson} />
+						))
+					}
 				</div>
 			</CardContent>
 		</Card>
