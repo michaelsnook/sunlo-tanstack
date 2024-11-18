@@ -74,7 +74,25 @@ function FriendProfiles() {
 					: error ?
 						<></>
 					: !(data?.uids.friends?.length > 0) ?
-						<>no friends</>
+						<p>
+							Your friends list is empty for now. Use{' '}
+							<Link
+								className="s-link"
+								from={Route.fullPath}
+								to="/friends/request"
+							>
+								the search screen
+							</Link>{' '}
+							to find friends on Sunlo or{' '}
+							<Link
+								className="s-link"
+								from={Route.fullPath}
+								to="/friends/invite"
+							>
+								invite them to create an account
+							</Link>
+							.
+						</p>
 					:	data?.uids.friends.map((uid) => (
 							<ProfileWithRelationship
 								key={uid}
