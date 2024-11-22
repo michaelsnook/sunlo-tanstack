@@ -26,8 +26,49 @@ export const Route = createFileRoute('/_user/friends/invite')({
 function InviteFriendPage() {
 	return (
 		<main className="flex flex-col gap-6">
-			<InviteFriendForm />
+			<Card>
+				<CardHeader>
+					<CardTitle>
+						<div className="flex flex-row justify-between items-center">
+							<span>Invite a Friend</span>
+							<Link
+								to="/friends/request"
+								aria-disabled="true"
+								className={buttonVariants({
+									size: 'badge',
+									variant: 'outline',
+								})}
+							>
+								<Search className="h-3 w-3" />
+								<span className="me-1">Search </span>
+							</Link>
+						</div>
+					</CardTitle>
+					<CardDescription>
+						Invite a friend to learn with you or to help you learn.
+					</CardDescription>
+				</CardHeader>
+				<CardContent>
+					<NativeShareButton />
+				</CardContent>
+			</Card>
 		</main>
+	)
+}
+
+function NativeShareButton() {
+	const canShare = typeof navigator?.share === 'function'
+	const onClick = async (): Promise<void> => {
+		// console.log('sharing...', navigator, navigator?.canShare())
+		if (navigator?.share) await navigator?.share()
+		else console.log(`not sharing bc not possible`)
+	}
+	return (
+		<p>
+			{canShare ?
+				<Button onClick={onClick}>Share</Button>
+			:	<>no sharing options</>}
+		</p>
 	)
 }
 
@@ -64,51 +105,31 @@ function InviteFriendForm() {
 	})
 
 	return (
-		<Card>
-			<CardHeader>
-				<CardTitle>
-					<div className="flex flex-row justify-between items-center">
-						<span>Invite a Friend</span>
-						<Link
-							to="/friends/request"
-							aria-disabled="true"
-							className={buttonVariants({ size: 'badge', variant: 'outline' })}
-						>
-							<Search className="h-3 w-3" />
-							<span className="me-1">Search </span>
-						</Link>
-					</div>
-				</CardTitle>
-				<CardDescription>Send an invitation by email.</CardDescription>
-			</CardHeader>
-			<CardContent>
-				<form onSubmit={onSubmit}>
-					<fieldset
-						className="flex flex-row gap-2 items-end"
-						disabled={invite.isPending}
-					>
-						<div className="w-full">
-							<Label htmlFor="email">Friend's email</Label>
-							<Controller
-								name="email"
-								control={control}
-								render={({ field }) => (
-									<Input
-										{...field}
-										type="email"
-										placeholder="Enter your friend's email"
-									/>
-								)}
+		<form onSubmit={onSubmit}>
+			<fieldset
+				className="flex flex-row gap-2 items-end"
+				disabled={invite.isPending}
+			>
+				<div className="w-full">
+					<Label htmlFor="email">Friend's email</Label>
+					<Controller
+						name="email"
+						control={control}
+						render={({ field }) => (
+							<Input
+								{...field}
+								type="email"
+								placeholder="Enter your friend's email"
 							/>
-						</div>
-						<Button disabled={invite.isPending}>
-							<Send />
-							<span className="hidden @md:block">Send</span>
-						</Button>
-					</fieldset>
-				</form>
-				<ShowError className="mt-4">{invite.error?.message}</ShowError>
-			</CardContent>
-		</Card>
+						)}
+					/>
+				</div>
+				<Button disabled={invite.isPending}>
+					<Send />
+					<span className="hidden @md:block">Send</span>
+				</Button>
+			</fieldset>
+			<ShowError className="mt-4">{invite.error?.message}</ShowError>
+		</form>
 	)
 }
