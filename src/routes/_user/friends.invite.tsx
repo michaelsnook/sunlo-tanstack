@@ -1,8 +1,7 @@
-import { useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 
-import { Mail, Phone, Search, Share } from 'lucide-react'
-import { Button, buttonVariants } from '@/components/ui/button'
+import { Mail, Phone, Search } from 'lucide-react'
+import { buttonVariants } from '@/components/ui/button'
 import {
 	Card,
 	CardContent,
@@ -10,8 +9,8 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card'
-import { ShowError } from '@/components/errors'
 import { useProfile } from '@/lib/use-profile'
+import { NativeShareButton } from '@/components/native-share-button'
 
 export const Route = createFileRoute('/_user/friends/invite')({
 	component: InviteFriendPage,
@@ -51,43 +50,16 @@ function InviteFriendPage() {
 }
 
 function ShareButtons() {
-	const canShare = typeof navigator?.share === 'function'
-	const [error, setError] = useState<
-		null | DOMException | TypeError | { message: string }
-	>(null)
 	const { data: profile } = useProfile()
 	const shareData = {
 		text: `Hello friend, I'm learning a language with Sunlo, a social language learning app. Will you join me? https://sunlo.app/signup`,
-		title: `Invitation! ${profile?.username} on Sunlo.app`,
+		title: `Invitation! ${profile?.username || 'Join your friend'} on Sunlo.app`,
 	}
-	const onClick = (): void => {
-		// console.log('sharing...', navigator, navigator?.canShare())
-		if (navigator?.share)
-			navigator
-				.share(shareData)
-				.then(() => setError(null))
-				.catch((error: DOMException | TypeError) => {
-					console.log(
-						`Some error has occurred while sharing. It could just be they cancelled the share.`,
-						error
-					)
-					// setError(error)
-				})
-		else {
-			console.log(`not sharing bc not supported`)
-			setError({
-				message: `Sorry, we can't open your device's share interface. Please try one of the other options.`,
-			})
-		}
-	}
+
 	return (
 		<div>
 			<div className="flex flex-col @md:flex-row gap-2">
-				{canShare ?
-					<Button size="lg" onClick={onClick}>
-						Share <Share />
-					</Button>
-				:	null}
+				<NativeShareButton shareData={shareData} />
 				<a
 					className={buttonVariants({ size: 'lg', variant: 'secondary' })}
 					href={`mailto:?subject=${encodeURIComponent(shareData.title)}&body=${encodeURIComponent(shareData.text)}`}
@@ -101,7 +73,6 @@ function ShareButtons() {
 					WhatsApp <Phone className="outline outline-1 rounded-full p-px" />
 				</a>
 			</div>
-			<ShowError>{error?.message}</ShowError>
 		</div>
 	)
 }
