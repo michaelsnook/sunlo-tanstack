@@ -63,7 +63,7 @@ function ShareButtons() {
 	const [error, setError] = useState<null | DOMException | TypeError>(null)
 	const { data: profile } = useProfile()
 	const shareData = {
-		url: 'https://sunlo.app/signup',
+		// url: 'https://sunlo.app/signup',
 		text: `Hello friend, I'm learning a language with Sunlo, a social language learning app. Will you join me? https://sunlo.app/signup`,
 		title: `Invitation! ${profile?.username} on Sunlo.app`,
 	}
