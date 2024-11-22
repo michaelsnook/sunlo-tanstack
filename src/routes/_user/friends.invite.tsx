@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useMutation } from '@tanstack/react-query'
 import { z } from 'zod'
@@ -5,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
+import { Search, Send } from 'lucide-react'
 import { Button, buttonVariants } from '@/components/ui/button'
 import {
 	Card,
@@ -15,7 +17,6 @@ import {
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Search, Send } from 'lucide-react'
 import { ShowError } from '@/components/errors'
 import supabase from '@/lib/supabase-client'
 
@@ -58,17 +59,25 @@ function InviteFriendPage() {
 
 function NativeShareButton() {
 	const canShare = typeof navigator?.share === 'function'
-	const onClick = async (): Promise<void> => {
+	const [error, setError] = useState<null | DOMException | TypeError>(null)
+	const onClick = (): void => {
 		// console.log('sharing...', navigator, navigator?.canShare())
-		if (navigator?.share) await navigator?.share()
+		if (navigator?.share)
+			navigator
+				?.share({
+					url: `https://sunlo.app/signup`,
+				})
+				.then(() => setError(null))
+				.catch((error: DOMException | TypeError) => setError(error))
 		else console.log(`not sharing bc not possible`)
 	}
 	return (
-		<p>
+		<div>
 			{canShare ?
 				<Button onClick={onClick}>Share</Button>
 			:	<>no sharing options</>}
-		</p>
+			<ShowError>{error?.message}</ShowError>
+		</div>
 	)
 }
 
