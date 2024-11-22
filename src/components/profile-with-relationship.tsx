@@ -8,16 +8,9 @@ import { AvatarIconRow } from '@/components/ui/avatar-icon'
 import supabase from '@/lib/supabase-client'
 import { useAuth } from '@/lib/hooks'
 import { Tables } from '@/types/supabase'
-import {
-	Dialog,
-	DialogClose,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from './ui/dialog'
+import { ConfirmDestructiveActionDialog } from './confirm-destructive-action-dialog'
+
+// const useFriendMutation = () => useMutation({})
 
 export function ProfileWithRelationship({
 	otherPerson,
@@ -104,84 +97,59 @@ export function ProfileWithRelationship({
 						>
 							<ThumbsUp />
 						</Button>
-						<Dialog>
-							<DialogTrigger asChild>
-								<Button
-									variant="secondary"
-									className="w-8 h-8"
-									size="icon"
-									title="Decline pending invitation"
-								>
-									<X className="w-6 h-6 p-0" />
-								</Button>
-							</DialogTrigger>
-							<DialogContent>
-								<DialogHeader>
-									<DialogTitle>Decline this invitation</DialogTitle>
-									<DialogDescription>
-										Please confirm whether you'd like to decline this invitation
-									</DialogDescription>
-								</DialogHeader>
-								<DialogFooter className="gap-2">
-									<DialogClose asChild>
-										<Button variant="secondary">Go back</Button>
-									</DialogClose>
-									<Button
-										variant="destructive"
-										title="Confirm: Cancel friend request"
-										onClick={() => inviteResponseMutation.mutate('decline')}
-									>
-										{inviteResponseMutation.isPending ?
-											<Loader2 />
-										: inviteResponseMutation.isSuccess ?
-											<Check className="text-white w-6 h-6" />
-										:	<>Confirm</>}
-									</Button>
-								</DialogFooter>
-							</DialogContent>
-						</Dialog>
+						<ConfirmDestructiveActionDialog
+							title="Decline this invitation"
+							description="Please confirm whether you'd like to decline this invitation"
+						>
+							<Button
+								variant="secondary"
+								className="w-8 h-8"
+								size="icon"
+								title="Decline pending invitation"
+							>
+								<X className="w-6 h-6 p-0" />
+							</Button>
+							<Button
+								variant="destructive"
+								title="Confirm: Cancel friend request"
+								onClick={() => inviteResponseMutation.mutate('decline')}
+							>
+								{inviteResponseMutation.isPending ?
+									<Loader2 />
+								: inviteResponseMutation.isSuccess ?
+									<Check className="text-white w-6 h-6" />
+								:	<>Confirm</>}
+							</Button>
+						</ConfirmDestructiveActionDialog>
 					</>
 				: (
 					relationship?.status === 'pending' &&
 					userId === relationship?.most_recent_uid_by
 				) ?
-					<Dialog>
-						<DialogTrigger asChild>
-							<Button
-								variant="secondary"
-								className="w-8 h-8"
-								size="icon"
-								title="Cancel friend request"
-							>
-								<X className="w-6 h-6 p-0" />
-							</Button>
-						</DialogTrigger>
-						<DialogContent className="sm:max-w-[425px]">
-							<DialogHeader>
-								<DialogTitle>Cancel this request</DialogTitle>
-								<DialogDescription>
-									Please confirm whether you'd like to cancel this friend
-									request
-								</DialogDescription>
-							</DialogHeader>
-							<DialogFooter>
-								<DialogClose asChild>
-									<Button variant="secondary">Go back</Button>
-								</DialogClose>
-								<Button
-									variant="destructive"
-									title="Confirm: Cancel friend request"
-									onClick={() => inviteResponseMutation.mutate('cancel')}
-								>
-									{inviteResponseMutation.isPending ?
-										<Loader2 />
-									: inviteResponseMutation.isSuccess ?
-										<Check className="text-white w-6 h-6" />
-									:	<>Confirm</>}
-								</Button>
-							</DialogFooter>
-						</DialogContent>
-					</Dialog>
+					<ConfirmDestructiveActionDialog
+						title={`Cancel this request`}
+						description={`Please confirm whether you'd like to cancel this friend request`}
+					>
+						<Button
+							variant="secondary"
+							className="w-8 h-8"
+							size="icon"
+							title="Cancel friend request"
+						>
+							<X className="w-6 h-6 p-0" />
+						</Button>
+						<Button
+							variant="destructive"
+							title="Confirm: Cancel friend request"
+							onClick={() => inviteResponseMutation.mutate('cancel')}
+						>
+							{inviteResponseMutation.isPending ?
+								<Loader2 />
+							: inviteResponseMutation.isSuccess ?
+								<Check className="text-white w-6 h-6" />
+							:	<>Confirm</>}
+						</Button>
+					</ConfirmDestructiveActionDialog>
 				: relationship.status === 'friends' ?
 					<Handshake className="w-6 h-6 p-0" />
 				:	<> status is null for some reason</>}
