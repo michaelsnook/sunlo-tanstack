@@ -44,5 +44,6 @@ export const usePublicProfile = (uid: uuid) => {
 				.throwOnError()
 			return res.data
 		},
+		enabled: typeof uid === 'string' && uid?.length > 10,
 	})
 }

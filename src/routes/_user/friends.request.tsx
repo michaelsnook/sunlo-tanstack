@@ -1,4 +1,9 @@
-import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import {
+	createFileRoute,
+	Link,
+	Outlet,
+	useNavigate,
+} from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
 import { z } from 'zod'
 
@@ -38,6 +43,7 @@ export const Route = createFileRoute('/_user/friends/request')({
 function FriendRequestPage() {
 	return (
 		<main className="flex flex-col gap-6">
+			<Outlet />
 			<PendingInvitationsSection />
 			<SearchProfiles />
 		</main>
