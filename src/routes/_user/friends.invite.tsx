@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
-import { Search, Send } from 'lucide-react'
+import { Mail, Phone, Search, Send, Share } from 'lucide-react'
 import { Button, buttonVariants } from '@/components/ui/button'
 import {
 	Card,
@@ -19,6 +19,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ShowError } from '@/components/errors'
 import supabase from '@/lib/supabase-client'
+import { useProfile } from '@/lib/use-profile'
 
 export const Route = createFileRoute('/_user/friends/invite')({
 	component: InviteFriendPage,
@@ -50,32 +51,58 @@ function InviteFriendPage() {
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<NativeShareButton />
+					<ShareButtons />
 				</CardContent>
 			</Card>
 		</main>
 	)
 }
 
-function NativeShareButton() {
+function ShareButtons() {
 	const canShare = typeof navigator?.share === 'function'
 	const [error, setError] = useState<null | DOMException | TypeError>(null)
+	const { data: profile } = useProfile()
+	const shareData = {
+		url: 'https://sunlo.app/signup',
+		text: `Hello friend, I'm learning a language with Sunlo, a social language learning app. Will you join me? https://sunlo.app/signup`,
+		title: `Invitation! ${profile?.username} on Sunlo.app`,
+	}
 	const onClick = (): void => {
 		// console.log('sharing...', navigator, navigator?.canShare())
 		if (navigator?.share)
 			navigator
-				?.share({
-					url: `https://sunlo.app/signup`,
-				})
+				.share(shareData)
 				.then(() => setError(null))
-				.catch((error: DOMException | TypeError) => setError(error))
+				.catch((error: DOMException | TypeError) => {
+					console.log(
+						`Some error has occurred while sharing. It could just be they cancelled the share.`,
+						error
+					)
+					// setError(error)
+				})
 		else console.log(`not sharing bc not possible`)
 	}
 	return (
 		<div>
-			{canShare ?
-				<Button onClick={onClick}>Share</Button>
-			:	<>no sharing options</>}
+			<div className="flex flex-col @md:flex-row gap-2">
+				{canShare ?
+					<Button size="lg" onClick={onClick}>
+						Share <Share />
+					</Button>
+				:	null}
+				<a
+					className={buttonVariants({ size: 'lg', variant: 'secondary' })}
+					href={`mailto:?subject=${encodeURIComponent(shareData.title)}&body=${encodeURIComponent(shareData.text)}`}
+				>
+					Email <Mail />
+				</a>
+				<a
+					className={buttonVariants({ size: 'lg', variant: 'secondary' })}
+					href={`whatsapp://send?text=${encodeURIComponent(shareData.text)}`}
+				>
+					WhatsApp <Phone className="outline outline-1 rounded-full p-px" />
+				</a>
+			</div>
 			<ShowError>{error?.message}</ShowError>
 		</div>
 	)
