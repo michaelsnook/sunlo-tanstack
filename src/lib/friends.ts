@@ -1,21 +1,8 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import supabase from './supabase-client'
-import { PublicProfile, PublicProfileFull } from '@/types/main'
+import { PublicProfileFull } from '@/types/main'
 import { useAuth } from './hooks'
 import { mapArray } from './utils'
-
-export const usePublicProfileSearch = () =>
-	useMutation({
-		mutationKey: ['profiles', 'search'],
-		mutationFn: async (terms: string) => {
-			const { data } = await supabase
-				.from('public_profile')
-				.select()
-				.ilike('username', terms)
-				.throwOnError()
-			return data as Array<PublicProfile>
-		},
-	})
 
 type FriendSummariesFull = {
 	relationsMap: { [key: string]: PublicProfileFull }
