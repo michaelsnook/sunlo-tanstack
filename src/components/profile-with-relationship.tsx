@@ -1,66 +1,23 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import toast from 'react-hot-toast'
 import { Check, Handshake, Loader2, Send, ThumbsUp, X } from 'lucide-react'
 
-import type { PublicProfileFull, FriendRequestActionInsert } from '@/types/main'
+import type { FriendSummary, PublicProfileFull } from '@/types/main'
 import { Button } from '@/components/ui/button'
 import { AvatarIconRow } from '@/components/ui/avatar-icon'
-import supabase from '@/lib/supabase-client'
 import { useAuth } from '@/lib/hooks'
-import { Tables } from '@/types/supabase'
 import { ConfirmDestructiveActionDialog } from './confirm-destructive-action-dialog'
-
-// const useFriendMutation = () => useMutation({})
+import { useFriendRequestAction } from '@/lib/friends'
 
 export function ProfileWithRelationship({
 	otherPerson,
 	relationship,
 }: {
 	otherPerson: PublicProfileFull
-	relationship?: null | Tables<'friend_summary'>
+	relationship?: null | FriendSummary
 }) {
 	const { userId } = useAuth()
-	const [uid_less, uid_more] = [userId, otherPerson.uid].sort()
-	const queryClient = useQueryClient()
-	const inviteResponseMutation = useMutation({
-		mutationKey: ['user', 'friend_request_action', otherPerson.uid],
-		mutationFn: async (action_type: string) => {
-			await supabase
-				.from('friend_request_action')
-				.insert({
-					uid_less,
-					uid_more,
-					uid_by: userId,
-					uid_for: otherPerson.uid,
-					action_type,
-				} as FriendRequestActionInsert)
-				.throwOnError()
-		},
-		onSuccess: (_, variable) => {
-			if (variable === 'invite') toast.success('Friend request sent 👍')
-			if (variable === 'accept')
-				toast.success('Accepted invitation. You are now connected 👍')
-			if (variable === 'decline') toast('Declined this invitation')
-			if (variable === 'cancel') toast('Cancelled this invitation')
-			if (variable === 'remove') toast('You are no longer friends')
-			void queryClient.invalidateQueries({
-				queryKey: ['user', 'friends', 'summaries'],
-			})
-			void queryClient.invalidateQueries({
-				queryKey: ['public_profile', 'search'],
-			})
-		},
-		onError: (error, variables) => {
-			console.log(
-				`Something went wrong trying to modify your relationship:`,
-				error,
-				variables
-			)
-			toast.error(`Something went wrong with this interaction`)
-		},
-	})
+	const inviteResponseMutation = useFriendRequestAction(otherPerson.uid)
 
-	relationship ??= otherPerson.friend_summary ?? null
+	relationship ??= otherPerson?.friend_summary
 
 	return (
 		<AvatarIconRow {...otherPerson}>

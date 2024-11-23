@@ -1,9 +1,9 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { useRelationsQuery } from '@/lib/friends'
+import { useFriendRequestAction, useRelationsQuery } from '@/lib/friends'
 import { useAuth } from '@/lib/hooks'
 import { usePublicProfile } from '@/lib/use-profile'
-import { Tables } from '@/types/supabase'
+import { FriendSummary, uuid } from '@/types/main'
 import { createFileRoute } from '@tanstack/react-router'
 import { Check, Loader2, ThumbsUp } from 'lucide-react'
 
@@ -37,7 +37,7 @@ function ProfilePage() {
 						<h2 className="text-xl font-semibold">{profile.username}</h2>
 						<div>
 							<p className="capitalize">{relationship.status}</p>
-							<RelationshipActions relationship={relationship} />
+							<RelationshipActions uid_for={uid} relationship={relationship} />
 						</div>
 					</CardContent>
 				</Card>
@@ -47,16 +47,23 @@ function ProfilePage() {
 }
 
 function RelationshipActions({
+	uid_for,
 	relationship,
 }: {
-	relationship?: null | Tables<'friend_summary'>
+	uid_for: uuid
+	// @@TODO don't pass the relationship? fetch from hook
+	relationship?: null | FriendSummary
 }) {
 	const { userId } = useAuth()
+	const action = useFriendRequestAction(uid_for)
 	return (
 		!userId ? null
 		: !relationship?.status || relationship.status === 'unconnected' ?
-			<Button>
-				Add friend <ThumbsUp />
+			<Button onClick={() => action.mutate('invite')}>
+				Add friend{' '}
+				{action.isPending ?
+					<Loader2 />
+				:	<ThumbsUp />}
 			</Button>
 		: relationship.status === 'friends' ?
 			<Button>
@@ -64,16 +71,19 @@ function RelationshipActions({
 			</Button>
 		: (
 			relationship.status === 'pending' &&
+			relationship.most_recent_uid_for === userId
+		) ?
+			<Button onClick={() => action.mutate('accept')}>
+				Confirm friends{' '}
+				{action.isPending ?
+					<Loader2 />
+				:	<ThumbsUp />}
+			</Button>
+		: (
+			relationship.status === 'pending' &&
 			relationship.most_recent_uid_by === userId
 		) ?
 			<Button>Awaiting response (cancel?)</Button>
-		: (
-			relationship.status === 'pending' &&
-			relationship.most_recent_uid_for === userId
-		) ?
-			<Button>
-				Confirm friends <ThumbsUp />
-			</Button>
 		:	null
 	)
 }
