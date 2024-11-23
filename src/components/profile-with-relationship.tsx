@@ -1,26 +1,23 @@
 import { Check, Handshake, Loader2, Send, ThumbsUp, X } from 'lucide-react'
 
-import type { FriendSummary, PublicProfileFull } from '@/types/main'
+import type { PublicProfile, PublicProfileFull, uuid } from '@/types/main'
 import { Button } from '@/components/ui/button'
 import { AvatarIconRow } from '@/components/ui/avatar-icon'
-import { useAuth } from '@/lib/hooks'
 import { ConfirmDestructiveActionDialog } from './confirm-destructive-action-dialog'
-import { useFriendRequestAction } from '@/lib/friends'
+import { useFriendRequestAction, useOneRelation } from '@/lib/friends'
 
 export function ProfileWithRelationship({
-	otherPerson,
-	relationship,
+	uid,
+	profile,
 }: {
-	otherPerson: PublicProfileFull
-	relationship?: null | FriendSummary
+	uid: uuid
+	profile: PublicProfile | PublicProfileFull
 }) {
-	const { userId } = useAuth()
-	const inviteResponseMutation = useFriendRequestAction(otherPerson.uid)
-
-	relationship ??= otherPerson?.friend_summary
+	const inviteResponseMutation = useFriendRequestAction(uid)
+	const { data: relationship } = useOneRelation(uid)
 
 	return (
-		<AvatarIconRow {...otherPerson}>
+		<AvatarIconRow {...profile}>
 			<div className="flex flex-row gap-2">
 				{inviteResponseMutation.isPending ?
 					<span className="h-8 w-8 rounded-full p-1">
@@ -40,10 +37,7 @@ export function ProfileWithRelationship({
 					>
 						<Send className="w-6 h-6 mr-[0.1rem] mt-[0.1rem]" />
 					</Button>
-				: (
-					relationship?.status === 'pending' &&
-					userId === relationship?.most_recent_uid_for
-				) ?
+				: relationship.status === 'pending' && !relationship.isMostRecentByMe ?
 					<>
 						<Button
 							variant="default"
@@ -79,10 +73,7 @@ export function ProfileWithRelationship({
 							</Button>
 						</ConfirmDestructiveActionDialog>
 					</>
-				: (
-					relationship?.status === 'pending' &&
-					userId === relationship?.most_recent_uid_by
-				) ?
+				: relationship?.status === 'pending' && relationship.isMostRecentByMe ?
 					<ConfirmDestructiveActionDialog
 						title={`Cancel this request`}
 						description={`Please confirm whether you'd like to cancel this friend request`}

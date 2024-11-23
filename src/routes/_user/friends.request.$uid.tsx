@@ -1,6 +1,5 @@
 import { ProfileWithRelationship } from '@/components/profile-with-relationship'
 import Callout from '@/components/ui/callout'
-import { useRelationsQuery } from '@/lib/friends'
 import { useProfile, usePublicProfile } from '@/lib/use-profile'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -12,7 +11,6 @@ function FriendRequestWithUIDPage() {
 	const { data: profile } = useProfile()
 	const { uid } = Route.useParams()
 	const { data: otherProfile } = usePublicProfile(uid)
-	const { data } = useRelationsQuery()
 
 	return !otherProfile || !profile ?
 			null
@@ -24,10 +22,7 @@ function FriendRequestWithUIDPage() {
 						can send them an invitation to connect.
 					</p>
 					<Callout>
-						<ProfileWithRelationship
-							otherPerson={otherProfile}
-							relationship={data?.relationsMap?.[uid].friend_summary}
-						/>
+						<ProfileWithRelationship uid={uid} profile={otherProfile} />
 					</Callout>
 					<p>
 						Or, use this page to search for friends and get started learning

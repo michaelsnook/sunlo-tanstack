@@ -21,8 +21,7 @@ import {
 import { Input } from '@/components/ui/input'
 import Callout from '@/components/ui/callout'
 
-import { useRelationsQuery } from '@/lib/friends'
-import Loading from '@/components/loading'
+import { useRelations } from '@/lib/friends'
 import type { PublicProfile } from '@/types/main'
 import supabase from '@/lib/supabase-client'
 import { ShowError } from '@/components/errors'
@@ -51,7 +50,7 @@ function FriendRequestPage() {
 }
 
 function PendingInvitationsSection() {
-	const { data, isPending, error } = useRelationsQuery()
+	const { data, isPending, error } = useRelations()
 
 	return (
 		<Card>
@@ -72,7 +71,7 @@ function PendingInvitationsSection() {
 			</CardHeader>
 			<CardContent className="space-y-4">
 				{isPending ?
-					<Loading />
+					<Loader2 />
 				: error ?
 					<ShowError>{error.message}</ShowError>
 				: !(data?.uids.invitations?.length > 0) ?
@@ -80,7 +79,8 @@ function PendingInvitationsSection() {
 				:	data?.uids.invitations.map((uid) => (
 						<ProfileWithRelationship
 							key={uid}
-							otherPerson={data?.relationsMap[uid]}
+							uid={uid}
+							profile={data?.relationsMap[uid].profile}
 						/>
 					))
 				}
@@ -102,7 +102,6 @@ const searchAsync = async (query: string): Promise<PublicProfile[]> => {
 
 export default function SearchProfiles() {
 	const { query } = Route.useSearch()
-	const { data } = useRelationsQuery()
 	const debouncedQuery = useDebounce(query, 500)
 	const navigate = useNavigate({ from: Route.fullPath })
 	const setQueryInputValue = (val: string) =>
@@ -199,13 +198,11 @@ export default function SearchProfiles() {
 										</p>
 									</div>
 								</Callout>
-							:	resultsToShow.map((person) => (
+							:	resultsToShow.map((profile) => (
 									<ProfileWithRelationship
-										key={person.uid}
-										otherPerson={person}
-										relationship={
-											data?.relationsMap[person.uid].friend_summary || null
-										}
+										key={profile.uid}
+										uid={profile.uid}
+										profile={profile}
 									/>
 								))
 							}

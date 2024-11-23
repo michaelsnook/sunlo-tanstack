@@ -1,4 +1,4 @@
-import { Tables, TablesInsert } from './supabase'
+import { Enums, Tables, TablesInsert } from './supabase'
 import { UseMutationResult, UseQueryResult } from '@tanstack/react-query'
 import {
 	PostgrestError,
@@ -130,9 +130,25 @@ export type FriendshipRow = {
 	updated_at: string
 }
 
+export type FriendSummary = Tables<'friend_summary'>
 export type FriendRequestActionInsert = TablesInsert<'friend_request_action'>
+export type FriendSummaryFull = FriendSummary & {
+	profile_more: PublicProfile
+	profile_less: PublicProfile
+}
+
+export type FriendSummaryRelative = {
+	most_recent_action_type: Enums<'friend_request_response'>
+	most_recent_created_at: string
+	status: string
+	uidOther: uuid
+	isMostRecentByMe: boolean
+	isMyUidMore: boolean
+	profile?: PublicProfile
+}
+
 export type PublicProfileFull = PublicProfile & {
-	friend_summary?: Tables<'friend_summary'>
+	friend_summary?: FriendSummaryRelative
 }
 
 // for legacy hooks and such

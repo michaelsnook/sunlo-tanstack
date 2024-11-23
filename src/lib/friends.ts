@@ -1,23 +1,54 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+	useMutation,
+	useQuery,
+	useQueryClient,
+	UseQueryResult,
+} from '@tanstack/react-query'
 import supabase from './supabase-client'
-import { FriendRequestActionInsert, PublicProfileFull, uuid } from '@/types/main'
+import {
+	FriendRequestActionInsert,
+	FriendSummary,
+	FriendSummaryFull,
+	FriendSummaryRelative,
+	uuid,
+} from '@/types/main'
 import { useAuth } from './hooks'
 import { mapArray } from './utils'
 import toast from 'react-hot-toast'
 
-type FriendSummariesFull = {
-	// @@TODO: we should not use PublicProfileFull for this; we should invert the shape to
-	// more like { ...relation, profile: publicProfile } or possibly { relation, profile }
-	relationsMap: { [key: string]: PublicProfileFull }
+type FriendSummariesLoaded = {
+	relationsMap: { [key: uuid]: FriendSummaryRelative }
 	uids: {
-		all: Array<string>
-		friends: Array<string>
-		invited: Array<string>
-		invitations: Array<string>
+		all: Array<uuid>
+		friends: Array<uuid>
+		invited: Array<uuid>
+		invitations: Array<uuid>
 	}
 }
 
-export const useRelationsQuery = () => {
+export const friendSummaryToRelative = (
+	uid: uuid,
+	d: FriendSummaryFull | FriendSummary
+): FriendSummaryRelative => {
+	let res: FriendSummaryRelative = {
+		most_recent_action_type: d.most_recent_action_type,
+		most_recent_created_at: d.most_recent_created_at,
+		status: d.status,
+		uidOther: uid === d.uid_less ? d.uid_more : d.uid_less,
+		isMostRecentByMe: uid === d.most_recent_uid_by,
+		isMyUidMore: uid === d.uid_more,
+	}
+
+	if ('profile_less' in d && 'profile_more' in d)
+		res.profile = d.profile_less.uid === uid ? d.profile_more : d.profile_less
+	return res
+}
+
+export const useRelationsQuery = (
+	select?: (
+		data: FriendSummariesLoaded
+	) => FriendSummariesLoaded | FriendSummaryRelative
+) => {
 	const { userId } = useAuth()
 	return useQuery({
 		queryKey: ['user', 'friends', 'summaries'],
@@ -29,36 +60,43 @@ export const useRelationsQuery = () => {
 				)
 				.throwOnError()
 
-			const cleanArray = data.map(
-				({ profile_less, profile_more, ...summary }) => {
-					const profile =
-						userId === profile_less.uid ? profile_more : profile_less
-					return { ...profile, friend_summary: summary }
-				}
+			const cleanArray: Array<FriendSummaryRelative> = data.map((d) =>
+				friendSummaryToRelative(userId, d)
 			)
+
 			return {
-				relationsMap: mapArray(cleanArray, 'uid'),
+				relationsMap: mapArray(cleanArray, 'uidOther'),
 				uids: {
-					all: cleanArray.map((d) => d.uid),
+					all: cleanArray.map((d) => d.uidOther),
 					friends: cleanArray
-						.filter((d) => d.friend_summary.status === 'friends')
-						.map((d) => d.uid),
+						.filter((d) => d.status === 'friends')
+						.map((d) => d.uidOther),
 					invited: cleanArray
-						.filter(
-							({ friend_summary: sum }) =>
-								sum.status === 'pending' && sum.most_recent_uid_by === userId
-						)
-						.map((d) => d.uid),
+						.filter((d) => d.status === 'pending' && d.isMostRecentByMe)
+						.map((d) => d.uidOther),
 					invitations: cleanArray
-						.filter(
-							({ friend_summary: sum }) =>
-								sum.status === 'pending' && sum.most_recent_uid_for === userId
-						)
-						.map((d) => d.uid),
+						.filter((d) => d.status === 'pending' && !d.isMostRecentByMe)
+						.map((d) => d.uidOther),
 				},
-			} as FriendSummariesFull
+			} as FriendSummariesLoaded
 		},
+		select,
+		enabled: !!userId,
 	})
+}
+
+export const useRelations = () => {
+	return useRelationsQuery() as UseQueryResult<FriendSummariesLoaded, Error>
+}
+
+export const useOneRelation = (
+	uid: uuid
+): UseQueryResult<FriendSummaryRelative, Error> => {
+	const select = (data: FriendSummariesLoaded) => data.relationsMap[uid]
+	return useRelationsQuery(select) as UseQueryResult<
+		FriendSummaryRelative,
+		Error
+	>
 }
 
 export const useFriendRequestAction = (uid_for: uuid) => {

@@ -3,7 +3,7 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { buttonVariants } from '@/components/ui/button'
 import { Loader2, Search } from 'lucide-react'
-import { useRelationsQuery } from '@/lib/friends'
+import { useRelations } from '@/lib/friends'
 import { ShowError } from '@/components/errors'
 import { ProfileWithRelationship } from '@/components/profile-with-relationship'
 
@@ -21,7 +21,7 @@ function FriendListPage() {
 }
 
 function PendingRequestsSection() {
-	const { data, isPending, error } = useRelationsQuery()
+	const { data, isPending, error } = useRelations()
 
 	return (
 		<Card>
@@ -38,7 +38,8 @@ function PendingRequestsSection() {
 				:	data.uids.invited.map((uid) => (
 						<ProfileWithRelationship
 							key={uid}
-							otherPerson={data?.relationsMap[uid]}
+							uid={uid}
+							profile={data?.relationsMap[uid].profile}
 						/>
 					))
 				}
@@ -48,7 +49,7 @@ function PendingRequestsSection() {
 }
 
 function FriendProfiles() {
-	const { data, isPending, error } = useRelationsQuery()
+	const { data, isPending, error } = useRelations()
 	return (
 		<Card>
 			<CardHeader>
@@ -96,7 +97,8 @@ function FriendProfiles() {
 					:	data?.uids.friends.map((uid) => (
 							<ProfileWithRelationship
 								key={uid}
-								otherPerson={data?.relationsMap[uid]}
+								uid={uid}
+								profile={data?.relationsMap[uid].profile}
 							/>
 						))
 					}

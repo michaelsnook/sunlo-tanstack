@@ -1,9 +1,13 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { useFriendRequestAction, useRelationsQuery } from '@/lib/friends'
+import {
+	useFriendRequestAction,
+	useOneRelation,
+	useRelations,
+} from '@/lib/friends'
 import { useAuth } from '@/lib/hooks'
 import { usePublicProfile } from '@/lib/use-profile'
-import { FriendSummary, uuid } from '@/types/main'
+import { uuid } from '@/types/main'
 import { createFileRoute } from '@tanstack/react-router'
 import { Check, Loader2, ThumbsUp } from 'lucide-react'
 
@@ -14,9 +18,8 @@ export const Route = createFileRoute('/_user/profiles/$uid')({
 function ProfilePage() {
 	const { uid } = Route.useParams()
 	const { data: profile, isPending: isPending1 } = usePublicProfile(uid)
-	const { data: relations, isPending: isPending2 } = useRelationsQuery()
-	const relationship =
-		!relations || !uid ? null : relations.relationsMap?.[uid].friend_summary
+	const { data: relations, isPending: isPending2 } = useRelations()
+	const relationship = !relations || !uid ? null : relations.relationsMap[uid]
 	return (
 		<main className="px-2 py-10 max-w-sm mx-auto">
 			{isPending1 || isPending2 ?
@@ -36,8 +39,10 @@ function ProfilePage() {
 						</div>
 						<h2 className="text-xl font-semibold">{profile.username}</h2>
 						<div>
-							<p className="capitalize">{relationship.status}</p>
-							<RelationshipActions uid_for={uid} relationship={relationship} />
+							<p className="capitalize">
+								{relationship?.status ?? 'unconnected'}
+							</p>
+							<RelationshipActions uid_for={uid} />
 						</div>
 					</CardContent>
 				</Card>
@@ -46,16 +51,10 @@ function ProfilePage() {
 	)
 }
 
-function RelationshipActions({
-	uid_for,
-	relationship,
-}: {
-	uid_for: uuid
-	// @@TODO don't pass the relationship? fetch from hook
-	relationship?: null | FriendSummary
-}) {
+function RelationshipActions({ uid_for }: { uid_for: uuid }) {
 	const { userId } = useAuth()
 	const action = useFriendRequestAction(uid_for)
+	const { data: relationship } = useOneRelation(uid_for)
 	return (
 		!userId ? null
 		: !relationship?.status || relationship.status === 'unconnected' ?
@@ -69,20 +68,14 @@ function RelationshipActions({
 			<Button>
 				Connected <Check /> (unfriend?)
 			</Button>
-		: (
-			relationship.status === 'pending' &&
-			relationship.most_recent_uid_for === userId
-		) ?
+		: relationship.status === 'pending' && !relationship.isMostRecentByMe ?
 			<Button onClick={() => action.mutate('accept')}>
 				Confirm friends{' '}
 				{action.isPending ?
 					<Loader2 />
 				:	<ThumbsUp />}
 			</Button>
-		: (
-			relationship.status === 'pending' &&
-			relationship.most_recent_uid_by === userId
-		) ?
+		: relationship.status === 'pending' && relationship.isMostRecentByMe ?
 			<Button>Awaiting response (cancel?)</Button>
 		:	null
 	)
