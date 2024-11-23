@@ -28,7 +28,7 @@ function ProfilePage() {
 					<CardHeader>
 						<CardTitle className="mx-auto">
 							{profile?.username}
-							<span className="opacity-70">'s public profile</span>
+							<span className="opacity-70">'s profile</span>
 						</CardTitle>
 					</CardHeader>
 					<CardContent className="space-y-4 text-center">
@@ -39,7 +39,7 @@ function ProfilePage() {
 						</div>
 						<h2 className="text-xl font-semibold">{profile.username}</h2>
 						<div>
-							<p className="capitalize">
+							<p className="capitalize text-muted-foreground text-sm mb-2">
 								{relationship?.status ?? 'unconnected'}
 							</p>
 							<RelationshipActions uid_for={uid} />
