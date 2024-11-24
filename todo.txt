@@ -1,31 +1,45 @@
+INVESTIGATE EPIC: Convert useQueries to usequery(someOptions) format
+-	we're already using { data, isPending, error } in most components
+-	we're not preloading mostly because we don't have these options objects
+-	perhaps just adopt for one query, like the relationships, bc we should get
+	immediate UX/code improvement -- only placing error/pending states
+	between navigations and removing them from
+- And then: use queryClient.prefetchQuery(queryOptions) everywhere
+
 EPIC OF SIGNUPS AND GETTING STARTED AND CONNECTING FRIENDS
-1. ✅ Got to actually build the signup workflow, for learners and friends
-	1. ✅ add a mock for the form input
-		1. ✅ make the form input look niceeee
-	1. ✅ make the form input work
-	1. ~make the signup email nice~
-	1. ✅ differentiate the landing page
-		1. ✅ getting-started page just has the username and primary language, creates the profile only.
-		1. _then_ the differentiated page: 
+1.	✅ Got to actually build the signup workflow, for learners and friends
+	1.	✅ add a mock for the form input
+		1.	✅ make the form input look niceeee
+	1.	✅ make the form input work
+	1.	~make the signup email nice~
+	1.	add "copy invitation text" to invite page
+	1.	✅ differentiate the landing page
+		1.	✅ getting-started page just has the username and primary language, creates the profile only.
+		1.	_then_ the differentiated page: 
 			*	✅ learners get the add-first-deck page
-			* ✅ friends get an accept-friendship page
+			*	✅ friends get an accept-friendship page
+				*	✅ Build this "accept-one-particular-invite" page
+				*	original invite needs to embed the friend's uid
+				*	grab the url argument and save it when the temp user is created
+				*	detect the friend uid in the user object for the first-redirect after getting-started
 	1. ✅ landing page followup steps (/getting-started, etc.)
-	1. implications: there should be someplace in /profile to change this? to "open up" the rest of the app?
+	1.	implications: there should be someplace in /profile to change this? to "open up" the rest of the app?
 		*	so far, no; the user_role is only used for the getting-started page's redirect
 1. ✅ search for friends -- results should include relationship if present
-	* ✅ this may mean actually the search unit should take an ID and we should fetch the relationship from a map 
+	* ✅ this may mean actually the search unit should take an ID and we should fetch the relationship from a map
 		(so do like how we have deck.pids and and such, with relationships, refactoring this cache entry)
-1. ✅ use specific mutation keys for invitations/response actions
-1. ✅ destructive buttons like "unfriend" and "cancel invite" and "decline invitation" should all have dialog confirmations
+1.	✅ use specific mutation keys for invitations/response actions
+1.	✅ destructive buttons like "unfriend" and "cancel invite" and "decline invitation" should all have dialog confirmations
 
 ISSUES
-1. erroneous link like /learn/undefined should 404, or at least say 'do you wanna start learning this?'
+1. malformed link like /learn/undefined should 404, or at least say 'do you wanna start learning this?'
 1. When you try to sign up using existing creds you get an error and then get logged in. We
 	should handle this. (inspect and special-case the error before throwing, and toast accordingly)
-1. Signup workflow should not be a toast-redirect, it should be a success alert, saying go check
+1. ✅ Signup workflow should not be a toast-redirect, it should be a success alert, saying go check
 	and verify your email; redirect should happen after this
 1. why is class s-link not working correctly in the "find a friend" search empty results section? (have manually added a border-b, like a barbarian)
 1. accent color isn't working; comes through as light grey; makes the s-link not visible (enough)
+1. darkmode foreground is too white (it's giving me difficulty already; it could be worse for others)
 1. ✅ Friends data model: we have a problem with stacking multiple invites/requests between the same two people
 
 EDGE CASES LEFT BEHIND
