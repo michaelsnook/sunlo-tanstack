@@ -38,8 +38,7 @@ ISSUES
 1. ✅ Signup workflow should not be a toast-redirect, it should be a success alert, saying go check
 	and verify your email; redirect should happen after this
 1. why is class s-link not working correctly in the "find a friend" search empty results section? (have manually added a border-b, like a barbarian)
-1. accent color isn't working; comes through as light grey; makes the s-link not visible (enough)
-1. darkmode foreground is too white (it's giving me difficulty already; it could be worse for others)
+1. ✅ darkmode foreground is too white (it's giving me difficulty already; it could be worse for others)
 1. ✅ Friends data model: we have a problem with stacking multiple invites/requests between the same two people
 
 EDGE CASES LEFT BEHIND
@@ -97,8 +96,8 @@ COMPONENTS (ShadCN/Radix)
 1. ✅ Add a Components page to keep track of / showcase all components
 1. ✅ Removing daisyUI
 		1. disable active link (removed class `disabled`)
-	1. ✅ 🪲 find-and-fix all these: .page-card .card-white .card .alert
-	1. ✅ fix color codes (text-base) in SelectOneLanguage
+		1. ✅ fix color codes (text-base) in SelectOneLanguage
+		1. fix accent color
 	1. find-replace all these colors: text-base text-base-content etc
 1. use <ReloadIcon className="mr-2 h-4 w-4 animate-spin" /> for loading buttons
 1. Add the "suggest edits to this card"
@@ -141,10 +140,10 @@ DATA LOADING
 		phrases in particular. now also relationships or public profiles, bc search results
 
 ROUTER
-1. ✅ if the navbar is not present, use its parent, somehow. (unclear why this is not happening)
+1. ✅ if the navbar is not present, use its parent, somehow
 1. can we aggregate all the context menu items and display them in groups. 
 		(this collation should mean we can set a single page's title without affecting the menus) 
-1. What is the best way to get the $lang? is it `const { lang } = Route.useParams()` ? can we not get it in page props, or context?
+1. ✅ What is the best way to get the $lang? is it `const { lang } = Route.useParams()` ? can we not get it in page props, or context?
 		- yes to context: `const data = Route.useRouteContext()` does return the queryClient and the auth object (mixed together actually)
 			- further can we access context from props?
 1. Standardize how we handle: `const { navigate } = useRouter()` -- can we use some props or the `Route.` methods?
