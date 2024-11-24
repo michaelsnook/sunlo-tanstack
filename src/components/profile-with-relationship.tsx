@@ -13,8 +13,8 @@ export function ProfileWithRelationship({
 	uid: uuid
 	profile: PublicProfile | PublicProfileFull
 }) {
-	const inviteResponseMutation = useFriendRequestAction(uid)
 	const { data: relationship } = useOneRelation(uid)
+	const inviteResponseMutation = useFriendRequestAction(uid)
 
 	return (
 		<AvatarIconRow {...profile}>
