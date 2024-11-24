@@ -1,12 +1,11 @@
-import { Label } from '@/components/ui/label'
 import { Link } from '@tanstack/react-router'
-import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label'
+import { buttonVariants } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useAuth } from '@/lib/hooks'
 
 export default function UserAuthCard() {
 	const { userEmail } = useAuth()
-
 	return (
 		<>
 			<Label>Your email</Label>
@@ -17,9 +16,12 @@ export default function UserAuthCard() {
 					value={userEmail ?? 'loading...'}
 					disabled
 				/>
-				<Button variant="secondary" className="my-auto" asChild>
-					<Link to="/profile/change-email">Change</Link>
-				</Button>
+				<Link
+					to="/profile/change-email"
+					className={buttonVariants({ variant: 'secondary' })}
+				>
+					Change
+				</Link>
 			</div>
 			<Label>Your password</Label>
 			<div className="flex flex-row gap-2">
@@ -29,9 +31,13 @@ export default function UserAuthCard() {
 					value="***************"
 					disabled
 				/>
-				<Button variant="secondary" className="my-auto" asChild>
-					<Link to="/profile/change-password">Change</Link>
-				</Button>
+
+				<Link
+					to="/profile/change-password"
+					className={buttonVariants({ variant: 'secondary' })}
+				>
+					Change
+				</Link>
 			</div>
 		</>
 	)
