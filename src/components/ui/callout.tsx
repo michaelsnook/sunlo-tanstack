@@ -25,7 +25,7 @@ export default function Callout({
 		<div
 			{...props}
 			className={cn(
-				'card flex flex-row gap-4 items-center',
+				'border rounded px-[4%] py-[3%] flex flex-row gap-4 items-center',
 				variants[variant],
 				className
 			)}

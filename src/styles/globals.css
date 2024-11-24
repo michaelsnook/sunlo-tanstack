@@ -87,16 +87,6 @@
 	.nav-link.active {
 		@apply border-l-4 border-opacity-50 pl-2 text-opacity-70;
 	}
-	.card {
-		@apply border rounded p-[4%];
-	}
-	.card-page {
-		@apply card bg-background text-foreground;
-	}
-	.page-card > .h1,
-	.page-card > .h2 {
-		@apply text-opacity-90;
-	}
 }
 @layer utilities {
 	.h1 {
