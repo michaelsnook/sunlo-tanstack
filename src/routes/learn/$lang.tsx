@@ -41,8 +41,7 @@ export const Route = createFileRoute('/learn/$lang')({
 				},
 				{
 					name: 'Friends and contacts',
-					to: '/learn/$lang/friend-request',
-					params: { lang },
+					to: '/friends',
 					icon: 'contact',
 				},
 			],

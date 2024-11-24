@@ -101,6 +101,8 @@ function renderIcon(icon: string, props: LucideProps = { size: 20 }) {
 	switch (icon) {
 		case 'book-heart': // for your /learn page
 			return <BookHeart {...props} />
+		case 'contact':
+			return <Contact {...props} />
 		case 'email': // for change-email page
 			return <Mail {...props} />
 		case 'folder-plus': // for a new deck
