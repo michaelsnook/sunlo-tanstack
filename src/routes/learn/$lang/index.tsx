@@ -14,7 +14,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card'
-import { Book, NotebookPen, Search } from 'lucide-react'
+import { Book, Loader2, NotebookPen, Search } from 'lucide-react'
 
 export const Route = createFileRoute('/learn/$lang/')({
 	component: WelcomePage,
@@ -73,6 +73,11 @@ function FriendsSection({ lang }: LangOnlyComponentProps) {
 		<Card>
 			<CardHeader>
 				<CardTitle>Your Friends</CardTitle>
+				<CardDescription>
+					NB: This "your friends" section is mock content for wireframe purposes
+					only. The list below is not pulling from the database and doesn't
+					reflect your actual friends list or their activities.
+				</CardDescription>
 			</CardHeader>
 			<CardContent>
 				<p>Recent activity in this deck</p>
@@ -95,7 +100,7 @@ function FriendsSection({ lang }: LangOnlyComponentProps) {
 }
 
 function DeckSettings({ lang }: LangOnlyComponentProps) {
-	const { data } = useDeckMeta(lang)
+	const { data, isPending } = useDeckMeta(lang)
 
 	return (
 		<Card>
@@ -106,25 +111,28 @@ function DeckSettings({ lang }: LangOnlyComponentProps) {
 				</CardDescription>
 			</CardHeader>
 			<CardContent className="space-y-4">
-				<ul className="list-disc ms-4">
-					<li>
-						Your deck is currently:{' '}
-						<strong>{data?.archived ? 'Inactive' : 'Active'}</strong>
-					</li>
-					<li>
-						Your learning motivation is:{' '}
-						<strong>
-							{data?.learning_goal === 'family' ?
-								'To connect with family'
-							: data?.learning_goal === 'visiting' ?
-								'Preparing to visit'
-							:	'Living in a new place'}
-						</strong>
-					</li>
-					<li>
-						Your learning goals are: <strong>lorem upside downum</strong>
-					</li>
-				</ul>
+				{isPending ?
+					<Loader2 />
+				:	<ul className="list-disc ms-4">
+						<li>
+							Your deck is currently:{' '}
+							<strong>{data?.archived ? 'Inactive' : 'Active'}</strong>
+						</li>
+						<li>
+							Your learning motivation is:{' '}
+							<strong>
+								{data?.learning_goal === 'family' ?
+									'To connect with family'
+								: data?.learning_goal === 'visiting' ?
+									'Preparing to visit'
+								:	'Living in a new place'}
+							</strong>
+						</li>
+						<li>
+							Your learning goals are: <strong>lorem upside downum</strong>
+						</li>
+					</ul>
+				}
 				<Link
 					to="/learn/$lang/deck-settings"
 					params={{ lang }}
