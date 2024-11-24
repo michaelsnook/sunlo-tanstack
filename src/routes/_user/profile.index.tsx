@@ -6,14 +6,13 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card'
-import { useProfile } from '@/lib/use-profile'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import {
 	AvatarSection,
 	UpdateProfileForm,
 	UserAuthCard,
 } from '@/components/profile'
-import { ArrowRight, Loader2 } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
 import { useRelations } from '@/lib/friends'
 
 export const Route = createFileRoute('/_user/profile/')({
@@ -22,30 +21,33 @@ export const Route = createFileRoute('/_user/profile/')({
 
 function ProfilePage() {
 	return (
-		<>
+		<main className="px-px flex flex-col gap-6">
 			<AvatarSection />
-			<div className="w-full text-center">
-				<Link to="/getting-started" className="s-link text-xl" tabIndex={-1}>
-					Get Started <ArrowRight className="inline-block w-4 h-4 ml-1" />
-				</Link>
-			</div>
-			<div className="card-page">
-				<div className="h3">
-					<h3>Edit Profile</h3>
-					<p>Update your profile information.</p>
-				</div>
 
-				<UpdateProfileForm />
-			</div>
+			<Card>
+				<CardHeader>
+					<CardTitle>Edit Profile</CardTitle>
+					<CardDescription>Update your profile information</CardDescription>
+				</CardHeader>
+				<CardContent>
+					<UpdateProfileForm />
+				</CardContent>
+			</Card>
+
 			<FriendsSection />
-			<div className="card-page">
-				<div className="h3">
-					<h3>Login Credentials</h3>
-					<p>Update your email or password (or signin method)</p>
-				</div>
-				<UserAuthCard />
-			</div>
-		</>
+
+			<Card>
+				<CardHeader>
+					<CardTitle>Login Credentials</CardTitle>
+					<CardDescription>
+						Update your email or password (or signin method)
+					</CardDescription>
+				</CardHeader>
+				<CardContent>
+					<UserAuthCard />
+				</CardContent>
+			</Card>
+		</main>
 	)
 }
 
