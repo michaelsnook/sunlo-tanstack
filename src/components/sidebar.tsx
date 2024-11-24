@@ -8,7 +8,7 @@ import { useProfile } from '@/lib/use-profile'
 import { useAuth, useSignOut } from '@/lib/hooks'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { CircleUser, LogOut } from 'lucide-react'
+import { HeartHandshake, LogOut } from 'lucide-react'
 import { ModeToggle } from './mode-toggle'
 import Avatar from './avatar'
 import Callout from './ui/callout'
@@ -131,7 +131,7 @@ function DeckMenu() {
 			</Link>
 			<Link to="/friends" className="nav-link">
 				<p className="flex flex-row gap-2">
-					<CircleUser size={24} />
+					<HeartHandshake size={24} />
 					Your friends
 				</p>
 			</Link>
