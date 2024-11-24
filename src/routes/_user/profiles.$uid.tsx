@@ -1,5 +1,7 @@
+import { ConfirmDestructiveActionDialog } from '@/components/confirm-destructive-action-dialog'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+
 import {
 	useFriendRequestAction,
 	useOneRelation,
@@ -9,7 +11,7 @@ import { useAuth } from '@/lib/hooks'
 import { usePublicProfile } from '@/lib/use-profile'
 import { uuid } from '@/types/main'
 import { createFileRoute } from '@tanstack/react-router'
-import { Check, Loader2, ThumbsUp } from 'lucide-react'
+import { Loader2, ThumbsUp, UserCheck, UserMinus, X } from 'lucide-react'
 
 export const Route = createFileRoute('/_user/profiles/$uid')({
 	component: ProfilePage,
@@ -65,18 +67,54 @@ function RelationshipActions({ uid_for }: { uid_for: uuid }) {
 				:	<ThumbsUp />}
 			</Button>
 		: relationship.status === 'friends' ?
-			<Button>
-				Connected <Check /> (unfriend?)
-			</Button>
+			<ConfirmDestructiveActionDialog
+				title="Would you like to remove this friendship?"
+				description="You won't be able to see each other's decks or progress any more."
+			>
+				<Button variant="outline" className="hover:bg-destructive/30">
+					<UserCheck />
+					Friends
+				</Button>
+				<Button variant="destructive" onClick={() => action.mutate('remove')}>
+					<UserMinus />
+					Unfriend
+				</Button>
+			</ConfirmDestructiveActionDialog>
 		: relationship.status === 'pending' && !relationship.isMostRecentByMe ?
-			<Button onClick={() => action.mutate('accept')}>
-				Confirm friends{' '}
-				{action.isPending ?
-					<Loader2 />
-				:	<ThumbsUp />}
-			</Button>
+			<div className="flex flex-row gap-2 items-center justify-center">
+				<Button onClick={() => action.mutate('accept')}>
+					Confirm friends{' '}
+					{action.isPending ?
+						<Loader2 />
+					:	<ThumbsUp />}
+				</Button>
+				<ConfirmDestructiveActionDialog
+					title="Decline this friend request?"
+					description="You can still invite them to be friends later."
+				>
+					<Button variant="secondary">
+						<X />
+					</Button>
+					<Button
+						variant="destructive"
+						onClick={() => action.mutate('decline')}
+					>
+						Confirm
+					</Button>
+				</ConfirmDestructiveActionDialog>
+			</div>
 		: relationship.status === 'pending' && relationship.isMostRecentByMe ?
-			<Button>Awaiting response (cancel?)</Button>
+			<ConfirmDestructiveActionDialog
+				title="Cancel your friend request?"
+				description=""
+			>
+				<Button variant="outline" className="hover:bg-destructive/30">
+					<UserCheck /> Requested
+				</Button>
+				<Button variant="destructive" onClick={() => action.mutate('cancel')}>
+					Cancel request
+				</Button>
+			</ConfirmDestructiveActionDialog>
 		:	null
 	)
 }
