@@ -51,7 +51,7 @@ export const Route = createFileRoute('/learn/$lang')({
 
 function LanguageLayout() {
 	return (
-		<main className="container mx-auto">
+		<main className="mx-auto">
 			<Outlet />
 		</main>
 	)

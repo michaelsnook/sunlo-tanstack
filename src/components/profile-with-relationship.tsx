@@ -1,4 +1,4 @@
-import { Check, Handshake, Loader2, Send, ThumbsUp, X } from 'lucide-react'
+import { Check, Loader2, Send, ThumbsUp, UserCheck, X } from 'lucide-react'
 
 import type { PublicProfile, PublicProfileFull, uuid } from '@/types/main'
 import { Button } from '@/components/ui/button'
@@ -99,7 +99,7 @@ export function ProfileWithRelationship({
 						</Button>
 					</ConfirmDestructiveActionDialog>
 				: relationship.status === 'friends' ?
-					<Handshake className="w-6 h-6 p-0" />
+					<UserCheck className="w-6 h-6 p-0" />
 				:	<> status is null for some reason</>}
 			</div>
 		</AvatarIconRow>

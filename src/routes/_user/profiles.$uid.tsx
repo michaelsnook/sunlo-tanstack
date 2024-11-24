@@ -36,8 +36,14 @@ function ProfilePage() {
 					<CardContent className="space-y-4 text-center">
 						<div className="w-32 h-32 rounded-full bg-foreground/40 mx-auto flex items-center justify-center text-4xl">
 							{profile?.avatar_url ?
-								<img src={profile.avatar_url} className="rounded-full" />
-							:	profile.username[0].toUpperCase()}
+								<img
+									src={profile.avatar_url}
+									className="rounded-full w-32 h-32 object-cover"
+								/>
+							:	<span className="capitalize">
+									{profile.username.slice(0, 2)}
+								</span>
+							}
 						</div>
 						<h2 className="text-xl font-semibold">{profile.username}</h2>
 						<div>
