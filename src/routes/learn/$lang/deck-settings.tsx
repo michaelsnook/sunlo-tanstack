@@ -22,10 +22,10 @@ import {
 } from '@/components/ui/alert-dialog'
 
 import { useDeckMeta } from '@/lib/use-deck'
-import Loading from '@/components/loading'
 import { DeckMeta, DeckRow } from '@/types/main'
 import { LearningGoalField } from '@/components/fields/learning-goal-field'
 import supabase from '@/lib/supabase-client'
+import { Loader2 } from 'lucide-react'
 
 export const Route = createFileRoute('/learn/$lang/deck-settings')({
 	component: DeckSettingsPage,
@@ -35,7 +35,7 @@ function DeckSettingsPage() {
 	const { lang } = Route.useParams()
 	const { data: meta, isPending } = useDeckMeta(lang)
 	return isPending ?
-			<Loading />
+			<Loader2 />
 		:	<Card>
 				<CardHeader>
 					<CardTitle>Deck Settings</CardTitle>

@@ -2,10 +2,10 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 import { NavbarData } from '@/types/main'
-import Loading from '@/components/loading'
 import { FlashCardReviewSession } from '@/components/flash-card-review-session'
 import languages from '@/lib/languages'
 import { useDeck } from '@/lib/use-deck'
+import { Loader2 } from 'lucide-react'
 
 export const Route = createFileRoute('/learn/$lang/review')({
 	component: ReviewPage,
@@ -42,7 +42,7 @@ export const Route = createFileRoute('/learn/$lang/review')({
 function ReviewPage() {
 	const { lang } = Route.useParams()
 	const { data, isPending } = useDeck(lang)
-	if (isPending) return <Loading />
+	if (isPending) return <Loader2 />
 	const pidsForReview = shuffle(data.pids)
 	return pidsForReview.length === 0 ?
 			<Empty lang={lang} />

@@ -1,5 +1,4 @@
 import { ShowError } from '@/components/errors'
-import Loading from '@/components/loading'
 import SuccessCheckmark from '@/components/SuccessCheckmark'
 import { Button, buttonVariants } from '@/components/ui/button'
 import Callout from '@/components/ui/callout'
@@ -17,7 +16,7 @@ import { useProfile, usePublicProfile } from '@/lib/use-profile'
 import { useMutation } from '@tanstack/react-query'
 
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { ArrowRightLeft } from 'lucide-react'
+import { ArrowRightLeft, Loader2 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { z } from 'zod'
 
@@ -125,7 +124,7 @@ function AcceptInvitePage() {
 	return (
 		<main className="p-2 w-app flex flex-col justify-center h-screen pb-20">
 			{isPending ?
-				<Loading />
+				<Loader2 />
 			:	<Card>
 					<CardHeader>
 						<CardTitle>Accept invite from {learner.username}?</CardTitle>

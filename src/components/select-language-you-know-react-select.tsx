@@ -1,5 +1,4 @@
 import { useProfile } from '@/lib/use-profile'
-import Loading from './loading'
 import { opts } from '@/lib/languages'
 import { SelectOption } from '@/types/main'
 import {
@@ -16,7 +15,7 @@ import {
 	CommandList,
 } from '@/components/ui/command'
 import { Button } from '@/components/ui/button'
-import { Check, ChevronsUpDown } from 'lucide-react'
+import { Check, ChevronsUpDown, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useState } from 'react'
 
@@ -33,7 +32,7 @@ export default function SelectLanguageYouKnow({
 	const [open, setOpen] = useState(false)
 	const [value, setValue] = useState('')
 
-	if (!data) return <Loading />
+	if (!data) return <Loader2 />
 	const languages_spoken = data?.languages_spoken || []
 	const selectOptions: SelectOption[] = opts(languages_spoken)
 

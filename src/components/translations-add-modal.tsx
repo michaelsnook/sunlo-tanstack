@@ -4,14 +4,15 @@ import {
 	useMutation,
 	useQueryClient,
 } from '@tanstack/react-query'
-import ModalWithOpener from '@/components/modal-with-opener'
-import supabase from '@/lib/supabase-client'
-import SelectLanguageYouKnow from '@/components/select-language-you-know'
-import Loading from '@/components/loading'
 import toast from 'react-hot-toast'
+import { Loader2 } from 'lucide-react'
+
+import type { TranslationRow, SelectOption, PhraseFull } from '@/types/main'
+import supabase from '@/lib/supabase-client'
+import type { PostgrestError, QueryResult } from '@supabase/supabase-js'
+import ModalWithOpener from '@/components/modal-with-opener'
+import SelectLanguageYouKnow from '@/components/select-language-you-know'
 import { ShowError } from '@/components/errors'
-import { TranslationRow, SelectOption, PhraseFull } from '@/types/main'
-import { PostgrestError, QueryResult } from '@supabase/supabase-js'
 import { Button } from './ui/button'
 
 interface ModalProps {
@@ -83,7 +84,7 @@ export default function AddTranslationsModal({ phrase, close }: ModalProps) {
 						disabled={addTranslation.isPending}
 					>
 						{addTranslation.isPending ?
-							<Loading />
+							<Loader2 />
 						:	`Submit translation`}
 					</Button>
 					<ShowError show={!!addTranslation.error}>

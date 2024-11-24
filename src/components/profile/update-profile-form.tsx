@@ -1,24 +1,23 @@
 import type { uuid } from '@/types/main'
 
+import { Navigate } from '@tanstack/react-router'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { toast } from 'react-hot-toast'
-import { Button } from '@/components/ui/button'
+import { Loader2 } from 'lucide-react'
 
 import supabase from '@/lib/supabase-client'
-import { ShowError } from '@/components/errors'
-import Loading from '@/components/loading'
 import { useProfile } from '@/lib/use-profile'
-
+import { ShowError } from '@/components/errors'
+import { Button } from '@/components/ui/button'
 import {
 	AvatarEditorField,
 	LanguagePrimaryField,
 	LanguagesSpokenField,
 	UsernameField,
 } from '@/components/fields'
-import { Navigate } from '@tanstack/react-router'
 
 const ProfileEditFormSchema = z.object({
 	username: z
@@ -42,7 +41,7 @@ export default function UpdateProfileForm() {
 	return (
 		!data ?
 			data === undefined ?
-				<Loading className="mt-0" />
+				<Loader2 />
 			:	<Navigate to={`/getting-started`} />
 		:	<PrefilledForm
 				initialData={{
