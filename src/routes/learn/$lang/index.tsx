@@ -87,7 +87,7 @@ function FriendsSection({ lang }: LangOnlyComponentProps) {
 					<li>j-bhai (nothing special actually)</li>
 				</ul>
 				<Link
-					to="/friends/request"
+					to="/friends/search"
 					search={{ lang }}
 					from={Route.fullPath}
 					className={buttonVariants({ variant: 'secondary' })}

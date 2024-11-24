@@ -25,7 +25,7 @@ function InviteFriendPage() {
 						<div className="flex flex-row justify-between items-center">
 							<span>Invite a Friend</span>
 							<Link
-								to="/friends/request"
+								to="/friends/search"
 								aria-disabled="true"
 								className={buttonVariants({
 									size: 'badge',

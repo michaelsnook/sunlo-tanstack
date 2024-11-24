@@ -34,14 +34,14 @@ const SearchSchema = z.object({
 	lang: z.string().optional(),
 })
 
-export const Route = createFileRoute('/_user/friends/request')({
+export const Route = createFileRoute('/_user/friends/search')({
 	component: FriendRequestPage,
 	validateSearch: (search) => SearchSchema.parse(search),
 })
 
 function FriendRequestPage() {
 	return (
-		<main className="flex flex-col gap-6">
+		<main className="flex flex-col gap-4">
 			<Outlet />
 			<PendingInvitationsSection />
 			<SearchProfiles />
@@ -52,41 +52,46 @@ function FriendRequestPage() {
 function PendingInvitationsSection() {
 	const { data, isPending, error } = useRelations()
 
-	return (
-		<Card>
-			<CardHeader>
-				<CardTitle>
-					<div className="flex flex-row justify-between items-center">
-						<span>Invitations to connect</span>
-						<Link
-							to="/friends"
-							aria-disabled="true"
-							className={buttonVariants({ size: 'badge', variant: 'outline' })}
-						>
-							<Contact className="h-3 w-3" />{' '}
-							<span className="me-1">Friends list</span>
-						</Link>
-					</div>
-				</CardTitle>
-			</CardHeader>
-			<CardContent className="space-y-4">
-				{isPending ?
-					<Loader2 />
-				: error ?
-					<ShowError>{error.message}</ShowError>
-				: !(data?.uids.invitations?.length > 0) ?
-					<p>You don't have any pending invitations at this time.</p>
-				:	data?.uids.invitations.map((uid) => (
-						<ProfileWithRelationship
-							key={uid}
-							uid={uid}
-							profile={data?.relationsMap[uid].profile}
-						/>
-					))
-				}
-			</CardContent>
-		</Card>
-	)
+	return !(data?.uids.invitations?.length > 0) ?
+			<p
+				className={`mx-2 text-muted-foreground ${isPending ? 'invisible' : ''}`}
+			>
+				No friend requests pending for you.
+			</p>
+		:	<Card>
+				<CardHeader>
+					<CardTitle>
+						<div className="flex flex-row justify-between items-center">
+							<span>Invitations to connect</span>
+							<Link
+								to="/friends"
+								aria-disabled="true"
+								className={buttonVariants({
+									size: 'badge',
+									variant: 'outline',
+								})}
+							>
+								<Contact className="h-3 w-3" />{' '}
+								<span className="me-1">Friends list</span>
+							</Link>
+						</div>
+					</CardTitle>
+				</CardHeader>
+				<CardContent className="space-y-4">
+					{isPending ?
+						<Loader2 />
+					: error ?
+						<ShowError>{error.message}</ShowError>
+					:	data?.uids.invitations.map((uid) => (
+							<ProfileWithRelationship
+								key={uid}
+								uid={uid}
+								profile={data?.relationsMap[uid].profile}
+							/>
+						))
+					}
+				</CardContent>
+			</Card>
 }
 
 const searchAsync = async (query: string): Promise<PublicProfile[]> => {

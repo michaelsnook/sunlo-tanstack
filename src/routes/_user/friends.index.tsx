@@ -54,7 +54,7 @@ function FriendProfiles() {
 		<>
 			<div className="flex gap-2 flex-row flex-wrap dark">
 				<Link
-					to="/friends/request"
+					to="/friends/search"
 					from={Route.fullPath}
 					className={buttonVariants({ variant: 'secondary' })}
 				>
@@ -75,7 +75,7 @@ function FriendProfiles() {
 						<div className="flex flex-row justify-between items-center">
 							<span>Your friends</span>
 							<Link
-								to="/friends/request"
+								to="/friends/search"
 								search
 								aria-disabled="true"
 								className={buttonVariants({
@@ -101,7 +101,7 @@ function FriendProfiles() {
 								<Link
 									className="s-link"
 									from={Route.fullPath}
-									to="/friends/request"
+									to="/friends/search"
 								>
 									the search screen
 								</Link>{' '}

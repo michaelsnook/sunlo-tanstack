@@ -71,7 +71,7 @@ function NewDeckForm() {
 				</Button>
 				{showNewUserUI ?
 					<Link
-						to={`/friends/request`}
+						to={`/friends/search`}
 						className={buttonVariants({ variant: 'link' })}
 					>
 						View friend requests

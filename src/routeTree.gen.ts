@@ -36,10 +36,10 @@ import { Route as LearnLangDeckSettingsImport } from './routes/learn/$lang/deck-
 import { Route as LearnLangAddPhraseImport } from './routes/learn/$lang/add-phrase'
 import { Route as UserProfileChangePasswordImport } from './routes/_user/profile.change-password'
 import { Route as UserProfileChangeEmailImport } from './routes/_user/profile.change-email'
-import { Route as UserFriendsRequestImport } from './routes/_user/friends.request'
+import { Route as UserFriendsSearchImport } from './routes/_user/friends.search'
 import { Route as UserFriendsInviteImport } from './routes/_user/friends.invite'
 import { Route as UserFriendsUidImport } from './routes/_user/friends.$uid'
-import { Route as UserFriendsRequestUidImport } from './routes/_user/friends.request.$uid'
+import { Route as UserFriendsSearchUidImport } from './routes/_user/friends.search.$uid'
 
 // Create Virtual Routes
 
@@ -205,8 +205,8 @@ const UserProfileChangeEmailRoute = UserProfileChangeEmailImport.update({
   getParentRoute: () => UserProfileRoute,
 } as any)
 
-const UserFriendsRequestRoute = UserFriendsRequestImport.update({
-  path: '/request',
+const UserFriendsSearchRoute = UserFriendsSearchImport.update({
+  path: '/search',
   getParentRoute: () => UserFriendsRoute,
 } as any)
 
@@ -220,9 +220,9 @@ const UserFriendsUidRoute = UserFriendsUidImport.update({
   getParentRoute: () => UserFriendsRoute,
 } as any)
 
-const UserFriendsRequestUidRoute = UserFriendsRequestUidImport.update({
+const UserFriendsSearchUidRoute = UserFriendsSearchUidImport.update({
   path: '/$uid',
-  getParentRoute: () => UserFriendsRequestRoute,
+  getParentRoute: () => UserFriendsSearchRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -376,11 +376,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserFriendsInviteImport
       parentRoute: typeof UserFriendsImport
     }
-    '/_user/friends/request': {
-      id: '/_user/friends/request'
-      path: '/request'
-      fullPath: '/friends/request'
-      preLoaderRoute: typeof UserFriendsRequestImport
+    '/_user/friends/search': {
+      id: '/_user/friends/search'
+      path: '/search'
+      fullPath: '/friends/search'
+      preLoaderRoute: typeof UserFriendsSearchImport
       parentRoute: typeof UserFriendsImport
     }
     '/_user/profile/change-email': {
@@ -453,12 +453,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LearnLangIndexImport
       parentRoute: typeof LearnLangImport
     }
-    '/_user/friends/request/$uid': {
-      id: '/_user/friends/request/$uid'
+    '/_user/friends/search/$uid': {
+      id: '/_user/friends/search/$uid'
       path: '/$uid'
-      fullPath: '/friends/request/$uid'
-      preLoaderRoute: typeof UserFriendsRequestUidImport
-      parentRoute: typeof UserFriendsRequestImport
+      fullPath: '/friends/search/$uid'
+      preLoaderRoute: typeof UserFriendsSearchUidImport
+      parentRoute: typeof UserFriendsSearchImport
     }
   }
 }
@@ -479,8 +479,8 @@ export const routeTree = rootRoute.addChildren({
     UserFriendsRoute: UserFriendsRoute.addChildren({
       UserFriendsUidRoute,
       UserFriendsInviteRoute,
-      UserFriendsRequestRoute: UserFriendsRequestRoute.addChildren({
-        UserFriendsRequestUidRoute,
+      UserFriendsSearchRoute: UserFriendsSearchRoute.addChildren({
+        UserFriendsSearchUidRoute,
       }),
       UserFriendsIndexRoute,
     }),
@@ -579,7 +579,7 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/_user/friends/$uid",
         "/_user/friends/invite",
-        "/_user/friends/request",
+        "/_user/friends/search",
         "/_user/friends/"
       ]
     },
@@ -640,11 +640,11 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_user/friends.invite.tsx",
       "parent": "/_user/friends"
     },
-    "/_user/friends/request": {
-      "filePath": "_user/friends.request.tsx",
+    "/_user/friends/search": {
+      "filePath": "_user/friends.search.tsx",
       "parent": "/_user/friends",
       "children": [
-        "/_user/friends/request/$uid"
+        "/_user/friends/search/$uid"
       ]
     },
     "/_user/profile/change-email": {
@@ -687,9 +687,9 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "learn/$lang/index.tsx",
       "parent": "/learn/$lang"
     },
-    "/_user/friends/request/$uid": {
-      "filePath": "_user/friends.request.$uid.tsx",
-      "parent": "/_user/friends/request"
+    "/_user/friends/search/$uid": {
+      "filePath": "_user/friends.search.$uid.tsx",
+      "parent": "/_user/friends/search"
     }
   }
 }

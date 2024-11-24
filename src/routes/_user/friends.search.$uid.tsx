@@ -3,7 +3,7 @@ import Callout from '@/components/ui/callout'
 import { useProfile, usePublicProfile } from '@/lib/use-profile'
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/_user/friends/request/$uid')({
+export const Route = createFileRoute('/_user/friends/search/$uid')({
 	component: FriendRequestWithUIDPage,
 })
 

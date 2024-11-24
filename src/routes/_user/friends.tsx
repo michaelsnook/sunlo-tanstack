@@ -10,13 +10,13 @@ export const Route = createFileRoute('/_user/friends')({
 			icon: '',
 			contextMenu: [
 				{
-					name: 'Friends list',
+					name: 'Friends and contacts',
 					to: '/friends',
 					icon: 'friend',
 				},
 				{
-					name: 'Browse profiles',
-					to: '/friends/request',
+					name: 'Search profiles',
+					to: '/friends/search',
 					icon: 'handshake',
 				},
 				{
@@ -30,7 +30,7 @@ export const Route = createFileRoute('/_user/friends')({
 					icon: 'notebook-pen',
 				},
 				{
-					name: 'Start a new Language',
+					name: 'Start a new language',
 					to: '/learn/add-deck',
 					icon: 'folder-plus',
 				},
@@ -43,7 +43,7 @@ function FriendsPage() {
 	return (
 		<div className="w-app @container">
 			<Navbar />
-			<div className="px-1 space-y-6 pb-10">
+			<div className="px-1 space-y-4 pb-10">
 				<Outlet />
 			</div>
 		</div>
