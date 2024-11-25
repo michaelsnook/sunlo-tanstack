@@ -1,8 +1,8 @@
 import {
+	queryOptions,
 	useMutation,
 	useQuery,
 	useQueryClient,
-	UseQueryResult,
 } from '@tanstack/react-query'
 import supabase from './supabase-client'
 import {
@@ -44,59 +44,56 @@ export const friendSummaryToRelative = (
 	return res
 }
 
-export const useRelationsQuery = (
-	select?: (
-		data: FriendSummariesLoaded
-	) => FriendSummariesLoaded | FriendSummaryRelative
-) => {
-	const { userId } = useAuth()
-	return useQuery({
-		queryKey: ['user', 'friends', 'summaries'],
-		queryFn: async () => {
-			const { data } = await supabase
-				.from('friend_summary')
-				.select(
-					'*, profile_less:public_profile!friend_request_action_uid_less_fkey(*), profile_more:public_profile!friend_request_action_uid_more_fkey(*)'
-				)
-				.throwOnError()
+const getRelations = async (uid: uuid) => {
+	const { data } = await supabase
+		.from('friend_summary')
+		.select(
+			'*, profile_less:public_profile!friend_request_action_uid_less_fkey(*), profile_more:public_profile!friend_request_action_uid_more_fkey(*)'
+		)
+		.throwOnError()
 
-			const cleanArray: Array<FriendSummaryRelative> = data.map((d) =>
-				friendSummaryToRelative(userId, d)
-			)
+	const cleanArray: Array<FriendSummaryRelative> = data.map((d) =>
+		friendSummaryToRelative(uid, d)
+	)
 
-			return {
-				relationsMap: mapArray(cleanArray, 'uidOther'),
-				uids: {
-					all: cleanArray.map((d) => d.uidOther),
-					friends: cleanArray
-						.filter((d) => d.status === 'friends')
-						.map((d) => d.uidOther),
-					invited: cleanArray
-						.filter((d) => d.status === 'pending' && d.isMostRecentByMe)
-						.map((d) => d.uidOther),
-					invitations: cleanArray
-						.filter((d) => d.status === 'pending' && !d.isMostRecentByMe)
-						.map((d) => d.uidOther),
-				},
-			} as FriendSummariesLoaded
+	return {
+		relationsMap: mapArray(cleanArray, 'uidOther'),
+		uids: {
+			all: cleanArray.map((d) => d.uidOther),
+			friends: cleanArray
+				.filter((d) => d.status === 'friends')
+				.map((d) => d.uidOther),
+			invited: cleanArray
+				.filter((d) => d.status === 'pending' && d.isMostRecentByMe)
+				.map((d) => d.uidOther),
+			invitations: cleanArray
+				.filter((d) => d.status === 'pending' && !d.isMostRecentByMe)
+				.map((d) => d.uidOther),
 		},
-		select,
-		enabled: !!userId,
-	})
+	} as FriendSummariesLoaded
 }
+
+const relationsQuery = (uidMe: uuid) =>
+	queryOptions({
+		queryKey: ['user', uidMe, 'relations'],
+		queryFn: () => getRelations(uidMe),
+		enabled: !!uidMe,
+	})
+
+const oneRelationQuery = (uidMe: uuid, uidOther: uuid) =>
+	queryOptions({
+		...relationsQuery(uidMe),
+		select: (data) => data.relationsMap[uidOther],
+	})
 
 export const useRelations = () => {
-	return useRelationsQuery() as UseQueryResult<FriendSummariesLoaded, Error>
+	const { userId } = useAuth()
+	return useQuery(relationsQuery(userId))
 }
 
-export const useOneRelation = (
-	uid: uuid
-): UseQueryResult<FriendSummaryRelative, Error> => {
-	const select = (data: FriendSummariesLoaded) => data.relationsMap[uid]
-	return useRelationsQuery(select) as UseQueryResult<
-		FriendSummaryRelative,
-		Error
-	>
+export const useOneRelation = (uidToUse: uuid) => {
+	const { userId } = useAuth()
+	return useQuery(oneRelationQuery(userId, uidToUse))
 }
 
 export const useFriendRequestAction = (uid_for: uuid) => {
@@ -105,7 +102,7 @@ export const useFriendRequestAction = (uid_for: uuid) => {
 	const queryClient = useQueryClient()
 
 	return useMutation({
-		mutationKey: ['user', 'friend_request_action', uid_for],
+		mutationKey: ['user', uid_by, 'friend_request_action', uid_for],
 		mutationFn: async (action_type: string) => {
 			await supabase
 				.from('friend_request_action')
