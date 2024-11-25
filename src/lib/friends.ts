@@ -73,7 +73,7 @@ const getRelations = async (uid: uuid) => {
 	} as FriendSummariesLoaded
 }
 
-const relationsQuery = (uidMe: uuid) =>
+export const relationsQuery = (uidMe: uuid) =>
 	queryOptions({
 		queryKey: ['user', uidMe, 'relations'],
 		queryFn: () => getRelations(uidMe),
