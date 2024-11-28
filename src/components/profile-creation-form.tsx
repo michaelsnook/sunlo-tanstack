@@ -62,8 +62,8 @@ export default function ProfileCreationForm({ userId }: { userId: string }) {
 					control={control}
 					error={errors.language_primary}
 				/>
-				<div className="flex flex-col gap-4 sm:flex-row sm:justify-between">
-					<Button type="submit" className="w-full sm:w-auto">
+				<div className="flex flex-col gap-4 @xl:flex-row @xl:justify-between">
+					<Button type="submit" className="w-full @xl:w-auto">
 						Confirm
 					</Button>
 				</div>

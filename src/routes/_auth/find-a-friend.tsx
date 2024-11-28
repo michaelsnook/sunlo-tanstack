@@ -107,7 +107,7 @@ export function SearchProfilesComponent() {
 				)}
 			</form>
 
-			<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+			<div className="grid gap-4 @3xl:grid-cols-2 @5xl:grid-cols-3">
 				{searchResults.map((profile) => (
 					<Card key={profile.id}>
 						<CardHeader>
