@@ -1,6 +1,152 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@plugin '@tailwindcss/typography';
+@plugin '@tailwindcss/container-queries';
+@plugin 'tailwindcss-animate';
+
+@variant dark (&:is(.dark *));
+
+@theme {
+	--breakpoint-*: initial;
+	--breakpoint-sm: 640px;
+	--breakpoint-md: 768px;
+	--breakpoint-lg: 1024px;
+
+	--font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue',
+		Oxygen-Sans, Cantarell, sans-serif;
+
+	--radius-lg: var(--radius);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-sm: calc(var(--radius) - 4px);
+
+	--color-border: hsl(var(--border));
+	--color-input: hsl(var(--input));
+	--color-ring: hsl(var(--ring));
+	--color-background: hsl(var(--background));
+	--color-foreground: hsl(var(--foreground));
+
+	--color-primary: hsl(var(--primary));
+	--color-primary-foreground: hsl(var(--primary-foreground));
+
+	--color-secondary: hsl(var(--secondary));
+	--color-secondary-foreground: hsl(var(--secondary-foreground));
+
+	--color-destructive: hsl(var(--destructive));
+	--color-destructive-foreground: hsl(var(--destructive-foreground));
+
+	--color-muted: hsl(var(--muted));
+	--color-muted-foreground: hsl(var(--muted-foreground));
+
+	--color-accent: hsl(var(--accent));
+	--color-accent-foreground: hsl(var(--accent-foreground));
+
+	--color-popover: hsl(var(--popover));
+	--color-popover-foreground: hsl(var(--popover-foreground));
+
+	--color-card: hsl(var(--card));
+	--color-card-foreground: hsl(var(--card-foreground));
+
+	--animate-accordion-down: accordion-down 0.2s ease-out;
+	--animate-accordion-up: accordion-up 0.2s ease-out;
+
+	@keyframes accordion-down {
+		from {
+			height: 0;
+		}
+		to {
+			height: var(--radix-accordion-content-height);
+		}
+	}
+	@keyframes accordion-up {
+		from {
+			height: var(--radix-accordion-content-height);
+		}
+		to {
+			height: 0;
+		}
+	}
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+	*,
+	::after,
+	::before,
+	::backdrop,
+	::file-selector-button {
+		border-color: var(--color-gray-200, currentColor);
+	}
+}
+
+@utility w-app {
+	@apply mx-auto w-full max-w-[40rem];
+}
+
+@utility s-link {
+	@apply cursor-pointer decoration-accent underline-offset-2 hover:underline-offset-1 underline hover:decoration-2 decoration-1 transition-all;
+}
+
+@utility s-input {
+	@apply outline-1 outline-primary border-primary;
+}
+
+@utility nav-link {
+	@apply transition-all;
+	&:not(.active) {
+		@apply cursor-pointer hover:border-primary hover:border-l-4 hover:pl-2;
+	}
+	&.active {
+		@apply border-l-4 pl-2;
+	}
+}
+
+@utility active {
+	&.nav-link {
+		@apply border-l-4 pl-2;
+	}
+}
+@utility h1 {
+	@apply my-4 text-3xl @xl:text-4xl @3xl:text-5xl @5xl:text-6xl; /* font-display;*/
+	& .sub {
+		@apply text-lg @xl:text-xl @3xl:text-2xl;
+	}
+}
+@utility sub {
+	.h1 & {
+		@apply text-lg @xl:text-xl @3xl:text-2xl;
+	}
+}
+@utility d1 {
+	@apply my-4 text-4xl @xl:text-5xl @3xl:text-6xl @5xl:text-8xl tracking-tight; /* font-display;*/
+}
+@utility h2 {
+	@apply my-4 text-2xl @3xl:text-3xl @5xl:text-4xl; /* font-display;*/
+}
+@utility d2 {
+	@apply text-3xl @xl:text-4xl @3xl:text-5xl @5xl:text-6xl; /* font-display;*/
+}
+@utility h3 {
+	@apply mb-3 mt-1 text-xl @3xl:text-2xl; /* font-display;*/
+	& > p {
+		@apply text-sm opacity-80 @3xl:text-base;
+	}
+}
+@utility h4 {
+	@apply my-2 text-lg @3xl:text-xl; /* font-display;*/
+}
+@utility h5 {
+	@apply my-2 text-lg font-bold;
+}
+@utility px-min {
+	@apply px-2 @xl:px-3 @3xl:px-4 @5xl:px-6;
+}
 
 @layer base {
 	:root {
@@ -65,58 +211,5 @@
 	}
 	main {
 		@apply px-1;
-	}
-}
-
-@layer components {
-	.w-app {
-		@apply mx-auto w-full max-w-[40rem]; /* outline outline-dashed outline-white/50; */
-	}
-	.s-link {
-		@apply cursor-pointer decoration-accent underline-offset-2 hover:underline-offset-1 underline hover:decoration-2 decoration-1 transition-all;
-	}
-	.s-input {
-		@apply outline outline-1 outline-primary border-primary;
-	}
-	.nav-link {
-		@apply transition-all;
-	}
-	.nav-link:not(.active) {
-		@apply cursor-pointer hover:border-primary hover:border-l-4 hover:pl-2;
-	}
-	.nav-link.active {
-		@apply border-l-4 border-opacity-50 pl-2 text-opacity-70;
-	}
-}
-@layer utilities {
-	.h1 {
-		@apply my-4 text-3xl @xl:text-4xl @3xl:text-5xl @5xl:text-6xl; /* font-display;*/
-	}
-	.h1 .sub {
-		@apply text-lg @xl:text-xl @3xl:text-2xl;
-	}
-	.d1 {
-		@apply my-4 text-4xl @xl:text-5xl @3xl:text-6xl @5xl:text-8xl tracking-tight; /* font-display;*/
-	}
-	.h2 {
-		@apply my-4 text-2xl @3xl:text-3xl @5xl:text-4xl; /* font-display;*/
-	}
-	.d2 {
-		@apply text-3xl @xl:text-4xl @3xl:text-5xl @5xl:text-6xl; /* font-display;*/
-	}
-	.h3 {
-		@apply mb-3 mt-1 text-xl @3xl:text-2xl; /* font-display;*/
-	}
-	.h3 > p {
-		@apply text-sm opacity-80 @3xl:text-base;
-	}
-	.h4 {
-		@apply my-2 text-lg @3xl:text-xl; /* font-display;*/
-	}
-	.h5 {
-		@apply my-2 text-lg font-bold;
-	}
-	.px-min {
-		@apply px-2 @xl:px-3 @3xl:px-4 @5xl:px-6;
 	}
 }

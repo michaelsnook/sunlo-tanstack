@@ -77,7 +77,7 @@ function Index() {
 					Our Approach to Language&nbsp;Learning
 				</h2>
 				<div className="flex gap-4 flex-row flex-wrap">
-					<Card className="basis-80 flex-grow">
+					<Card className="basis-80 grow">
 						<CardHeader>
 							<CardTitle className="flex-row gap-2 flex">
 								<PhraseIcon /> Phrase Based
@@ -96,7 +96,7 @@ function Index() {
 							</p>
 						</CardContent>
 					</Card>
-					<Card className="basis-80 flex-grow">
+					<Card className="basis-80 grow">
 						<CardHeader>
 							<CardTitle className="flex-row gap-2 flex">
 								<UsersIcon /> Social Learning
@@ -116,7 +116,7 @@ function Index() {
 							</p>
 						</CardContent>
 					</Card>
-					<Card className="basis-80 flex-grow">
+					<Card className="basis-80 grow">
 						<CardHeader>
 							<CardTitle className="flex-row gap-2 flex">
 								<CuriosityIcon /> Driven by Curiosity
@@ -140,7 +140,7 @@ function Index() {
 			<section className="my-16 px-1 pb-8 pt-4 @lg:px-4 @lg:pb-16 @lg:pt-10">
 				<h2 className="h2 px-4 text-center @lg:mb-6">Who is Sunlo for?</h2>
 				<div className="flex gap-4 flex-row flex-wrap">
-					<Card className="basis-80 flex-grow">
+					<Card className="basis-80 grow">
 						<CardHeader>
 							<CardTitle className="flex-row gap-2 flex">
 								<PlaneIcon /> Moving To a New Place
@@ -158,7 +158,7 @@ function Index() {
 							</p>
 						</CardContent>
 					</Card>
-					<Card className="basis-80 flex-grow">
+					<Card className="basis-80 grow">
 						<CardHeader>
 							<CardTitle className="flex-row gap-2 flex">
 								<FriendIcon /> The Friend / Guide
@@ -178,7 +178,7 @@ function Index() {
 						</CardContent>
 					</Card>
 
-					<Card className="basis-80 flex-grow">
+					<Card className="basis-80 grow">
 						<CardHeader>
 							<CardTitle className="flex-row gap-2 flex">
 								<HeartIcon /> Extended Family

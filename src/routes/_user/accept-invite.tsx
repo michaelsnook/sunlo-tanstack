@@ -81,7 +81,7 @@ function AcceptInvitePage() {
 						<img
 							src={learner.avatar_url}
 							width=""
-							className="mx-auto rounded-xl max-w-32 flex-shrink"
+							className="mx-auto rounded-xl max-w-32 shrink"
 							alt={`${learner.username}'s profile picture`}
 						/>
 						{friend.avatar_url ?
@@ -89,7 +89,7 @@ function AcceptInvitePage() {
 								<ArrowRightLeft className="opacity-70 mx-auto" />
 								<img
 									src={learner.avatar_url}
-									className="mx-auto rounded-xl flex-shrink max-w-32"
+									className="mx-auto rounded-xl shrink max-w-32"
 									alt={`${learner.username}'s profile picture`}
 								/>
 							</>

@@ -85,13 +85,13 @@ export function FlashCardReviewSession({ pids, cardsMap }: ComponentProps) {
 				</div>
 			</CardHeader>
 			{isReviewComplete ?
-				<CardContent className="flex flex-grow flex-col items-center justify-center gap-4 pb-16">
+				<CardContent className="flex grow flex-col items-center justify-center gap-4 pb-16">
 					<h2 className="text-2xl font-bold">Good work!</h2>
 					<p className="text-lg">You've completed your review for today.</p>
 					<SuccessCheckmark />
 				</CardContent>
-			:	<CardContent className="flex flex-grow flex-col pt-6">
-					<div className="flex-grow flex flex-col items-center justify-center">
+			:	<CardContent className="flex grow flex-col pt-6">
+					<div className="grow flex flex-col items-center justify-center">
 						<div className="flex items-center justify-center mb-4">
 							<div className="text-2xl font-bold text-center mr-2">
 								{currentCard.originalPhrase}

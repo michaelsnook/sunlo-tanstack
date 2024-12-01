@@ -46,7 +46,7 @@ export default function Page() {
 						key={key}
 						to="/learn/$lang"
 						params={{ lang: key }}
-						className="block transition-transform rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+						className="block transition-transform rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
 					>
 						<Card
 							key={deck.language}
