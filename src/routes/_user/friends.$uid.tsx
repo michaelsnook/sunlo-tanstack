@@ -41,7 +41,7 @@ function ProfilePage() {
 									className="rounded-full w-32 h-32 object-cover"
 								/>
 							:	<>
-									<User className="rounded-full w-32 h-32 p-1 text-muted-foreground/20 blur-sm" />
+									<User className="rounded-full w-32 h-32 p-1 text-muted-foreground/20 blur-xs" />
 									<span className="capitalize font-bold absolute top-0 bottom-0 left-0 right-0 h-32 w-32 flex items-center justify-center">
 										{profile.username.slice(0, 2)}
 									</span>

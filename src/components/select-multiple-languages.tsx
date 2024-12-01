@@ -42,7 +42,7 @@ export default function SelectMultipleLanguagesInput({
 		<div className="h-40 overflow-auto rounded border py-3">
 			{Object.keys(languages).map((k) => (
 				<p key={`languages-spoken-${k}`} className="flex">
-					<label className="w-full px-3 py-1 has-[:checked]:bg-primary has-[:checked]:text-white">
+					<label className="w-full px-3 py-1 has-checked:bg-primary has-checked:text-white">
 						<input
 							type="checkbox"
 							className="mr-2 rounded"

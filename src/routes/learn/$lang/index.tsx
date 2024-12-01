@@ -179,7 +179,7 @@ function DeckFullContents({ lang }: LangOnlyComponentProps) {
 					</div>
 				</div>
 				{deck.data?.pids.length > 0 ?
-					<div className="flex-basis-[20rem] flex flex-shrink flex-row flex-wrap gap-4">
+					<div className="flex-basis-[20rem] flex shrink flex-row flex-wrap gap-4">
 						<LanguagePhrasesAccordionComponent
 							lang={lang}
 							pids={deck.data?.pids}

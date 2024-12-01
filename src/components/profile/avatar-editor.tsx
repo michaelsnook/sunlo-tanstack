@@ -62,7 +62,7 @@ export default function AvatarEditor({ url, onUpload }: AvatarEditorProps) {
 	})
 
 	return (
-		<div className="relative h-40 flex-shrink border border-dashed p-2">
+		<div className="relative h-40 shrink border border-dashed p-2">
 			<Label
 				htmlFor="avatarUploadInput"
 				className="fit-content relative z-10 flex h-full flex-col rounded text-center"
@@ -86,7 +86,7 @@ export default function AvatarEditor({ url, onUpload }: AvatarEditorProps) {
 					onChange={sendImage.mutate}
 					disabled={sendImage.isPending}
 				/>
-				<div className="absolute flex h-full flex-col justify-center bg-base-100/50 opacity-0 backdrop-blur hover:opacity-100">
+				<div className="absolute flex h-full flex-col justify-center bg-base-100/50 opacity-0 backdrop-blur-sm hover:opacity-100">
 					<p className="text-base-content place-content-center">
 						{sendImage.isPending ?
 							<>Uploading ...</>
